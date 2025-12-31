@@ -32,24 +32,12 @@
         .lightning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
         .bolt { position: absolute; background: white; box-shadow: 0 0 10px 1px white; opacity: 0; }
         @keyframes flash { 0% { opacity: 0; } 50% { opacity: 0.4; } 100% { opacity: 0; } }
-
-        @keyframes logo-pulse {
-            0% { filter: drop-shadow(0 0 5px rgba(220, 38, 38, 0.2)); }
-            50% { filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.6)); }
-            100% { filter: drop-shadow(0 0 5px rgba(220, 38, 38, 0.2)); }
-        }
+        @keyframes logo-pulse { 0% { filter: drop-shadow(0 0 5px rgba(220, 38, 38, 0.2)); } 50% { filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.6)); } 100% { filter: drop-shadow(0 0 5px rgba(220, 38, 38, 0.2)); } }
         .logo-animate { animation: logo-pulse 3s infinite ease-in-out; }
-
-        @keyframes btn-lightning {
-            0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); }
-            50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.4), 0 0 10px rgba(220, 38, 38, 0.8); }
-        }
+        @keyframes btn-lightning { 0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); } 50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.4), 0 0 10px rgba(220, 38, 38, 0.8); } }
         .btn-lightning-effect { animation: btn-lightning 2s infinite; border: 1px solid rgba(255, 255, 255, 0.2); }
-
         .bg-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.03) 0%, transparent 80%); pointer-events: none; z-index: -1; }
-
         @media (max-width: 1024px) { .side-nav { position: static; width: 100%; display: flex; overflow-x: auto; margin-top: 80px; padding: 10px; gap: 10px; } main { padding-right: 24px !important; padding-left: 24px !important; } }
-        
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
     </style>
@@ -150,7 +138,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
         import { getDatabase, ref, onValue, push, remove, update, set } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
-        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
         
         const firebaseConfig = {
             apiKey: "AIzaSyCt5H1t5dqUxileT88DqkIT5WRSGx45Lps",
@@ -159,12 +147,18 @@
             projectId: "osman-70f42",
             storageBucket: "osman-70f42.firebasestorage.app"
         };
+
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+        
         const ADMIN_EMAIL = "osohmde@gmail.com";
+        const Toast = Swal.mixin({ toast: true, position: 'top-start', showConfirmButton: false, timer: 2000, background: '#1a1a1a', color: '#fff' });
+        
         let cart = [], allProducts = [], currentCat = 'all';
 
+        // Lightning effect
         function makeLightning() {
             const container = document.getElementById('lightning-container');
             setInterval(() => {
@@ -207,8 +201,6 @@
             bank: { title: 'التحويل البنكي', icon: 'https://cdn-icons-png.flaticon.com/512/2830/2830284.png', value: 'SA9230000000123456784849', name: 'يزن عادل حسن ' }
         };
 
-        const Toast = Swal.mixin({ toast: true, position: 'top-start', showConfirmButton: false, timer: 2000, background: '#1a1a1a', color: '#fff' });
-
         onAuthStateChanged(auth, user => {
             const isAdmin = user && user.email === ADMIN_EMAIL;
             document.getElementById('admin-panel').classList.toggle('hidden', !isAdmin);
@@ -219,21 +211,95 @@
             onValue(ref(db, "products"), s => { allProducts = []; s.forEach(p => { allProducts.push({...p.val(), key: p.key}); }); renderProducts(); });
         });
 
+        window.loginWithGoogle = () => {
+            signInWithPopup(auth, googleProvider)
+                .then(() => {
+                    Swal.close();
+                    Toast.fire({ icon: 'success', title: 'تم تسجيل الدخول عبر Google' });
+                })
+                .catch(err => {
+                    Swal.fire('خطأ', 'فشل تسجيل الدخول: ' + err.message, 'error');
+                });
+        };
+
+        window.handleAuth = () => {
+            if(auth.currentUser) {
+                signOut(auth).then(() => {
+                    Toast.fire({ icon: 'success', title: 'تم تسجيل الخروج' });
+                    setTimeout(() => location.reload(), 1000);
+                });
+            } else {
+                Swal.fire({
+                    title: 'تسجيل الدخول', background:'#121212', color:'#fff',
+                    html: `
+                        <input id="e" class="swal2-input" placeholder="البريد الإلكتروني">
+                        <input id="p" type="password" class="swal2-input" placeholder="كلمة المرور">
+                        <button onclick="window.loginWithGoogle()" class="w-full mt-4 p-3 bg-white text-black rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" class="w-5"> الدخول بواسطة Google
+                        </button>
+                        <div class="mt-4 flex flex-col gap-2 text-xs">
+                            <button onclick="window.forgotPass()" class="text-red-500">نسيت كلمة المرور؟</button>
+                            <button onclick="window.openRegister()" class="text-blue-400">إنشاء حساب جديد</button>
+                        </div>`,
+                    confirmButtonText: 'دخول',
+                    showCancelButton: true,
+                    cancelButtonText: 'إلغاء'
+                }).then(r => { 
+                    if(r.isConfirmed) {
+                        const email = document.getElementById('e').value;
+                        const pass = document.getElementById('p').value;
+                        if(!email || !pass) return Toast.fire({ icon: 'error', title: 'يرجى ملء الحقول' });
+                        
+                        signInWithEmailAndPassword(auth, email, pass)
+                            .then(() => Toast.fire({ icon: 'success', title: 'تم تسجيل الدخول بنجاح' }))
+                            .catch(e => Swal.fire('خطأ', 'البريد أو كلمة المرور غير صحيحة', 'error'));
+                    }
+                });
+            }
+        };
+
+        window.openRegister = async () => {
+            const { value: f } = await Swal.fire({
+                title: 'إنشاء حساب', background:'#121212', color:'#fff',
+                html: `<input id="re" class="swal2-input" placeholder="البريد الإلكتروني"><input id="rp" type="password" class="swal2-input" placeholder="كلمة المرور">`,
+                preConfirm: () => ({ e: document.getElementById('re').value, p: document.getElementById('rp').value })
+            });
+            if(f) {
+                if(!f.e || !f.p) return Toast.fire({ icon: 'error', title: 'يرجى ملء البيانات' });
+                createUserWithEmailAndPassword(auth, f.e, f.p)
+                    .then(() => Toast.fire({ icon: 'success', title: 'تم إنشاء الحساب بنجاح' }))
+                    .catch(e => Swal.fire('خطأ', e.message, 'error'));
+            }
+        };
+
+        window.forgotPass = async () => {
+            const { value: e } = await Swal.fire({ title: 'استعادة المرور', input: 'email', background:'#121212', color:'#fff', placeholder: 'بريدك الإلكتروني' });
+            if(e) {
+                sendPasswordResetEmail(auth, e)
+                    .then(() => Swal.fire('تم الإرسال', 'تفقد بريدك الإلكتروني لاستعادة كلمة المرور', 'success'))
+                    .catch(err => Toast.fire({ icon: 'error', title: 'البريد غير مسجل' }));
+            }
+        };
+
         window.getYouTubeID = (url) => { if(!url) return null; const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/; const match = url.match(regExp); return (match && match[2].length === 11) ? match[2] : null; }
 
         window.openAddProduct = async () => {
             const { value: f } = await Swal.fire({
                 title: 'إضافة منتج جديد', background: '#121212', color: '#fff',
-                html: `<input id="nt" class="swal2-input" placeholder="الاسم"><input id="np" type="number" class="swal2-input" placeholder="السعر"><select id="nc" class="swal2-select"><option value="alerts">أليرتات</option><option value="packages">بكجات</option></select><select id="ntr" class="swal2-select"><option value="basic">أساسي</option><option value="premium">مميز</option><option value="luxury">فاخر</option></select><input id="ny" class="swal2-input" placeholder="يوتيوب"><input id="ni" type="file" class="swal2-file">`,
+                html: `<input id="nt" class="swal2-input" placeholder="الاسم"><input id="np" type="number" class="swal2-input" placeholder="السعر"><select id="nc" class="swal2-select"><option value="alerts">أليرتات</option><option value="packages">بكجات</option></select><select id="ntr" class="swal2-select"><option value="basic">أساسي</option><option value="premium">مميز</option><option value="luxury">فاخر</option></select><input id="ny" class="swal2-input" placeholder="رابط يوتيوب (اختياري)"><input id="ni" type="file" class="swal2-file">`,
                 preConfirm: async () => {
                     const file = document.getElementById('ni').files[0];
                     if(!file) return Swal.showValidationMessage('الصورة مطلوبة');
                     const fd = new FormData(); fd.append("image", file);
-                    const res = await fetch('https://api.imgbb.com/1/upload?key=11517ad350ecf73397b84302f750238e', { method: 'POST', body: fd }).then(r => r.json());
-                    return { title: document.getElementById('nt').value, price: document.getElementById('np').value, category: document.getElementById('nc').value, tier: document.getElementById('ntr').value, youtube: document.getElementById('ny').value, image: res.data.url };
+                    try {
+                        const res = await fetch('https://api.imgbb.com/1/upload?key=11517ad350ecf73397b84302f750238e', { method: 'POST', body: fd }).then(r => r.json());
+                        return { title: document.getElementById('nt').value, price: document.getElementById('np').value, category: document.getElementById('nc').value, tier: document.getElementById('ntr').value, youtube: document.getElementById('ny').value, image: res.data.url };
+                    } catch(e) { Swal.showValidationMessage('فشل رفع الصورة'); }
                 }
             });
-            if(f) push(ref(db, "products"), f);
+            if(f) {
+                push(ref(db, "products"), f).then(() => Toast.fire({ icon: 'success', title: 'تمت إضافة المنتج' }));
+            }
         };
 
         const loadAdminOrders = () => {
@@ -243,8 +309,8 @@
                     const d = o.val();
                     if(d.status === 'pending') {
                         list.innerHTML += `<div class="p-4 bg-white/5 rounded-xl border border-white/5 mb-2">
-                            <p class="font-bold">${d.email}</p><p class="text-red-500">${d.total}</p>
-                            <div class="flex gap-2 mt-2"><button onclick="window.activateOrder('${o.key}')" class="bg-green-600 px-3 py-1 rounded">تفعيل</button><button onclick="window.removeOrder('${o.key}')" class="bg-red-600 px-3 py-1 rounded">حذف</button></div>
+                            <p class="font-bold text-xs truncate">${d.email}</p><p class="text-red-500 font-black">${d.total}</p>
+                            <div class="flex gap-2 mt-2"><button onclick="window.activateOrder('${o.key}')" class="bg-green-600 px-3 py-1 rounded text-xs">تفعيل</button><button onclick="window.removeOrder('${o.key}')" class="bg-red-600 px-3 py-1 rounded text-xs">حذف</button></div>
                         </div>`;
                     }
                 });
@@ -252,10 +318,13 @@
         };
 
         window.activateOrder = async (key) => {
-            const { value: url } = await Swal.fire({ title: 'رابط التحميل', input: 'url', background: '#121212', color: '#fff' });
-            if(url) update(ref(db, `orders/${key}`), { status: 'active', productLink: url });
+            const { value: url } = await Swal.fire({ title: 'رابط التحميل', input: 'url', background: '#121212', color: '#fff', placeholder: 'ضع رابط الملف هنا' });
+            if(url) {
+                update(ref(db, `orders/${key}`), { status: 'active', productLink: url })
+                    .then(() => Toast.fire({ icon: 'success', title: 'تم تفعيل الطلب' }));
+            }
         };
-        window.removeOrder = (k) => { if(confirm('حذف؟')) remove(ref(db, "orders/"+k)); };
+        window.removeOrder = (k) => { if(confirm('هل أنت متأكد من حذف الطلب؟')) remove(ref(db, "orders/"+k)); };
 
         const loadUserOrders = (email) => {
             onValue(ref(db, "orders"), s => {
@@ -264,39 +333,13 @@
                     const d = o.val();
                     if(d.email === email) {
                         const active = d.status === 'active';
-                        list.innerHTML += `<div class="glass p-4 mb-2 flex justify-between items-center ${active ? 'border-green-500' : 'border-yellow-500'}">
-                            <div><p>طلب #${o.key.substr(-4)}</p><p class="font-bold">${d.total}</p></div>
-                            ${active ? `<a href="${d.productLink}" target="_blank" class="bg-green-600 px-4 py-2 rounded-full">تحميل</a>` : '⏳'}
+                        list.innerHTML += `<div class="glass p-4 mb-2 flex justify-between items-center ${active ? 'border-green-500/50' : 'border-yellow-500/50'}">
+                            <div><p class="text-xs text-gray-400">طلب #${o.key.substr(-4)}</p><p class="font-bold text-red-500">${d.total}</p></div>
+                            ${active ? `<a href="${d.productLink}" target="_blank" class="bg-green-600 px-4 py-2 rounded-full text-xs font-bold">تحميل المنتج</a>` : '<span class="text-yellow-500 text-xs font-bold">⏳ قيد المراجعة</span>'}
                         </div>`;
                     }
                 });
             });
-        };
-
-        window.handleAuth = () => {
-            if(auth.currentUser) signOut(auth).then(()=>location.reload());
-            else {
-                Swal.fire({
-                    title: 'تسجيل الدخول', background:'#121212', color:'#fff',
-                    html: `<input id="e" class="swal2-input" placeholder="البريد"><input id="p" type="password" class="swal2-input" placeholder="كلمة المرور">
-                    <div class="mt-4 flex flex-col gap-2 text-xs"><button onclick="window.forgotPass()" class="text-red-500">نسيت كلمة المرور؟</button><button onclick="window.openRegister()" class="text-blue-400">إنشاء حساب جديد</button></div>`,
-                    confirmButtonText: 'دخول'
-                }).then(r => { if(r.isConfirmed) signInWithEmailAndPassword(auth, document.getElementById('e').value, document.getElementById('p').value).catch(e=>alert(e.message)); });
-            }
-        };
-
-        window.openRegister = async () => {
-            const { value: f } = await Swal.fire({
-                title: 'إنشاء حساب', background:'#121212', color:'#fff',
-                html: `<input id="re" class="swal2-input" placeholder="البريد"><input id="rp" type="password" class="swal2-input" placeholder="كلمة المرور">`,
-                preConfirm: () => ({ e: document.getElementById('re').value, p: document.getElementById('rp').value })
-            });
-            if(f) createUserWithEmailAndPassword(auth, f.e, f.p).catch(e=>alert(e.message));
-        };
-
-        window.forgotPass = async () => {
-            const { value: e } = await Swal.fire({ title: 'استعادة المرور', input: 'email', background:'#121212', color:'#fff' });
-            if(e) sendPasswordResetEmail(auth, e).then(()=>alert('تفقد بريدك'));
         };
 
         window.openVideoModal = (k) => {
@@ -330,13 +373,13 @@
                 const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
                 const tierClass = p.tier === 'luxury' ? 'card-luxury' : (p.tier === 'premium' ? 'card-premium' : 'card-basic');
                 grid.innerHTML += `<div class="glass ${tierClass} group relative overflow-hidden flex flex-col h-full transition hover:-translate-y-1">
-                    <div class="p-4 flex-1" onclick="openVideoModal('${p.key}')">
+                    <div class="p-4 flex-1 cursor-pointer" onclick="openVideoModal('${p.key}')">
                         <div class="media-container mb-4"><img src="${p.image}"></div>
                         <h3 class="font-bold">${p.title}</h3>
                     </div>
                     <div class="p-4 border-t border-white/5 flex justify-between items-center bg-black/20">
-                        <span>$${p.price}</span>
-                        <button onclick="addToCart('${p.key}')" class="bg-white text-black px-4 py-1 rounded-lg">إضافة</button>
+                        <span class="font-black text-red-500">$${p.price}</span>
+                        <button onclick="addToCart('${p.key}')" class="bg-white text-black px-4 py-1 rounded-lg font-bold hover:bg-red-600 hover:text-white transition">إضافة</button>
                     </div>
                     ${isAdmin ? `<div class="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition"><button onclick="window.editProduct('${p.key}')" class="bg-blue-600 w-7 h-7 rounded-full"><i class="fa fa-pen text-[10px]"></i></button><button onclick="window.deleteProduct('${p.key}')" class="bg-red-600 w-7 h-7 rounded-full"><i class="fa fa-trash text-[10px]"></i></button></div>` : ''}
                 </div>`;
@@ -346,50 +389,86 @@
         window.editProduct = async (k) => {
             const p = allProducts.find(x => x.key === k);
             const { value: f } = await Swal.fire({
-                title: 'تعديل', background: '#121212', color: '#fff',
+                title: 'تعديل المنتج', background: '#121212', color: '#fff',
                 html: `<input id="ut" class="swal2-input" value="${p.title}"><input id="up" class="swal2-input" value="${p.price}"><input id="uy" class="swal2-input" value="${p.youtube || ''}">`,
                 preConfirm: () => ({ title: document.getElementById('ut').value, price: document.getElementById('up').value, youtube: document.getElementById('uy').value })
             });
-            if(f) update(ref(db, "products/"+k), f);
+            if(f) update(ref(db, "products/"+k), f).then(() => Toast.fire({ icon: 'success', title: 'تم التحديث' }));
         };
-        window.deleteProduct = (k) => { if(confirm('حذف؟')) remove(ref(db, "products/"+k)); };
+        window.deleteProduct = (k) => { if(confirm('حذف المنتج نهائياً؟')) remove(ref(db, "products/"+k)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف' })); };
 
         window.addToCart = (k) => { 
             const it = allProducts.find(x => x.key === k); 
             const ex = cart.find(x => x.key === k);
             if(ex) ex.qty++; else cart.push({...it, qty: 1});
-            updateCartUI(); Toast.fire({ icon: 'success', title: 'تمت الإضافة' });
+            updateCartUI(); Toast.fire({ icon: 'success', title: 'تمت الإضافة للسلة' });
         };
+
         const updateCartUI = () => {
             let sub = 0;
-            document.getElementById('cart-items').innerHTML = cart.map((it, i) => { sub += it.price * it.qty; return `<div class="flex justify-between items-center p-3 bg-white/5 rounded-xl mb-2"><div><p>${it.title}</p><p class="text-red-500">$${it.price}</p></div><div class="flex gap-2"><button onclick="updateQty(${i},-1)">-</button><span>${it.qty}</span><button onclick="updateQty(${i},1)">+</button></div></div>`; }).join('');
+            document.getElementById('cart-items').innerHTML = cart.map((it, i) => { 
+                sub += it.price * it.qty; 
+                return `<div class="flex justify-between items-center p-3 bg-white/5 rounded-xl mb-2">
+                    <div><p class="text-sm font-bold">${it.title}</p><p class="text-red-500 font-black">$${it.price}</p></div>
+                    <div class="flex items-center gap-3 bg-black/40 px-3 py-1 rounded-lg">
+                        <button onclick="updateQty(${i},-1)" class="text-red-500 font-bold">-</button>
+                        <span class="text-xs">${it.qty}</span>
+                        <button onclick="updateQty(${i},1)" class="text-green-500 font-bold">+</button>
+                    </div>
+                </div>`; 
+            }).join('');
             document.getElementById('total-price').innerText = `$${sub.toFixed(2)}`;
             document.getElementById('cart-count').innerText = cart.reduce((a,b)=>a+b.qty,0);
         };
+
         window.updateQty = (i,d) => { cart[i].qty+=d; if(cart[i].qty<1) cart.splice(i,1); updateCartUI(); };
         window.toggleCart = (s) => document.getElementById('cart-drawer').classList.toggle('open', s);
         window.filterCat = (c) => { currentCat = c; document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active')); document.getElementById('cat-'+c).classList.add('active'); renderProducts(); };
 
         window.startCheckout = () => {
-            if(!auth.currentUser) return alert('سجل دخولك');
-            if(cart.length === 0) return;
+            if(!auth.currentUser) {
+                toggleCart(false);
+                return handleAuth();
+            }
+            if(cart.length === 0) return Toast.fire({ icon: 'info', title: 'السلة فارغة' });
             Swal.fire({
-                title: 'طريقة الدفع', background:'#121212', color:'#fff', showConfirmButton: false,
-                html: `<div class="grid gap-2">${Object.entries(PAYMENT_DATA).map(([k,v])=>`<button onclick="showPayDetails('${k}')" class="p-4 glass flex gap-3"><img src="${v.icon}" class="w-6">${v.title}</button>`).join('')}</div>`
+                title: 'اختر طريقة الدفع', background:'#121212', color:'#fff', showConfirmButton: false,
+                html: `<div class="grid gap-2">${Object.entries(PAYMENT_DATA).map(([k,v])=>`<button onclick="showPayDetails('${k}')" class="p-4 glass flex items-center gap-3 w-full hover:bg-white/5 transition"><img src="${v.icon}" class="w-8"> <span class="font-bold">${v.title}</span></button>`).join('')}</div>`
             });
         };
+
         window.showPayDetails = (k) => {
             const d = PAYMENT_DATA[k];
             const total = document.getElementById('total-price').innerText;
-            const paypalBtn = k === 'paypal' ? `<a href="${d.link}" target="_blank" class="block w-full bg-blue-600 text-white p-3 rounded-xl mb-4 font-bold text-center">اضغط هنا للدفع المباشر (PayPal)</a>` : '';
-            Swal.fire({ title: d.title, background:'#121212', color:'#fff', confirmButtonText: 'تم التحويل', 
-                html: `${paypalBtn}<div class="p-4 bg-white/5 rounded font-mono text-sm break-all mb-2">${d.value}</div>${d.name ? `<div class="text-xs text-gray-400 mb-4">باسم: ${d.name}</div>` : ''}<p class="text-[10px] text-red-400">بعد الدفع، اضغط على زر "تم التحويل" لتأكيد طلبك</p>` 
+            const paypalBtn = k === 'paypal' ? `<a href="${d.link}" target="_blank" class="block w-full bg-blue-600 text-white p-4 rounded-xl mb-4 font-bold text-center shadow-lg">اضغط هنا للدفع المباشر (PayPal)</a>` : '';
+            Swal.fire({ 
+                title: d.title, background:'#121212', color:'#fff', 
+                confirmButtonText: 'لقد قمت بالتحويل بالفعل', 
+                showCancelButton: true, cancelButtonText: 'إلغاء',
+                html: `
+                    ${paypalBtn}
+                    <div class="p-4 bg-white/5 border border-dashed border-white/20 rounded-xl font-mono text-sm break-all mb-2 select-all">${d.value}</div>
+                    ${d.name ? `<div class="text-xs text-gray-400 mb-4">باسم: ${d.name}</div>` : ''}
+                    <p class="text-xs text-red-400 p-2 bg-red-500/5 rounded-lg">بعد إتمام عملية الدفع، اضغط على الزر أدناه لتأكيد طلبك وتنبيه الإدارة</p>` 
             })
-            .then(r => { if(r.isConfirmed) {
-                push(ref(db, "orders"), { email: auth.currentUser.email, total: total, method: k, status: 'pending', items: cart });
-                window.open(`https://wa.me/905377964233?text=طلبت بقيمة ${total} عبر ${k}`, '_blank');
-                cart = []; updateCartUI(); toggleCart(false);
-            }});
+            .then(r => { 
+                if(r.isConfirmed) {
+                    push(ref(db, "orders"), { 
+                        email: auth.currentUser.email, 
+                        total: total, 
+                        method: k, 
+                        status: 'pending', 
+                        items: cart,
+                        timestamp: Date.now()
+                    }).then(() => {
+                        window.open(`https://wa.me/905377964233?text=تم إرسال طلب جديد بقيمة ${total} عبر ${k} من الحساب: ${auth.currentUser.email}`, '_blank');
+                        cart = []; 
+                        updateCartUI(); 
+                        toggleCart(false);
+                        Swal.fire('تم إرسال طلبك', 'سيتم مراجعة الدفع وتفعيل طلبك خلال أقصر وقت ممكن', 'success');
+                    });
+                }
+            });
         };
     </script>
 </body>
