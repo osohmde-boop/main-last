@@ -51,7 +51,7 @@
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
     </style>
 </head>
-<body class="pb-20 text-right" dir="rtl">
+<body class="pb-10 text-right flex flex-col min-h-screen" dir="rtl">
     <div class="bg-particles"></div>
     <div id="lightning-container" class="lightning"></div>
 
@@ -87,7 +87,7 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <main class="pt-32 max-w-7xl mx-auto px-6 lg:pr-72 relative z-10">
+    <main class="pt-32 max-w-7xl mx-auto px-6 lg:pr-72 relative z-10 flex-grow w-full">
         <div class="text-center mb-16 space-y-6">
             <h1 class="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase italic"> وجهتك <span class="text-red-600">الأفضل</span> ⚡ </h1>
             <p id="store-desc-display" class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">جاري تحميل الوصف...</p>
@@ -128,6 +128,21 @@
 
         <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </main>
+
+    <!-- Footer with Legal Pages for Paddle Compliance -->
+    <footer class="mt-20 border-t border-white/5 py-10 bg-black/40 text-center relative z-10 w-full">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-sm text-gray-500">
+                جميع الحقوق محفوظة © 2026 <span class="text-white font-bold">YZ STORE</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
+                <button onclick="window.showLegalModal('terms')" class="hover:text-white transition">شروط الخدمة (Terms)</button>
+                <button onclick="window.showLegalModal('refund')" class="hover:text-white transition">سياسة الاسترجاع (Refund Policy)</button>
+                <button onclick="window.showLegalModal('privacy')" class="hover:text-white transition">سياسة الخصوصية (Privacy)</button>
+                <button onclick="window.showLegalModal('contact')" class="hover:text-white transition">اتصل بنا (Contact)</button>
+            </div>
+        </div>
+    </footer>
 
     <div id="cart-drawer" class="cart-sidebar p-8 flex flex-col">
         <div class="flex justify-between items-center mb-10">
@@ -548,6 +563,66 @@
                         Swal.fire('تم إرسال طلبك', 'سيتم مراجعة الدفع وتفعيل طلبك خلال أقصر وقت ممكن', 'success');
                     });
                 }
+            });
+        };
+
+        // Legal Modals for Paddle Approval
+        window.showLegalModal = (type) => {
+            const data = {
+                terms: {
+                    title: 'شروط الخدمة (Terms of Service)',
+                    content: `
+                        <div class="text-right text-sm space-y-3 leading-relaxed text-gray-300">
+                            <p><strong>1. طبيعة الخدمة:</strong> يقدم متجر YZ STORE خدمات وتصاميم رقمية مخصصة لصناع المحتوى والستريمرز (أليرتات، بكجات، تصاميم هوية البث).</p>
+                            <p><strong>2. حقوق الملكية:</strong> عند إتمام الشراء، يحصل العميل على ترخيص استخدام غير حصري أو حصري حسب الباقة للمواد الرقمية المسلّمة له.</p>
+                            <p><strong>3. التسليم:</strong> يتم تسليم المنتجات الرقمية فورياً أو عبر روابط تحميل مخصصة في لوحة حساب العميل بعد إتمام وتأكيد الدفع.</p>
+                        </div>
+                    `
+                },
+                refund: {
+                    title: 'سياسة الاسترجاع (Refund & Cancellation)',
+                    content: `
+                        <div class="text-right text-sm space-y-3 leading-relaxed text-gray-300">
+                            <p><strong>طبيعة المنتجات الرقمية:</strong> نظراً لأن جميع منتجاتنا وخدماتنا هي سلع رقمية وتصاميم غير ملموسة يتم تسليمها مباشرة، فإن عمليات الشراء نهائية وغير قابلة للاسترجاع بعد استلام الملفات وتحميلها.</p>
+                            <p><strong>الحالات الاستثنائية:</strong> يحق للعميل طلب استرجاع المبلغ بالكامل في الحالات التالية فقط:</p>
+                            <ul class="list-disc pr-5 space-y-1">
+                                <li>إذا حدث خطأ تقني في الدفع وتم سحب المبلغ مكرراً.</li>
+                                <li>إذا لم يتم تسليم الملفات المتفق عليها خلال 7 أيام من تاريخ الطلب.</li>
+                                <li>وجود خلل فني في الملفات الرقمية لم يتمكن فريق الدعم من إصلاحه.</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                privacy: {
+                    title: 'سياسة الخصوصية (Privacy Policy)',
+                    content: `
+                        <div class="text-right text-sm space-y-3 leading-relaxed text-gray-300">
+                            <p>نحن نحترم خصوصية بياناتك بالكامل. لا نقوم بتخزين أو مشاركة أي بيانات بنكية أو معلومات دفع حساسة على خوادمنا.</p>
+                            <p>تتم معالجة جميع المدفوعات المالية بأعلى معايير التشفير والأمان عبر بوابات دفع معتمدة عالمياً (Paddle / PayPal).</p>
+                            <p>البيانات التي نجمعها (كالبريد الإلكتروني) تُستخدم فقط لغرض تسليم الطلبات وإدارة حسابك على المتجر.</p>
+                        </div>
+                    `
+                },
+                contact: {
+                    title: 'اتصل بنا (Contact & Support)',
+                    content: `
+                        <div class="text-right text-sm space-y-3 leading-relaxed text-gray-300">
+                            <p>يسعدنا تقديم الدعم الفني والإجابة على أي استفسارات تخص الطلبات:</p>
+                            <p><strong>البريد الإلكتروني:</strong> osohmde@gmail.com</p>
+                            <p><strong>واتساب الدعم المباشر:</strong> +90 537 796 42 33</p>
+                            <p><strong>سيرفر الديسكورد:</strong> مجتمع YZ STORE الرسمي</p>
+                        </div>
+                    `
+                }
+            };
+
+            Swal.fire({
+                title: data[type].title,
+                html: data[type].content,
+                background: '#121212',
+                color: '#fff',
+                confirmButtonText: 'إغلاق',
+                confirmButtonColor: '#dc2626'
             });
         };
     </script>
