@@ -18,24 +18,27 @@
     </script>
 
     <style>
-        :root {
-            --primary-accent: #c2410c; /* لون يوم التأسيس */
-            --primary-glow: rgba(194, 65, 12, 0.4);
-        }
+        /* فرض ثيم يوم التأسيس البرتقالي التراثي على كامل الموقع */
         body { background: #09090b; color: #e4e4e7; font-family: 'Cairo', sans-serif; overflow-x: hidden; }
+        
+        .text-red-500, .text-red-600 { color: #c2410c !important; }
+        .bg-red-600, .bg-red-700 { background-color: #c2410c !important; }
+        .border-red-600\/30, .border-red-500\/40 { border-color: rgba(194, 65, 12, 0.4) !important; }
+        .bg-red-600\/20, .bg-red-500\/10 { background-color: rgba(194, 65, 12, 0.15) !important; }
+
         .glass { background: rgba(30, 30, 35, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; }
         .card-luxury { background: linear-gradient(145deg, rgba(251, 191, 36, 0.05) 0%, rgba(20, 20, 20, 1) 100%); border: 1px solid rgba(251, 191, 36, 0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
-        .card-premium { background: linear-gradient(145deg, rgba(194, 65, 12, 0.05) 0%, rgba(20, 20, 20, 1) 100%); border: 1px solid rgba(194, 65, 12, 0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .card-premium { background: linear-gradient(145deg, rgba(194, 65, 12, 0.08) 0%, rgba(20, 20, 20, 1) 100%); border: 1px solid rgba(194, 65, 12, 0.3); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
         .card-basic { background: linear-gradient(145deg, rgba(14, 165, 233, 0.05) 0%, rgba(20, 20, 20, 1) 100%); border: 1px solid rgba(14, 165, 233, 0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
         .side-nav { position: fixed; right: 20px; top: 130px; width: 220px; z-index: 50; }
         .nav-item { cursor: pointer; padding: 14px 24px; border-radius: 16px; margin-bottom: 10px; transition: all 0.3s ease; display: flex; align-items: center; gap: 12px; font-weight: 700; background: rgba(255,255,255,0.02); color: #a1a1aa; border: 1px solid transparent; }
-        .nav-item:hover, .nav-item.active { background: rgba(194, 65, 12, 0.1); color: var(--primary-accent); border-color: rgba(194, 65, 12, 0.3); transform: translateX(-5px); }
+        .nav-item:hover, .nav-item.active { background: rgba(194, 65, 12, 0.15); color: #ea580c; border-color: rgba(194, 65, 12, 0.4); transform: translateX(-5px); }
         .cart-sidebar { transform: translateX(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 420px; background: #0f0f10; border-left: 1px solid #333; box-shadow: -20px 0 40px rgba(0,0,0,0.6); }
         .cart-sidebar.open { transform: translateX(0); }
         .swal2-popup { border-radius: 24px !important; background: #121212 !important; border: 1px solid #333 !important; padding: 30px !important; color: #fff !important; }
         .swal2-title { color: #fff !important; font-family: 'Cairo', sans-serif !important; }
         .swal2-input, .swal2-select, .swal2-file, .swal2-textarea { background: #1e1e1e !important; color: #fff !important; border: 1px solid #333 !important; border-radius: 12px !important; margin: 10px auto !important; font-size: 14px !important; padding: 12px !important; box-shadow: none !important; }
-        .swal2-input:focus, .swal2-textarea:focus { border-color: var(--primary-accent) !important; }
+        .swal2-input:focus, .swal2-textarea:focus { border-color: #c2410c !important; }
         .media-container { position: relative; width: 100%; height: 12rem; overflow: hidden; border-radius: 16px; background: #000; cursor: pointer; }
         .media-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
         .whatsapp-float { position: fixed; bottom: 30px; left: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); z-index: 90; transition: 0.3s; }
@@ -43,30 +46,28 @@
         .lightning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
         .bolt { position: absolute; background: white; box-shadow: 0 0 10px 1px white; opacity: 0; }
         @keyframes flash { 0% { opacity: 0; } 50% { opacity: 0.4; } 100% { opacity: 0; } }
-        @keyframes logo-pulse { 0% { filter: drop-shadow(0 0 5px rgba(194, 65, 12, 0.2)); } 50% { filter: drop-shadow(0 0 20px rgba(194, 65, 12, 0.6)); } 100% { filter: drop-shadow(0 0 5px rgba(194, 65, 12, 0.2)); } }
+        @keyframes logo-pulse { 0% { filter: drop-shadow(0 0 5px rgba(194, 65, 12, 0.3)); } 50% { filter: drop-shadow(0 0 20px rgba(194, 65, 12, 0.7)); } 100% { filter: drop-shadow(0 0 5px rgba(194, 65, 12, 0.3)); } }
         .logo-animate { animation: logo-pulse 3s infinite ease-in-out; }
-        @keyframes btn-lightning { 0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); } 50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.4), 0 0 10px var(--primary-glow); } }
+        @keyframes btn-lightning { 0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); } 50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.4), 0 0 10px rgba(194, 65, 12, 0.8); } }
         .btn-lightning-effect { animation: btn-lightning 2s infinite; border: 1px solid rgba(255, 255, 255, 0.2); }
-        .bg-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(194, 65, 12, 0.04) 0%, transparent 80%); pointer-events: none; z-index: -1; }
+        .bg-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(194, 65, 12, 0.05) 0%, transparent 80%); pointer-events: none; z-index: -1; }
         @media (max-width: 1024px) { .side-nav { position: static; width: 100%; display: flex; overflow-x: auto; margin-top: 100px; padding: 10px; gap: 10px; } main { padding-right: 24px !important; padding-left: 24px !important; } }
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .accent-color { color: var(--primary-accent) !important; }
-        .accent-bg { background-color: var(--primary-accent) !important; }
     </style>
 </head>
 <body class="pb-10 text-right flex flex-col min-h-screen" dir="rtl">
     <div class="bg-particles"></div>
     <div id="lightning-container" class="lightning"></div>
 
-    <!-- شريط يوم التأسيس السعودي العلوي -->
-    <div class="fixed top-0 left-0 w-full z-[150] bg-[#c2410c] text-white text-center py-2 px-4 text-xs md:text-sm font-bold shadow-lg shadow-orange-950/40 flex items-center justify-center gap-2">
+    <!-- شريط المناسبة العلوي الثابت -->
+    <div style="background-color: #c2410c;" class="fixed top-0 left-0 w-full z-[150] text-white text-center py-2 px-4 text-xs md:text-sm font-bold shadow-lg flex items-center justify-center gap-2">
         <span>🦅 نبارك لكم يوم التأسيس السعودي! عروض وخصومات مميزة على جميع الخدمات 🇸🇦⚡</span>
     </div>
 
-    <!-- Navbar مخصص ومتناسق مع الشريط -->
-    <nav id="main-navbar" class="fixed top-[36px] w-full bg-[#09090b]/80 backdrop-blur-xl z-[100] px-6 py-4 border-b border-white/5 flex justify-between items-center transition-all duration-300">
-        <div class="text-2xl font-black accent-color italic tracking-tighter uppercase flex items-center gap-2">
+    <!-- النافبار المزاح للأسفل -->
+    <nav style="top: 36px;" class="fixed w-full bg-[#09090b]/80 backdrop-blur-xl z-[100] px-6 py-4 border-b border-white/5 flex justify-between items-center transition-all duration-300">
+        <div class="text-2xl font-black text-red-500 italic tracking-tighter uppercase flex items-center gap-2">
             <i class="fa fa-bolt"></i> YZ STORE
         </div>
         <div class="absolute left-1/2 transform -translate-x-1/2">
@@ -75,7 +76,7 @@
         <div class="flex items-center gap-4">
             <button onclick="toggleCart(true)" class="relative p-2 text-gray-300 hover:text-white transition">
                 <i class="fa fa-shopping-bag text-xl"></i>
-                <span id="cart-count" class="absolute top-0 right-0 accent-bg text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-lg">0</span>
+                <span id="cart-count" class="absolute top-0 right-0 bg-red-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-lg">0</span>
             </button>
             <button id="auth-btn" onclick="handleAuth()" class="text-xs font-bold border border-white/10 px-6 py-2.5 rounded-full hover:bg-white hover:text-black transition duration-300">حسابي</button>
         </div>
@@ -97,12 +98,12 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <main class="pt-36 max-w-7xl mx-auto px-6 lg:pr-72 relative z-10 flex-grow w-full">
+    <main class="pt-40 max-w-7xl mx-auto px-6 lg:pr-72 relative z-10 flex-grow w-full">
         <div class="text-center mb-16 space-y-6">
-            <h1 class="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase italic"> وجهتك <span class="accent-color">الأفضل</span> ⚡ </h1>
+            <h1 class="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase italic"> وجهتك <span class="text-red-600">الأفضل</span> ⚡ </h1>
             <p id="store-desc-display" class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">جاري تحميل الوصف...</p>
             <div class="pt-4">
-                <a href="https://wa.me/905377964233?text=أريد طلب أليرت خاص بمناسبة يوم التأسيس" target="_blank" class="bg-white text-black px-10 py-4 rounded-full font-black hover:bg-[#c2410c] hover:text-white transition-all transform hover:scale-105 shadow-2xl inline-flex items-center gap-3 btn-lightning-effect">
+                <a href="https://wa.me/905377964233?text=أريد طلب أليرت خاص بمناسبة يوم التأسيس" target="_blank" style="background-color: #c2410c; color: white;" class="px-10 py-4 rounded-full font-black transition-all transform hover:scale-105 shadow-2xl inline-flex items-center gap-3 btn-lightning-effect">
                     <i class="fa fa-wand-magic-sparkles"></i> اطلب أليرتك الخاص
                 </a>
             </div>
@@ -110,11 +111,11 @@
 
         <div id="admin-panel" class="hidden mb-16 space-y-8 animate-fade-in">
             <div class="flex items-center justify-between">
-                <h2 class="text-2xl font-black text-white">لوحة التحكم <span class="accent-color">.</span></h2>
+                <h2 class="text-2xl font-black text-white">لوحة التحكم <span class="text-red-600">.</span></h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <button onclick="window.openAddProduct()" class="glass p-8 border-dashed border-white/20 hover:from-white/10 transition flex flex-col items-center justify-center gap-3">
-                    <div class="w-12 h-12 rounded-full bg-orange-600/20 flex items-center justify-center accent-color"><i class="fa fa-plus text-xl"></i></div>
+                    <div class="w-12 h-12 rounded-full bg-red-600/20 flex items-center justify-center text-red-500"><i class="fa fa-plus text-xl"></i></div>
                     <span class="font-bold">إضافة منتج جديد</span>
                 </button>
                 <button onclick="window.editStoreDesc()" class="glass p-8 border-dashed border-blue-500/30 hover:bg-blue-500/10 transition flex flex-col items-center justify-center gap-3">
@@ -124,7 +125,7 @@
                 <div class="glass p-6 md:col-span-2 lg:col-span-1">
                     <h3 class="text-sm font-bold mb-4 border-b border-white/10 pb-3 flex justify-between items-center text-gray-400">
                         <span>📦 طلبات قيد الانتظار</span>
-                        <span class="text-xs bg-orange-500/10 accent-color px-2 py-1 rounded">Admin</span>
+                        <span class="text-xs bg-red-500/10 text-red-500 px-2 py-1 rounded">Admin</span>
                     </h3>
                     <div id="orders-list" class="space-y-3 max-h-64 overflow-y-auto custom-scroll"></div>
                 </div>
@@ -157,15 +158,15 @@
     <div id="cart-drawer" class="cart-sidebar p-8 flex flex-col">
         <div class="flex justify-between items-center mb-10">
             <h2 class="text-2xl font-black">سلة التسوق</h2>
-            <button onclick="toggleCart(false)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-orange-600 hover:text-white transition flex items-center justify-center"><i class="fa fa-times"></i></button>
+            <button onclick="toggleCart(false)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-red-600 hover:text-white transition flex items-center justify-center"><i class="fa fa-times"></i></button>
         </div>
         <div id="cart-items" class="flex-1 space-y-4 overflow-y-auto"></div>
         <div class="mt-8 pt-8 border-t border-white/10">
             <div class="flex justify-between items-end mb-6">
                 <span class="text-gray-400 font-bold">الإجمالي الكلي</span>
-                <span id="total-price" class="text-3xl font-black accent-color">$0.00</span>
+                <span id="total-price" class="text-3xl font-black text-red-500">$0.00</span>
             </div>
-            <button onclick="window.startCheckout()" class="w-full accent-bg py-4 rounded-xl font-bold shadow-lg transform hover:-translate-y-1 transition-all">إتمام الطلب والدفع</button>
+            <button onclick="window.startCheckout()" class="w-full bg-red-600 py-4 rounded-xl font-bold shadow-lg transform hover:-translate-y-1 transition-all">إتمام الطلب والدفع</button>
         </div>
     </div>
 
@@ -212,7 +213,7 @@
         makeLightning();
 
         onValue(ref(db, "store_settings/desc"), s => {
-            document.getElementById('store-desc-display').innerText = s.val() || "مرحباً بك في YZ STORE، المتجر الأفضل لتطوير تجربة البث المباشر الخاصة بك.";
+            document.getElementById('store-desc-display').innerText = s.val() || "مرحباً بك في YZ STORE، المتجر الأفضل لتطوير تجربة البث المباشر الخاصة بك بمناسبة يوم التأسيس 🇸🇦⚡";
         });
 
         window.editStoreDesc = async () => {
@@ -277,7 +278,7 @@
                             <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" class="w-5"> الدخول بواسطة Google
                         </button>
                         <div class="mt-4 flex flex-col gap-2 text-xs">
-                            <button onclick="window.forgotPass()" class="text-orange-500">نسيت كلمة المرور؟</button>
+                            <button onclick="window.forgotPass()" class="text-red-500">نسيت كلمة المرور؟</button>
                             <button onclick="window.openRegister()" class="text-blue-400">إنشاء حساب جديد</button>
                         </div>`,
                     confirmButtonText: 'دخول',
@@ -301,8 +302,8 @@
         window.openRegister = async () => {
             const { value: f } = await Swal.fire({
                 title: 'إنشاء حساب', background:'#121212', color:'#fff',
-                html: `<input id="re" class="swal2-input" placeholder="البريد الإلكتروني"><input id="rp" type="password" class="swal2-input" placeholder="كلمة المرور">`,
                 confirmButtonColor: '#c2410c',
+                html: `<input id="re" class="swal2-input" placeholder="البريد الإلكتروني"><input id="rp" type="password" class="swal2-input" placeholder="كلمة المرور">`,
                 preConfirm: () => ({ e: document.getElementById('re').value, p: document.getElementById('rp').value })
             });
             if(f) {
@@ -367,7 +368,7 @@
                     const d = o.val();
                     if(d.status === 'pending') {
                         list.innerHTML += `<div class="p-4 bg-white/5 rounded-xl border border-white/5 mb-2">
-                            <p class="font-bold text-xs truncate">${d.email}</p><p class="accent-color font-black">${d.total}</p>
+                            <p class="font-bold text-xs truncate">${d.email}</p><p class="text-red-500 font-black">${d.total}</p>
                             <div class="flex gap-2 mt-2"><button onclick="window.activateOrder('${o.key}')" class="bg-green-600 px-3 py-1 rounded text-xs">تفعيل</button><button onclick="window.removeOrder('${o.key}')" class="bg-red-600 px-3 py-1 rounded text-xs">حذف</button></div>
                         </div>`;
                     }
@@ -424,7 +425,7 @@
                     if(d.email === email) {
                         const active = d.status === 'active';
                         list.innerHTML += `<div class="glass p-4 mb-2 flex justify-between items-center ${active ? 'border-green-500/50' : 'border-yellow-500/50'}">
-                            <div><p class="text-xs text-gray-400">طلب #${o.key.substr(-4)}</p><p class="font-bold accent-color">${d.total}</p></div>
+                            <div><p class="text-xs text-gray-400">طلب #${o.key.substr(-4)}</p><p class="font-bold text-red-500">${d.total}</p></div>
                             ${active ? `<a href="${d.productLink}" target="_blank" class="bg-green-600 px-4 py-2 rounded-full text-xs font-bold">تحميل المنتج</a>` : '<span class="text-yellow-500 text-xs font-bold">⏳ قيد المراجعة</span>'}
                         </div>`;
                     }
@@ -448,8 +449,8 @@
                         </div>
                         <h2 class="text-2xl font-black mb-4">${p.title}</h2>
                         <div class="flex justify-between items-center bg-white/5 p-4 rounded-xl">
-                            <span class="text-3xl font-black accent-color">$${p.price}</span>
-                            <button onclick="addToCart('${p.key}'); Swal.close()" class="accent-bg text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:opacity-90 transition">إضافة للسلة</button>
+                            <span class="text-3xl font-black text-red-500">$${p.price}</span>
+                            <button onclick="addToCart('${p.key}'); Swal.close()" class="bg-red-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:opacity-90 transition">إضافة للسلة</button>
                         </div>
                     </div>
                 `
@@ -468,7 +469,7 @@
                         <h3 class="font-bold">${p.title}</h3>
                     </div>
                     <div class="p-4 border-t border-white/5 flex justify-between items-center bg-black/20">
-                        <span class="font-black accent-color">$${p.price}</span>
+                        <span class="font-black text-red-500">$${p.price}</span>
                         <button onclick="addToCart('${p.key}')" class="bg-white text-black px-4 py-1 rounded-lg font-bold hover:bg-[#c2410c] hover:text-white transition">إضافة</button>
                     </div>
                     ${isAdmin ? `<div class="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition"><button onclick="window.editProduct('${p.key}')" class="bg-blue-600 w-7 h-7 rounded-full"><i class="fa fa-pen text-[10px]"></i></button><button onclick="window.deleteProduct('${p.key}')" class="bg-red-600 w-7 h-7 rounded-full"><i class="fa fa-trash text-[10px]"></i></button></div>` : ''}
@@ -510,9 +511,9 @@
             document.getElementById('cart-items').innerHTML = cart.map((it, i) => { 
                 sub += it.price * it.qty; 
                 return `<div class="flex justify-between items-center p-3 bg-white/5 rounded-xl mb-2">
-                    <div><p class="text-sm font-bold">${it.title}</p><p class="accent-color font-black">$${it.price}</p></div>
+                    <div><p class="text-sm font-bold">${it.title}</p><p class="text-red-500 font-black">$${it.price}</p></div>
                     <div class="flex items-center gap-3 bg-black/40 px-3 py-1 rounded-lg">
-                        <button onclick="updateQty(${i},-1)" class="text-orange-500 font-bold">-</button>
+                        <button onclick="updateQty(${i},-1)" class="text-red-500 font-bold">-</button>
                         <span class="text-xs">${it.qty}</span>
                         <button onclick="updateQty(${i},1)" class="text-green-500 font-bold">+</button>
                     </div>
@@ -537,7 +538,7 @@
                 html: `
                     <div class="grid gap-3">
                         ${Object.entries(PAYMENT_DATA).map(([k,v])=>`
-                            <button onclick="showPayDetails('${k}')" class="p-4 glass flex items-center justify-between w-full hover:bg-white/5 transition border ${k==='paddle' ? 'border-orange-500/40 bg-orange-500/5' : 'border-white/5'}">
+                            <button onclick="showPayDetails('${k}')" class="p-4 glass flex items-center justify-between w-full hover:bg-white/5 transition border ${k==='paddle' ? 'border-red-500/40 bg-red-500/5' : 'border-white/5'}">
                                 <div class="flex items-center gap-3">
                                     <img src="${v.icon}" class="w-8 h-8 object-contain"> 
                                     <span class="font-bold text-sm text-right">${v.title}</span>
@@ -590,7 +591,7 @@
                     ${paypalBtn}
                     <div class="p-4 bg-white/5 border border-dashed border-white/20 rounded-xl font-mono text-sm break-all mb-2 select-all">${d.value}</div>
                     ${d.name ? `<div class="text-xs text-gray-400 mb-4">باسم: ${d.name}</div>` : ''}
-                    <p class="text-xs text-orange-400 p-2 bg-orange-500/5 rounded-lg">بعد إتمام عملية الدفع، اضغط على الزر أدناه لتأكيد طلبك وتنبيه الإدارة</p>` 
+                    <p class="text-xs text-red-400 p-2 bg-red-500/5 rounded-lg">بعد إتمام عملية الدفع، اضغط على الزر أدناه لتأكيد طلبك وتنبيه الإدارة</p>` 
             })
             .then(r => { 
                 if(r.isConfirmed) {
@@ -612,7 +613,7 @@
             });
         };
 
-        // Paddle Verified Compliance Legal Policies
+        // Paddle Compliance Legal Policies
         window.showLegalModal = (type) => {
             const data = {
                 terms: {
@@ -653,7 +654,7 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-white mb-1">How to Claim</h4>
-                                <p>Contact support at <a href="mailto:osohmde@gmail.com" class="text-orange-400 underline">osohmde@gmail.com</a> with your order number. Refunds are processed back to your original payment method within 5-10 business days.</p>
+                                <p>Contact support at <a href="mailto:osohmde@gmail.com" class="text-red-400 underline">osohmde@gmail.com</a> with your order number. Refunds are processed back to your original payment method within 5-10 business days.</p>
                             </div>
                         </div>
                     `
@@ -673,7 +674,7 @@
                     content: `
                         <div class="text-left text-sm space-y-3 leading-relaxed text-gray-300 font-sans" dir="ltr">
                             <p><strong>Business Name:</strong> YZ STORE (Muhammed Osman)</p>
-                            <p><strong>Support Email:</strong> <a href="mailto:osohmde@gmail.com" class="text-orange-400 underline">osohmde@gmail.com</a></p>
+                            <p><strong>Support Email:</strong> <a href="mailto:osohmde@gmail.com" class="text-red-400 underline">osohmde@gmail.com</a></p>
                             <p><strong>WhatsApp Support:</strong> +90 537 796 42 33</p>
                             <p><strong>Address:</strong> Mimar Sinan Mah. 8504 Sk. No:13, Merkez, Osmaniye, Turkey</p>
                         </div>
