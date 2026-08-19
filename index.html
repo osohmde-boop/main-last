@@ -18,6 +18,10 @@
     </script>
 
     <style>
+        :root {
+            --primary-accent: #dc2626;
+            --primary-glow: rgba(220, 38, 38, 0.4);
+        }
         body { background: #09090b; color: #e4e4e7; font-family: 'Cairo', sans-serif; overflow-x: hidden; }
         .glass { background: rgba(30, 30, 35, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; }
         .card-luxury { background: linear-gradient(145deg, rgba(251, 191, 36, 0.05) 0%, rgba(20, 20, 20, 1) 100%); border: 1px solid rgba(251, 191, 36, 0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
@@ -25,13 +29,13 @@
         .card-basic { background: linear-gradient(145deg, rgba(14, 165, 233, 0.05) 0%, rgba(20, 20, 20, 1) 100%); border: 1px solid rgba(14, 165, 233, 0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
         .side-nav { position: fixed; right: 20px; top: 110px; width: 220px; z-index: 50; }
         .nav-item { cursor: pointer; padding: 14px 24px; border-radius: 16px; margin-bottom: 10px; transition: all 0.3s ease; display: flex; align-items: center; gap: 12px; font-weight: 700; background: rgba(255,255,255,0.02); color: #a1a1aa; border: 1px solid transparent; }
-        .nav-item:hover, .nav-item.active { background: rgba(220, 38, 38, 0.1); color: #f87171; border-color: rgba(220, 38, 38, 0.3); transform: translateX(-5px); }
+        .nav-item:hover, .nav-item.active { background: rgba(220, 38, 38, 0.1); color: var(--primary-accent); border-color: rgba(220, 38, 38, 0.3); transform: translateX(-5px); }
         .cart-sidebar { transform: translateX(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 420px; background: #0f0f10; border-left: 1px solid #333; box-shadow: -20px 0 40px rgba(0,0,0,0.6); }
         .cart-sidebar.open { transform: translateX(0); }
         .swal2-popup { border-radius: 24px !important; background: #121212 !important; border: 1px solid #333 !important; padding: 30px !important; color: #fff !important; }
         .swal2-title { color: #fff !important; font-family: 'Cairo', sans-serif !important; }
         .swal2-input, .swal2-select, .swal2-file, .swal2-textarea { background: #1e1e1e !important; color: #fff !important; border: 1px solid #333 !important; border-radius: 12px !important; margin: 10px auto !important; font-size: 14px !important; padding: 12px !important; box-shadow: none !important; }
-        .swal2-input:focus, .swal2-textarea:focus { border-color: #dc2626 !important; }
+        .swal2-input:focus, .swal2-textarea:focus { border-color: var(--primary-accent) !important; }
         .media-container { position: relative; width: 100%; height: 12rem; overflow: hidden; border-radius: 16px; background: #000; cursor: pointer; }
         .media-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
         .whatsapp-float { position: fixed; bottom: 30px; left: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); z-index: 90; transition: 0.3s; }
@@ -41,20 +45,22 @@
         @keyframes flash { 0% { opacity: 0; } 50% { opacity: 0.4; } 100% { opacity: 0; } }
         @keyframes logo-pulse { 0% { filter: drop-shadow(0 0 5px rgba(220, 38, 38, 0.2)); } 50% { filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.6)); } 100% { filter: drop-shadow(0 0 5px rgba(220, 38, 38, 0.2)); } }
         .logo-animate { animation: logo-pulse 3s infinite ease-in-out; }
-        @keyframes btn-lightning { 0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); } 50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.4), 0 0 10px rgba(220, 38, 38, 0.8); } }
+        @keyframes btn-lightning { 0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); } 50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.4), 0 0 10px var(--primary-glow); } }
         .btn-lightning-effect { animation: btn-lightning 2s infinite; border: 1px solid rgba(255, 255, 255, 0.2); }
         .bg-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.03) 0%, transparent 80%); pointer-events: none; z-index: -1; }
         @media (max-width: 1024px) { .side-nav { position: static; width: 100%; display: flex; overflow-x: auto; margin-top: 80px; padding: 10px; gap: 10px; } main { padding-right: 24px !important; padding-left: 24px !important; } }
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .accent-color { color: var(--primary-accent) !important; }
+        .accent-bg { background-color: var(--primary-accent) !important; }
     </style>
 </head>
 <body class="pb-10 text-right flex flex-col min-h-screen" dir="rtl">
     <div class="bg-particles"></div>
     <div id="lightning-container" class="lightning"></div>
 
-    <nav class="fixed top-0 w-full bg-[#09090b]/80 backdrop-blur-xl z-[100] px-6 py-4 border-b border-white/5 flex justify-between items-center">
-        <div class="text-2xl font-black text-red-500 italic tracking-tighter uppercase flex items-center gap-2">
+    <nav id="main-navbar" class="fixed top-0 w-full bg-[#09090b]/80 backdrop-blur-xl z-[100] px-6 py-4 border-b border-white/5 flex justify-between items-center transition-all duration-300">
+        <div class="text-2xl font-black accent-color italic tracking-tighter uppercase flex items-center gap-2">
             <i class="fa fa-bolt"></i> YZ STORE
         </div>
         <div class="absolute left-1/2 transform -translate-x-1/2">
@@ -63,7 +69,7 @@
         <div class="flex items-center gap-4">
             <button onclick="toggleCart(true)" class="relative p-2 text-gray-300 hover:text-white transition">
                 <i class="fa fa-shopping-bag text-xl"></i>
-                <span id="cart-count" class="absolute top-0 right-0 bg-red-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-lg shadow-red-600/40">0</span>
+                <span id="cart-count" class="absolute top-0 right-0 accent-bg text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-lg">0</span>
             </button>
             <button id="auth-btn" onclick="handleAuth()" class="text-xs font-bold border border-white/10 px-6 py-2.5 rounded-full hover:bg-white hover:text-black transition duration-300">حسابي</button>
         </div>
@@ -87,7 +93,7 @@
 
     <main class="pt-32 max-w-7xl mx-auto px-6 lg:pr-72 relative z-10 flex-grow w-full">
         <div class="text-center mb-16 space-y-6">
-            <h1 class="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase italic"> وجهتك <span class="text-red-600">الأفضل</span> ⚡ </h1>
+            <h1 class="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase italic"> وجهتك <span class="accent-color">الأفضل</span> ⚡ </h1>
             <p id="store-desc-display" class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">جاري تحميل الوصف...</p>
             <div class="pt-4">
                 <a href="https://wa.me/905377964233?text=أريد طلب أليرت خاص" target="_blank" class="bg-white text-black px-10 py-4 rounded-full font-black hover:bg-red-600 hover:text-white transition-all transform hover:scale-105 shadow-2xl inline-flex items-center gap-3 btn-lightning-effect">
@@ -98,11 +104,11 @@
 
         <div id="admin-panel" class="hidden mb-16 space-y-8 animate-fade-in">
             <div class="flex items-center justify-between">
-                <h2 class="text-2xl font-black text-white">لوحة التحكم <span class="text-red-600">.</span></h2>
+                <h2 class="text-2xl font-black text-white">لوحة التحكم <span class="accent-color">.</span></h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <button onclick="window.openAddProduct()" class="glass p-8 border-dashed border-white/20 hover:from-white/10 transition flex flex-col items-center justify-center gap-3">
-                    <div class="w-12 h-12 rounded-full bg-red-600/20 flex items-center justify-center text-red-500"><i class="fa fa-plus text-xl"></i></div>
+                    <div class="w-12 h-12 rounded-full bg-red-600/20 flex items-center justify-center accent-color"><i class="fa fa-plus text-xl"></i></div>
                     <span class="font-bold">إضافة منتج جديد</span>
                 </button>
                 <button onclick="window.editStoreDesc()" class="glass p-8 border-dashed border-blue-500/30 hover:bg-blue-500/10 transition flex flex-col items-center justify-center gap-3">
@@ -112,7 +118,7 @@
                 <div class="glass p-6 md:col-span-2 lg:col-span-1">
                     <h3 class="text-sm font-bold mb-4 border-b border-white/10 pb-3 flex justify-between items-center text-gray-400">
                         <span>📦 طلبات قيد الانتظار</span>
-                        <span class="text-xs bg-red-500/10 text-red-500 px-2 py-1 rounded">Admin</span>
+                        <span class="text-xs bg-red-500/10 accent-color px-2 py-1 rounded">Admin</span>
                     </h3>
                     <div id="orders-list" class="space-y-3 max-h-64 overflow-y-auto custom-scroll"></div>
                 </div>
@@ -151,11 +157,101 @@
         <div class="mt-8 pt-8 border-t border-white/10">
             <div class="flex justify-between items-end mb-6">
                 <span class="text-gray-400 font-bold">الإجمالي الكلي</span>
-                <span id="total-price" class="text-3xl font-black text-red-500">$0.00</span>
+                <span id="total-price" class="text-3xl font-black accent-color">$0.00</span>
             </div>
-            <button onclick="window.startCheckout()" class="w-full bg-gradient-to-r from-red-600 to-red-700 py-4 rounded-xl font-bold shadow-lg shadow-red-600/20 hover:shadow-red-600/40 transform hover:-translate-y-1 transition-all">إتمام الطلب والدفع</button>
+            <button onclick="window.startCheckout()" class="w-full accent-bg py-4 rounded-xl font-bold shadow-lg transform hover:-translate-y-1 transition-all">إتمام الطلب والدفع</button>
         </div>
     </div>
+
+    <!-- Script for Automatic GCC Occasions Theme -->
+    <script>
+        (function initOccasions() {
+            const today = new Date();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+
+            const occasions = [
+                {
+                    name: "يوم التأسيس السعودي 🇸🇦",
+                    active: month === 2 && day === 22,
+                    primaryColor: "#c2410c",
+                    glowColor: "rgba(194, 65, 12, 0.4)",
+                    bannerText: "نحتفل معكم بـ يوم التأسيس السعودي! 🇸🇦 أهلاً بكم في YZ STORE ⚡"
+                },
+                {
+                    name: "اليوم الوطني السعودي 🇸🇦",
+                    active: month === 9 && day === 23,
+                    primaryColor: "#16a34a",
+                    glowColor: "rgba(22, 163, 74, 0.4)",
+                    bannerText: "دام عزك يا وطن! احتفل معنا باليوم الوطني السعودي 🇸🇦⚡"
+                },
+                {
+                    name: "اليوم الوطني الإماراتي 🇦🇪",
+                    active: month === 12 && (day === 2 || day === 3),
+                    primaryColor: "#059669",
+                    glowColor: "rgba(5, 150, 105, 0.4)",
+                    bannerText: "كل عام والإمارات الحبيبة بخير بمناسبة اليوم الوطني 🇦🇪"
+                },
+                {
+                    name: "اليوم الوطني الكويتي 🇰🇼",
+                    active: month === 2 && (day === 25 || day === 26),
+                    primaryColor: "#0284c7",
+                    glowColor: "rgba(2, 132, 199, 0.4)",
+                    bannerText: "أفراح الكويت.. تهانينا بمناسبة اليوم الوطني وعيد التحرير 🇰🇼"
+                },
+                {
+                    name: "اليوم الوطني القطري 🇶🇦",
+                    active: month === 12 && day === 18,
+                    primaryColor: "#831843",
+                    glowColor: "rgba(131, 24, 67, 0.4)",
+                    bannerText: "نبارك للأشقاء في قطر بمناسبة اليوم الوطني 🇶🇦"
+                },
+                {
+                    name: "اليوم الوطني البحريني 🇧🇭",
+                    active: month === 12 && (day === 16 || day === 17),
+                    primaryColor: "#dc2626",
+                    glowColor: "rgba(220, 38, 38, 0.4)",
+                    bannerText: "تهانينا لمملكة البحرين بمناسبة العيد الوطني المجيد 🇧🇭"
+                },
+                {
+                    name: "اليوم الوطني العماني 🇴🇲",
+                    active: month === 11 && day === 18,
+                    primaryColor: "#15803d",
+                    glowColor: "rgba(21, 128, 61, 0.4)",
+                    bannerText: "كل عام وسلطنة عمان بألف خير بمناسبة اليوم الوطني 🇴🇲"
+                }
+            ];
+
+            const currentEvent = occasions.find(e => e.active);
+
+            if (currentEvent) {
+                document.documentElement.style.setProperty('--primary-accent', currentEvent.primaryColor);
+                document.documentElement.style.setProperty('--primary-glow', currentEvent.glowColor);
+
+                const banner = document.createElement('div');
+                banner.style.cssText = `
+                    background: ${currentEvent.primaryColor};
+                    color: #fff;
+                    text-align: center;
+                    padding: 8px 12px;
+                    font-size: 13px;
+                    font-weight: bold;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    z-index: 150;
+                    box-shadow: 0 2px 12px ${currentEvent.glowColor};
+                    letter-spacing: -0.2px;
+                `;
+                banner.innerHTML = `<span>${currentEvent.bannerText}</span>`;
+                document.body.prepend(banner);
+
+                const nav = document.getElementById('main-navbar');
+                if (nav) nav.style.top = '36px';
+            }
+        })();
+    </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
@@ -180,7 +276,6 @@
         
         let cart = [], allProducts = [], currentCat = 'all';
 
-        // Lightning effect
         function makeLightning() {
             const container = document.getElementById('lightning-container');
             if(!container) return;
@@ -353,7 +448,7 @@
                     const d = o.val();
                     if(d.status === 'pending') {
                         list.innerHTML += `<div class="p-4 bg-white/5 rounded-xl border border-white/5 mb-2">
-                            <p class="font-bold text-xs truncate">${d.email}</p><p class="text-red-500 font-black">${d.total}</p>
+                            <p class="font-bold text-xs truncate">${d.email}</p><p class="accent-color font-black">${d.total}</p>
                             <div class="flex gap-2 mt-2"><button onclick="window.activateOrder('${o.key}')" class="bg-green-600 px-3 py-1 rounded text-xs">تفعيل</button><button onclick="window.removeOrder('${o.key}')" class="bg-red-600 px-3 py-1 rounded text-xs">حذف</button></div>
                         </div>`;
                     }
@@ -362,13 +457,45 @@
         };
 
         window.activateOrder = async (key) => {
-            const { value: url } = await Swal.fire({ title: 'رابط التحميل', input: 'url', background: '#121212', color: '#fff', placeholder: 'ضع رابط الملف هنا' });
+            const { value: url } = await Swal.fire({ 
+                title: 'رابط التحميل', 
+                input: 'url', 
+                background: '#121212', 
+                color: '#fff', 
+                placeholder: 'ضع رابط الملف هنا (Google Drive / Mega)',
+                showCancelButton: true,
+                cancelButtonText: 'إلغاء',
+                confirmButtonText: 'تفعيل الطلب',
+                confirmButtonColor: '#16a34a'
+            });
+
             if(url) {
                 update(ref(db, `orders/${key}`), { status: 'active', productLink: url })
-                    .then(() => Toast.fire({ icon: 'success', title: 'تم تفعيل الطلب' }));
+                    .then(() => {
+                        Toast.fire({ icon: 'success', title: 'تم تفعيل الطلب بنجاح 🚀' });
+                    }).catch(err => {
+                        Swal.fire('خطأ', 'فشل التفعيل: ' + err.message, 'error');
+                    });
             }
         };
-        window.removeOrder = (k) => { if(confirm('هل أنت متأكد من حذف الطلب؟')) remove(ref(db, "orders/"+k)); };
+
+        window.removeOrder = (k) => { 
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: 'سيتم حذف الطلب نهائياً',
+                icon: 'warning',
+                background: '#121212',
+                color: '#fff',
+                showCancelButton: true,
+                confirmButtonText: 'نعم، احذف',
+                cancelButtonText: 'إلغاء',
+                confirmButtonColor: '#dc2626'
+            }).then(r => {
+                if (r.isConfirmed) {
+                    remove(ref(db, "orders/" + k)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف' }));
+                }
+            });
+        };
 
         const loadUserOrders = (email) => {
             onValue(ref(db, "orders"), s => {
@@ -378,7 +505,7 @@
                     if(d.email === email) {
                         const active = d.status === 'active';
                         list.innerHTML += `<div class="glass p-4 mb-2 flex justify-between items-center ${active ? 'border-green-500/50' : 'border-yellow-500/50'}">
-                            <div><p class="text-xs text-gray-400">طلب #${o.key.substr(-4)}</p><p class="font-bold text-red-500">${d.total}</p></div>
+                            <div><p class="text-xs text-gray-400">طلب #${o.key.substr(-4)}</p><p class="font-bold accent-color">${d.total}</p></div>
                             ${active ? `<a href="${d.productLink}" target="_blank" class="bg-green-600 px-4 py-2 rounded-full text-xs font-bold">تحميل المنتج</a>` : '<span class="text-yellow-500 text-xs font-bold">⏳ قيد المراجعة</span>'}
                         </div>`;
                     }
@@ -402,8 +529,8 @@
                         </div>
                         <h2 class="text-2xl font-black mb-4">${p.title}</h2>
                         <div class="flex justify-between items-center bg-white/5 p-4 rounded-xl">
-                            <span class="text-3xl font-black text-red-500">$${p.price}</span>
-                            <button onclick="addToCart('${p.key}'); Swal.close()" class="bg-red-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-red-600/20 hover:bg-red-700 transition">إضافة للسلة</button>
+                            <span class="text-3xl font-black accent-color">$${p.price}</span>
+                            <button onclick="addToCart('${p.key}'); Swal.close()" class="accent-bg text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:opacity-90 transition">إضافة للسلة</button>
                         </div>
                     </div>
                 `
@@ -422,7 +549,7 @@
                         <h3 class="font-bold">${p.title}</h3>
                     </div>
                     <div class="p-4 border-t border-white/5 flex justify-between items-center bg-black/20">
-                        <span class="font-black text-red-500">$${p.price}</span>
+                        <span class="font-black accent-color">$${p.price}</span>
                         <button onclick="addToCart('${p.key}')" class="bg-white text-black px-4 py-1 rounded-lg font-bold hover:bg-red-600 hover:text-white transition">إضافة</button>
                     </div>
                     ${isAdmin ? `<div class="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition"><button onclick="window.editProduct('${p.key}')" class="bg-blue-600 w-7 h-7 rounded-full"><i class="fa fa-pen text-[10px]"></i></button><button onclick="window.deleteProduct('${p.key}')" class="bg-red-600 w-7 h-7 rounded-full"><i class="fa fa-trash text-[10px]"></i></button></div>` : ''}
@@ -463,7 +590,7 @@
             document.getElementById('cart-items').innerHTML = cart.map((it, i) => { 
                 sub += it.price * it.qty; 
                 return `<div class="flex justify-between items-center p-3 bg-white/5 rounded-xl mb-2">
-                    <div><p class="text-sm font-bold">${it.title}</p><p class="text-red-500 font-black">$${it.price}</p></div>
+                    <div><p class="text-sm font-bold">${it.title}</p><p class="accent-color font-black">$${it.price}</p></div>
                     <div class="flex items-center gap-3 bg-black/40 px-3 py-1 rounded-lg">
                         <button onclick="updateQty(${i},-1)" class="text-red-500 font-bold">-</button>
                         <span class="text-xs">${it.qty}</span>
