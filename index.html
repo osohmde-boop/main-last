@@ -8,6 +8,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Paddle.js Setup -->
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+    <script>
+        Paddle.Initialize({
+            token: "live_9dac314ac3bb7e4c5a22a38360c"
+        });
+    </script>
+
     <style>
         body { background: #09090b; color: #e4e4e7; font-family: 'Cairo', sans-serif; overflow-x: hidden; }
         .glass { background: rgba(30, 30, 35, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; }
@@ -161,6 +170,7 @@
         // Lightning effect
         function makeLightning() {
             const container = document.getElementById('lightning-container');
+            if(!container) return;
             setInterval(() => {
                 if(Math.random() > 0.7) {
                     const b = document.createElement('div');
@@ -196,9 +206,14 @@
         };
 
         const PAYMENT_DATA = {
+            paddle: { 
+                title: 'الدفع الإلكتروني السريع (Apple Pay / فيزا / مدى)', 
+                icon: 'https://cdn-icons-png.flaticon.com/512/888/888870.png',
+                isPaddle: true
+            },
             paypal: { title: 'PayPal', icon: 'https://cdn-icons-png.flaticon.com/512/174/174861.png', value: 'yazen.makki@gmail.com', link: 'https://paypal.me/yzstore0' },
             binance: { title: 'Binance Pay', icon: 'https://cryptologos.cc/logos/binance-coin-bnb-logo.png', value: '86551336', name: 'YZ STORE' },
-            bank: { title: 'التحويل البنكي', icon: 'https://cdn-icons-png.flaticon.com/512/2830/2830284.png', value: 'SA9230000000123456784849', name: 'يزن عادل حسن ' }
+            bank: { title: 'التحويل البنكي (تركيا والسعودية)', icon: 'https://cdn-icons-png.flaticon.com/512/2830/2830284.png', value: 'SA9230000000123456784849', name: 'يزن عادل حسن' }
         };
 
         onAuthStateChanged(auth, user => {
@@ -286,14 +301,30 @@
         window.openAddProduct = async () => {
             const { value: f } = await Swal.fire({
                 title: 'إضافة منتج جديد', background: '#121212', color: '#fff',
-                html: `<input id="nt" class="swal2-input" placeholder="الاسم"><input id="np" type="number" class="swal2-input" placeholder="السعر"><select id="nc" class="swal2-select"><option value="alerts">أليرتات</option><option value="packages">بكجات</option></select><select id="ntr" class="swal2-select"><option value="basic">أساسي</option><option value="premium">مميز</option><option value="luxury">فاخر</option></select><input id="ny" class="swal2-input" placeholder="رابط يوتيوب (اختياري)"><input id="ni" type="file" class="swal2-file">`,
+                html: `
+                    <input id="nt" class="swal2-input" placeholder="اسم المنتج">
+                    <input id="np" type="number" class="swal2-input" placeholder="السعر بالدولار">
+                    <input id="npid" class="swal2-input" placeholder="Paddle Price ID (pri_...)" value="pri_01m0d1b6ktsc65fcmnghdxsmcf">
+                    <select id="nc" class="swal2-select"><option value="alerts">أليرتات</option><option value="packages">بكجات</option></select>
+                    <select id="ntr" class="swal2-select"><option value="basic">أساسي</option><option value="premium">مميز</option><option value="luxury">فاخر</option></select>
+                    <input id="ny" class="swal2-input" placeholder="رابط يوتيوب (اختياري)">
+                    <input id="ni" type="file" class="swal2-file">
+                `,
                 preConfirm: async () => {
                     const file = document.getElementById('ni').files[0];
                     if(!file) return Swal.showValidationMessage('الصورة مطلوبة');
                     const fd = new FormData(); fd.append("image", file);
                     try {
                         const res = await fetch('https://api.imgbb.com/1/upload?key=11517ad350ecf73397b84302f750238e', { method: 'POST', body: fd }).then(r => r.json());
-                        return { title: document.getElementById('nt').value, price: document.getElementById('np').value, category: document.getElementById('nc').value, tier: document.getElementById('ntr').value, youtube: document.getElementById('ny').value, image: res.data.url };
+                        return { 
+                            title: document.getElementById('nt').value, 
+                            price: document.getElementById('np').value, 
+                            paddlePriceId: document.getElementById('npid').value || 'pri_01m0d1b6ktsc65fcmnghdxsmcf',
+                            category: document.getElementById('nc').value, 
+                            tier: document.getElementById('ntr').value, 
+                            youtube: document.getElementById('ny').value, 
+                            image: res.data.url 
+                        };
                     } catch(e) { Swal.showValidationMessage('فشل رفع الصورة'); }
                 }
             });
@@ -390,8 +421,18 @@
             const p = allProducts.find(x => x.key === k);
             const { value: f } = await Swal.fire({
                 title: 'تعديل المنتج', background: '#121212', color: '#fff',
-                html: `<input id="ut" class="swal2-input" value="${p.title}"><input id="up" class="swal2-input" value="${p.price}"><input id="uy" class="swal2-input" value="${p.youtube || ''}">`,
-                preConfirm: () => ({ title: document.getElementById('ut').value, price: document.getElementById('up').value, youtube: document.getElementById('uy').value })
+                html: `
+                    <input id="ut" class="swal2-input" value="${p.title}" placeholder="الاسم">
+                    <input id="up" class="swal2-input" value="${p.price}" placeholder="السعر">
+                    <input id="upid" class="swal2-input" value="${p.paddlePriceId || 'pri_01m0d1b6ktsc65fcmnghdxsmcf'}" placeholder="Paddle Price ID">
+                    <input id="uy" class="swal2-input" value="${p.youtube || ''}" placeholder="رابط يوتيوب">
+                `,
+                preConfirm: () => ({ 
+                    title: document.getElementById('ut').value, 
+                    price: document.getElementById('up').value, 
+                    paddlePriceId: document.getElementById('upid').value,
+                    youtube: document.getElementById('uy').value 
+                })
             });
             if(f) update(ref(db, "products/"+k), f).then(() => Toast.fire({ icon: 'success', title: 'تم التحديث' }));
         };
@@ -433,13 +474,52 @@
             if(cart.length === 0) return Toast.fire({ icon: 'info', title: 'السلة فارغة' });
             Swal.fire({
                 title: 'اختر طريقة الدفع', background:'#121212', color:'#fff', showConfirmButton: false,
-                html: `<div class="grid gap-2">${Object.entries(PAYMENT_DATA).map(([k,v])=>`<button onclick="showPayDetails('${k}')" class="p-4 glass flex items-center gap-3 w-full hover:bg-white/5 transition"><img src="${v.icon}" class="w-8"> <span class="font-bold">${v.title}</span></button>`).join('')}</div>`
+                html: `
+                    <div class="grid gap-3">
+                        ${Object.entries(PAYMENT_DATA).map(([k,v])=>`
+                            <button onclick="showPayDetails('${k}')" class="p-4 glass flex items-center justify-between w-full hover:bg-white/5 transition border ${k==='paddle' ? 'border-red-500/40 bg-red-500/5' : 'border-white/5'}">
+                                <div class="flex items-center gap-3">
+                                    <img src="${v.icon}" class="w-8 h-8 object-contain"> 
+                                    <span class="font-bold text-sm text-right">${v.title}</span>
+                                </div>
+                                <i class="fa fa-chevron-left text-gray-500 text-xs"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                `
+            });
+        };
+
+        window.openPaddleCheckout = (itemsList) => {
+            const paddleItems = itemsList.map(item => ({
+                priceId: item.paddlePriceId || 'pri_01m0d1b6ktsc65fcmnghdxsmcf',
+                quantity: item.qty || 1
+            }));
+
+            Paddle.Checkout.open({
+                items: paddleItems,
+                customer: {
+                    email: auth.currentUser ? auth.currentUser.email : ""
+                },
+                settings: {
+                    displayMode: "overlay",
+                    theme: "dark",
+                    locale: "ar"
+                }
             });
         };
 
         window.showPayDetails = (k) => {
             const d = PAYMENT_DATA[k];
             const total = document.getElementById('total-price').innerText;
+
+            if (d.isPaddle) {
+                Swal.close();
+                toggleCart(false);
+                window.openPaddleCheckout(cart);
+                return;
+            }
+
             const paypalBtn = k === 'paypal' ? `<a href="${d.link}" target="_blank" class="block w-full bg-blue-600 text-white p-4 rounded-xl mb-4 font-bold text-center shadow-lg">اضغط هنا للدفع المباشر (PayPal)</a>` : '';
             Swal.fire({ 
                 title: d.title, background:'#121212', color:'#fff', 
