@@ -2,10 +2,10 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>YZ STORE | المتجر الرقمي المتطور</title>
+    <title>YZ STORE | المنصة الأولى لخدمات البث والاشتراكات</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Favicon / أيقونة المتصفح -->
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://i.ibb.co/YT1RPZdx/image.png">
     <link rel="apple-touch-icon" href="https://i.ibb.co/YT1RPZdx/image.png">
 
@@ -24,50 +24,67 @@
 
     <style>
         :root {
-            --accent-red: #ef4444;
-            --accent-glow: rgba(239, 68, 68, 0.4);
+            --primary-red: #ef4444;
+            --primary-glow: rgba(239, 68, 68, 0.4);
+            --bg-dark: #070709;
         }
         body { 
-            background: #09090b; 
+            background: var(--bg-dark); 
             color: #f4f4f5; 
             font-family: 'Cairo', sans-serif; 
             overflow-x: hidden; 
         }
-        
-        /* Ultra Glassmorphism */
-        .glass-panel { 
-            background: rgba(18, 18, 22, 0.75); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px); 
-            border: 1px solid rgba(255, 255, 255, 0.07); 
-        }
-        
-        .product-card {
-            background: linear-gradient(180deg, rgba(26, 26, 33, 0.7) 0%, rgba(14, 14, 18, 0.95) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .product-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(239, 68, 68, 0.4);
-            box-shadow: 0 15px 35px -10px var(--accent-glow);
+
+        /* Cyberpunk Grid Background */
+        .cyber-grid {
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
         }
 
-        .category-pill {
-            background: rgba(255, 255, 255, 0.04);
+        /* Glassmorphism V2 */
+        .glass-v2 {
+            background: rgba(18, 18, 24, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at 50% -20%, rgba(239, 68, 68, 0.25) 0%, rgba(7, 7, 9, 0) 70%);
+        }
+
+        .product-card-v2 {
+            background: linear-gradient(180deg, rgba(24, 24, 32, 0.8) 0%, rgba(12, 12, 16, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 22px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .product-card-v2:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: rgba(239, 68, 68, 0.5);
+            box-shadow: 0 20px 40px -15px rgba(239, 68, 68, 0.35);
+        }
+
+        .category-tab {
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: #a1a1aa;
-            transition: all 0.25s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .category-pill:hover, .category-pill.active {
-            background: rgba(239, 68, 68, 0.15);
+        .category-tab:hover, .category-tab.active {
+            background: #ef4444;
             border-color: #ef4444;
             color: #ffffff;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+            transform: scale(1.04);
         }
 
-        /* Cart Drawer */
+        /* Cart Sidebar */
         .cart-sidebar { 
             transform: translateX(100%); 
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
@@ -78,140 +95,171 @@
             height: 100%; 
             width: 100%; 
             max-width: 440px; 
-            background: #0d0d11; 
+            background: #0d0d12; 
             border-left: 1px solid rgba(255, 255, 255, 0.1); 
             box-shadow: -25px 0 50px rgba(0,0,0,0.8); 
         }
         .cart-sidebar.open { transform: translateX(0); }
 
         /* SweetAlert2 Styling */
-        .swal2-popup { border-radius: 24px !important; background: #121216 !important; border: 1px solid #27272a !important; padding: 24px !important; color: #fff !important; }
-        .swal2-title { color: #fff !important; font-family: 'Cairo', sans-serif !important; font-weight: 800 !important; }
-        .swal2-input, .swal2-select, .swal2-file, .swal2-textarea { background: #18181b !important; color: #fff !important; border: 1px solid #3f3f46 !important; border-radius: 12px !important; padding: 12px !important; font-family: 'Cairo', sans-serif !important; }
-        .swal2-input:focus, .swal2-textarea:focus { border-color: var(--accent-red) !important; box-shadow: 0 0 10px var(--accent-glow) !important; }
+        .swal2-popup { border-radius: 24px !important; background: #121218 !important; border: 1px solid #272732 !important; padding: 24px !important; color: #fff !important; }
+        .swal2-title { color: #fff !important; font-family: 'Cairo', sans-serif !important; font-weight: 900 !important; }
+        .swal2-input, .swal2-select, .swal2-file, .swal2-textarea { background: #1a1a24 !important; color: #fff !important; border: 1px solid #3f3f50 !important; border-radius: 12px !important; padding: 12px !important; font-family: 'Cairo', sans-serif !important; }
+        .swal2-input:focus, .swal2-textarea:focus { border-color: var(--primary-red) !important; }
 
-        /* Floating WhatsApp */
-        .whatsapp-float { 
+        /* WhatsApp Button */
+        .whatsapp-btn-float { 
             position: fixed; 
             bottom: 25px; 
             left: 25px; 
             background: #22c55e; 
             color: white; 
-            width: 55px; 
-            height: 55px; 
+            width: 58px; 
+            height: 58px; 
             border-radius: 50%; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            font-size: 28px; 
-            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4); 
+            font-size: 30px; 
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4); 
             z-index: 90; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            transition: all 0.3s ease; 
         }
-        .whatsapp-float:hover { transform: scale(1.1) rotate(10deg); background: #16a34a; }
+        .whatsapp-btn-float:hover { transform: scale(1.1) rotate(12deg); background: #16a34a; }
 
-        /* Subtle Glow Animation */
-        @keyframes subtle-pulse {
-            0%, 100% { filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.25)); }
-            50% { filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.6)); }
+        @keyframes pulse-slow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.3)); }
+            50% { filter: drop-shadow(0 0 25px rgba(239, 68, 68, 0.7)); }
         }
-        .logo-glow { animation: subtle-pulse 3.5s infinite ease-in-out; }
+        .logo-glow-effect { animation: pulse-slow 3s infinite ease-in-out; }
 
         .custom-scroll::-webkit-scrollbar { width: 5px; }
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
-        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #272732; border-radius: 10px; }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen relative">
     
-    <!-- Top Navigation Bar -->
-    <nav class="fixed top-0 w-full glass-panel z-50 px-6 py-3.5 border-b border-white/5 flex justify-between items-center">
+    <!-- Background Grid & Glow -->
+    <div class="fixed inset-0 cyber-grid pointer-events-none z-0"></div>
+    <div class="fixed inset-0 hero-gradient pointer-events-none z-0"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 w-full glass-v2 z-50 px-6 py-4 border-b border-white/5 flex justify-between items-center">
         <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-            <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="YZ STORE" class="h-10 w-auto logo-glow">
-            <span class="text-xl font-black italic tracking-wider uppercase text-white flex items-center gap-1.5">
+            <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="YZ STORE" class="h-11 w-auto logo-glow-effect">
+            <span class="text-2xl font-black italic tracking-tighter uppercase text-white flex items-center gap-1.5">
                 YZ <span class="text-red-500">STORE</span>
             </span>
         </div>
 
         <div class="flex items-center gap-3">
-            <a href="https://discord.gg/VWeJ5kkqPW" target="_blank" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-[#5865F2]/10 border border-[#5865F2]/20 text-[#5865F2] hover:bg-[#5865F2] hover:text-white transition duration-300 text-xs font-bold">
+            <a href="https://discord.gg/VWeJ5kkqPW" target="_blank" class="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#5865F2]/10 border border-[#5865F2]/20 text-[#5865F2] hover:bg-[#5865F2] hover:text-white transition duration-300 text-xs font-bold">
                 <i class="fab fa-discord"></i> ديسكورد
             </a>
-            <button onclick="toggleCart(true)" class="relative p-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-200 hover:text-white hover:border-red-500/50 transition">
+            <button onclick="toggleCart(true)" class="relative p-3 rounded-xl bg-white/5 border border-white/10 text-gray-200 hover:text-white hover:border-red-500/50 transition">
                 <i class="fa fa-shopping-bag text-lg"></i>
-                <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-lg shadow-red-600/50">0</span>
+                <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black shadow-lg shadow-red-600/50">0</span>
             </button>
-            <button id="auth-btn" onclick="handleAuth()" class="text-xs font-bold px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white shadow-lg shadow-red-600/20 transition duration-300">حسابي</button>
+            <button id="auth-btn" onclick="handleAuth()" class="text-xs font-bold px-5 py-3 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white shadow-lg shadow-red-600/30 transition duration-300">حسابي</button>
         </div>
     </nav>
 
-    <!-- Floating WhatsApp -->
-    <a href="https://wa.me/905377964233" target="_blank" class="whatsapp-float">
+    <!-- Floating WhatsApp Contact -->
+    <a href="https://wa.me/905377964233" target="_blank" class="whatsapp-btn-float">
         <i class="fab fa-whatsapp"></i>
     </a>
 
     <!-- Main Container -->
-    <main class="pt-28 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-grow w-full">
+    <main class="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-grow w-full relative z-10">
         
-        <!-- Hero Section -->
-        <div class="text-center mb-12 space-y-4">
-            <span class="px-4 py-1.5 rounded-full text-xs font-bold bg-red-600/10 border border-red-500/30 text-red-400 inline-flex items-center gap-1.5">
-                <i class="fa fa-bolt"></i> تسليم فوري وتصاميم حصرية للبث
-            </span>
-            <h1 class="text-4xl sm:text-6xl font-black text-white tracking-tight uppercase">
-                ارتقِ ببثك لمستوى <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">احترافي</span>
-            </h1>
-            <p id="store-desc-display" class="text-gray-400 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
-                جاري تحميل تفاصيل المتجر...
-            </p>
-            <div class="pt-2 flex flex-wrap justify-center gap-3">
-                <a href="https://wa.me/905377964233?text=أريد طلب أليرت أو تصميم خاص" target="_blank" class="px-8 py-3.5 rounded-xl font-black bg-white text-black hover:bg-red-600 hover:text-white transition-all transform hover:scale-105 shadow-xl flex items-center gap-2 text-sm">
-                    <i class="fa fa-wand-magic-sparkles"></i> طلب تصميم خاص
-                </a>
-                <a href="https://www.youtube.com/@Yzstore130" target="_blank" class="px-6 py-3.5 rounded-xl font-bold bg-white/5 border border-white/10 hover:bg-red-600/10 hover:border-red-500/40 text-gray-200 transition text-sm flex items-center gap-2">
-                    <i class="fab fa-youtube text-red-500"></i> معرض الأعمال
-                </a>
+        <!-- Gaming Hero Banner -->
+        <div class="glass-v2 rounded-3xl p-8 sm:p-12 mb-12 border border-white/10 relative overflow-hidden text-center sm:text-right flex flex-col sm:flex-row justify-between items-center gap-8 shadow-2xl">
+            <div class="space-y-4 max-w-xl z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-600/10 border border-red-500/30 text-red-400 text-xs font-black">
+                    <i class="fa fa-bolt"></i> المتجر الرسمي لصناع المحتوى واللاعبين
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight">
+                    طوّر بثك وحساباتك بأعلى <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-500 to-amber-500">احترافية ⚡</span>
+                </h1>
+                <p id="store-desc-display" class="text-gray-400 text-sm sm:text-base leading-relaxed">
+                    جاري تحميل وصف المتجر...
+                </p>
+                <div class="pt-2 flex flex-wrap justify-center sm:justify-start gap-3">
+                    <a href="https://wa.me/905377964233?text=أريد طلب تصميم أو خدمة خاصة" target="_blank" class="px-8 py-3.5 rounded-xl font-black bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/40 transition flex items-center gap-2 text-xs sm:text-sm">
+                        <i class="fa fa-wand-magic-sparkles"></i> طلب تصميم خاص
+                    </a>
+                    <a href="https://www.youtube.com/@Yzstore130" target="_blank" class="px-6 py-3.5 rounded-xl font-bold bg-white/5 border border-white/10 hover:bg-white/10 text-gray-200 transition text-xs sm:text-sm flex items-center gap-2">
+                        <i class="fab fa-youtube text-red-500"></i> استعراض الأعمال
+                    </a>
+                </div>
+            </div>
+            <div class="relative z-10 flex-shrink-0">
+                <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="YZ Store Hero" class="w-48 sm:w-64 h-auto logo-glow-effect drop-shadow-2xl">
+            </div>
+        </div>
+
+        <!-- Trust Stats Badges -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
+            <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
+                <i class="fa fa-bolt text-red-500 text-xl mb-1"></i>
+                <h4 class="font-black text-white text-base sm:text-lg">تسليم فوري</h4>
+                <p class="text-[11px] text-gray-400">مباشرة بعد إتمام الدفع</p>
+            </div>
+            <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
+                <i class="fa fa-shield-check text-green-500 text-xl mb-1"></i>
+                <h4 class="font-black text-white text-base sm:text-lg">دفع آمن 100%</h4>
+                <p class="text-[11px] text-gray-400">معتمد عالمياً عبر Paddle</p>
+            </div>
+            <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
+                <i class="fa fa-crown text-amber-500 text-xl mb-1"></i>
+                <h4 class="font-black text-white text-base sm:text-lg">+500 عميل</h4>
+                <p class="text-[11px] text-gray-400">ثقة صناع المحتوى</p>
+            </div>
+            <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
+                <i class="fa fa-headset text-blue-500 text-xl mb-1"></i>
+                <h4 class="font-black text-white text-base sm:text-lg">دعم 24/7</h4>
+                <p class="text-[11px] text-gray-400">مساعدة مستمرة عبر واتساب</p>
             </div>
         </div>
 
         <!-- Categories Selector -->
-        <div class="flex items-center justify-center gap-2 sm:gap-3 mb-10 overflow-x-auto pb-2 custom-scroll">
-            <button onclick="window.filterCat('all')" class="category-pill active px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 whitespace-nowrap" id="cat-all">
-                <i class="fa fa-border-all"></i> الكل
+        <div class="flex items-center justify-center gap-3 mb-10 overflow-x-auto pb-2 custom-scroll">
+            <button onclick="window.filterCat('all')" class="category-tab active px-7 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 whitespace-nowrap" id="cat-all">
+                <i class="fa fa-border-all"></i> جميع المنتجات
             </button>
-            <button onclick="window.filterCat('alerts')" class="category-pill px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 whitespace-nowrap" id="cat-alerts">
-                <i class="fa fa-bell"></i> الأليرتات
+            <button onclick="window.filterCat('alerts')" class="category-tab px-7 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 whitespace-nowrap" id="cat-alerts">
+                <i class="fa fa-bell"></i> الأليرتات والتصاميم
             </button>
-            <button onclick="window.filterCat('packages')" class="category-pill px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 whitespace-nowrap" id="cat-packages">
-                <i class="fa fa-box-open"></i> البكجات والخدمات
+            <button onclick="window.filterCat('packages')" class="category-tab px-7 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 whitespace-nowrap" id="cat-packages">
+                <i class="fa fa-box-open"></i> البكجات والاشتراكات
             </button>
         </div>
 
         <!-- Admin Control Panel (Visible for Admin Only) -->
         <div id="admin-panel" class="hidden mb-12 animate-fade-in">
-            <div class="glass-panel p-6 rounded-2xl border border-red-500/30">
+            <div class="glass-v2 p-6 rounded-3xl border border-red-500/30">
                 <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
                     <h2 class="text-lg font-black text-white flex items-center gap-2">
-                        <i class="fa fa-shield-halved text-red-500"></i> لوحة إدارة المتجر
+                        <i class="fa fa-shield-halved text-red-500"></i> لوحة إدارة YZ STORE
                     </h2>
-                    <span class="text-xs bg-red-600/20 text-red-400 px-3 py-1 rounded-full font-bold">Admin Active</span>
+                    <span class="text-xs bg-red-600/20 text-red-400 px-3 py-1 rounded-full font-bold">Admin Privileges</span>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <button onclick="window.openAddProduct()" class="p-6 rounded-xl bg-white/5 border border-dashed border-white/20 hover:border-red-500/50 hover:bg-red-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
-                        <i class="fa fa-plus-circle text-2xl text-red-500"></i>
+                    <button onclick="window.openAddProduct()" class="p-6 rounded-2xl bg-white/5 border border-dashed border-white/20 hover:border-red-500/50 hover:bg-red-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
+                        <i class="fa fa-plus-circle text-3xl text-red-500"></i>
                         <span class="font-bold text-sm">إضافة منتج جديد</span>
                     </button>
-                    <button onclick="window.editStoreDesc()" class="p-6 rounded-xl bg-white/5 border border-dashed border-white/20 hover:border-blue-500/50 hover:bg-blue-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
-                        <i class="fa fa-pencil text-2xl text-blue-400"></i>
+                    <button onclick="window.editStoreDesc()" class="p-6 rounded-2xl bg-white/5 border border-dashed border-white/20 hover:border-blue-500/50 hover:bg-blue-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
+                        <i class="fa fa-pencil text-3xl text-blue-400"></i>
                         <span class="font-bold text-sm">تعديل وصف المتجر</span>
                     </button>
-                    <div class="p-4 rounded-xl bg-black/40 border border-white/5">
+                    <div class="p-4 rounded-2xl bg-black/50 border border-white/5">
                         <h3 class="text-xs font-bold text-gray-400 mb-3 flex justify-between">
                             <span>📦 الطلبات المعلقة</span>
-                            <span id="pending-count" class="text-red-400 font-bold">0</span>
+                            <span id="pending-count" class="text-red-400 font-black">0</span>
                         </h3>
-                        <div id="orders-list" class="space-y-2 max-h-48 overflow-y-auto custom-scroll text-xs"></div>
+                        <div id="orders-list" class="space-y-2 max-h-44 overflow-y-auto custom-scroll text-xs"></div>
                     </div>
                 </div>
             </div>
@@ -220,17 +268,17 @@
         <!-- Customer Purchases Section -->
         <div id="user-orders-section" class="hidden mb-12">
             <h2 class="text-xl font-black text-white mb-4 flex items-center gap-2">
-                <i class="fa fa-download text-blue-400"></i> مشترياتي وملفاتي
+                <i class="fa fa-download text-blue-400"></i> مشترياتي وملفاتي المحملة
             </h2>
             <div id="user-orders-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
 
         <!-- Products Grid -->
-        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></div>
     </main>
 
     <!-- Footer with Paddle Compliance Links -->
-    <footer class="border-t border-white/5 py-10 bg-[#060608] text-center w-full mt-auto">
+    <footer class="border-t border-white/5 py-12 bg-[#050507] text-center w-full mt-auto relative z-10">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-gray-400">
             <div>
                 جميع الحقوق محفوظة © 2026 <span class="text-white font-bold">YZ STORE</span>
@@ -248,7 +296,7 @@
     <div id="cart-drawer" class="cart-sidebar p-6 sm:p-8 flex flex-col">
         <div class="flex justify-between items-center pb-6 border-b border-white/10 mb-6">
             <h2 class="text-xl font-black text-white flex items-center gap-2">
-                <i class="fa fa-shopping-bag text-red-500"></i> سلة المشتريات
+                <i class="fa fa-shopping-bag text-red-500"></i> سلة التسوق
             </h2>
             <button onclick="toggleCart(false)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-red-600 hover:text-white transition flex items-center justify-center text-sm">
                 <i class="fa fa-times"></i>
@@ -257,16 +305,16 @@
         <div id="cart-items" class="flex-1 space-y-3 overflow-y-auto custom-scroll pr-1"></div>
         <div class="mt-6 pt-6 border-t border-white/10">
             <div class="flex justify-between items-center mb-6">
-                <span class="text-gray-400 text-sm font-bold">المجموع الكلي:</span>
-                <span id="total-price" class="text-2xl font-black text-white">$0.00</span>
+                <span class="text-gray-400 text-sm font-bold">المجموع:</span>
+                <span id="total-price" class="text-2xl font-black text-red-500">$0.00</span>
             </div>
-            <button onclick="window.startCheckout()" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white py-4 rounded-xl font-black shadow-lg shadow-red-600/30 transform hover:-translate-y-0.5 transition-all text-sm">
-                إتمام الطلب والدفع الفوري
+            <button onclick="window.startCheckout()" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white py-4 rounded-xl font-black shadow-lg shadow-red-600/40 transform hover:-translate-y-0.5 transition-all text-sm">
+                إتمام الطلب والدفع السريع
             </button>
         </div>
     </div>
 
-    <!-- Firebase & Logic Script -->
+    <!-- Firebase & Store Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
         import { getDatabase, ref, onValue, push, remove, update, set } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
@@ -286,31 +334,31 @@
         const googleProvider = new GoogleAuthProvider();
         
         const ADMIN_EMAIL = "osohmde@gmail.com";
-        const Toast = Swal.mixin({ toast: true, position: 'top-start', showConfirmButton: false, timer: 2000, background: '#18181b', color: '#fff' });
+        const Toast = Swal.mixin({ toast: true, position: 'top-start', showConfirmButton: false, timer: 2000, background: '#181822', color: '#fff' });
         
         let cart = [], allProducts = [], currentCat = 'all';
 
         // Load Store Description
         onValue(ref(db, "store_settings/desc"), s => {
-            document.getElementById('store-desc-display').innerText = s.val() || "مرحباً بك في YZ STORE، المتجر الأفضل لتطوير تجربة البث المباشر وتجهيز الحسابات الرقمية.";
+            document.getElementById('store-desc-display').innerText = s.val() || "مرحباً بك في YZ STORE، المتجر الأفضل لتطوير تجربة البث المباشر وشراء الاشتراكات والخدمات الرقمية.";
         });
 
         window.editStoreDesc = async () => {
             const cur = document.getElementById('store-desc-display').innerText;
             const { value: text } = await Swal.fire({
                 title: 'تعديل وصف المتجر', input: 'textarea', inputValue: cur,
-                confirmButtonColor: '#dc2626', showCancelButton: true, cancelButtonText: 'إلغاء', confirmButtonText: 'حفظ'
+                confirmButtonColor: '#ef4444', showCancelButton: true, cancelButtonText: 'إلغاء', confirmButtonText: 'حفظ'
             });
             if(text) {
                 set(ref(db, "store_settings/desc"), text).then(() => {
-                    Toast.fire({ icon: 'success', title: 'تم حفظ الوصف الجديد' });
+                    Toast.fire({ icon: 'success', title: 'تم حفظ الوصف بنجاح' });
                 });
             }
         };
 
         const PAYMENT_DATA = {
             paddle: { 
-                title: 'الدفع الإلكتروني (Apple Pay / بطاقة بنكية / فيزا)', 
+                title: 'الدفع الإلكتروني (Apple Pay / فيزا / مدى)', 
                 icon: 'https://cdn-icons-png.flaticon.com/512/888/888870.png',
                 isPaddle: true
             },
@@ -350,7 +398,7 @@
                     html: `
                         <input id="e" class="swal2-input" placeholder="البريد الإلكتروني">
                         <input id="p" type="password" class="swal2-input" placeholder="كلمة المرور">
-                        <button onclick="window.loginWithGoogle()" class="w-full mt-4 p-3 bg-white text-black rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition text-sm">
+                        <button onclick="window.loginWithGoogle()" class="w-full mt-4 p-3.5 bg-white text-black rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition text-sm">
                             <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" class="w-4"> الدخول السريع بواسطة Google
                         </button>
                         <div class="mt-4 flex justify-between text-xs text-gray-400">
@@ -358,7 +406,7 @@
                             <button onclick="window.openRegister()" class="text-blue-400 font-bold">إنشاء حساب جديد</button>
                         </div>`,
                     confirmButtonText: 'دخول',
-                    confirmButtonColor: '#dc2626',
+                    confirmButtonColor: '#ef4444',
                     showCancelButton: true,
                     cancelButtonText: 'إلغاء'
                 }).then(r => { 
@@ -379,7 +427,7 @@
                 title: 'إنشاء حساب جديد',
                 html: `<input id="re" class="swal2-input" placeholder="البريد الإلكتروني"><input id="rp" type="password" class="swal2-input" placeholder="كلمة المرور">`,
                 confirmButtonText: 'تسجيل',
-                confirmButtonColor: '#dc2626',
+                confirmButtonColor: '#ef4444',
                 preConfirm: () => ({ e: document.getElementById('re').value, p: document.getElementById('rp').value })
             });
             if(f) {
@@ -391,7 +439,7 @@
         };
 
         window.forgotPass = async () => {
-            const { value: e } = await Swal.fire({ title: 'استعادة كلمة المرور', input: 'email', placeholder: 'بريدك الإلكتروني', confirmButtonColor: '#dc2626' });
+            const { value: e } = await Swal.fire({ title: 'استعادة كلمة المرور', input: 'email', placeholder: 'بريدك الإلكتروني', confirmButtonColor: '#ef4444' });
             if(e) {
                 sendPasswordResetEmail(auth, e)
                     .then(() => Swal.fire('تم الإرسال', 'تفقد بريدك الإلكتروني لتعيين كلمة مرور جديدة', 'success'))
@@ -408,11 +456,11 @@
                     <input id="nt" class="swal2-input" placeholder="اسم المنتج">
                     <input id="np" type="number" class="swal2-input" placeholder="السعر بالدولار ($)">
                     <input id="npid" class="swal2-input" placeholder="Paddle Price ID" value="pri_01m0d1b6ktsc65fcmnghdxsmcf">
-                    <select id="nc" class="swal2-select"><option value="alerts">أليرتات</option><option value="packages">بكجات</option></select>
+                    <select id="nc" class="swal2-select"><option value="alerts">أليرتات وتصاميم</option><option value="packages">بكجات واشتراكات</option></select>
                     <input id="ny" class="swal2-input" placeholder="رابط يوتيوب للمعاينة (اختياري)">
                     <input id="ni" type="file" class="swal2-file">
                 `,
-                confirmButtonColor: '#dc2626',
+                confirmButtonColor: '#ef4444',
                 preConfirm: async () => {
                     const file = document.getElementById('ni').files[0];
                     if(!file) return Swal.showValidationMessage('يرجى اختيار صورة للمنتج');
@@ -443,9 +491,9 @@
                     const d = o.val();
                     if(d.status === 'pending') {
                         count++;
-                        list.innerHTML += `<div class="p-3 bg-white/5 rounded-lg border border-white/5 flex justify-between items-center">
+                        list.innerHTML += `<div class="p-3 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center">
                             <div class="truncate max-w-[150px]"><p class="font-bold">${d.email}</p><p class="text-red-400 font-bold">${d.total}</p></div>
-                            <div class="flex gap-1.5"><button onclick="window.activateOrder('${o.key}')" class="bg-green-600 px-2.5 py-1 rounded text-[11px] font-bold">تفعيل</button><button onclick="window.removeOrder('${o.key}')" class="bg-red-600 px-2.5 py-1 rounded text-[11px]">حذف</button></div>
+                            <div class="flex gap-1.5"><button onclick="window.activateOrder('${o.key}')" class="bg-green-600 px-2.5 py-1 rounded-lg text-[11px] font-bold">تفعيل</button><button onclick="window.removeOrder('${o.key}')" class="bg-red-600 px-2.5 py-1 rounded-lg text-[11px]">حذف</button></div>
                         </div>`;
                     }
                 });
@@ -470,7 +518,7 @@
         window.removeOrder = (k) => { 
             Swal.fire({
                 title: 'هل تريد حذف هذا الطلب؟',
-                icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#dc2626'
+                icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
             }).then(r => {
                 if (r.isConfirmed) remove(ref(db, "orders/" + k)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف' }));
             });
@@ -483,7 +531,7 @@
                     const d = o.val();
                     if(d.email === email) {
                         const active = d.status === 'active';
-                        list.innerHTML += `<div class="glass-panel p-4 rounded-xl flex justify-between items-center ${active ? 'border-green-500/40' : 'border-yellow-500/40'}">
+                        list.innerHTML += `<div class="glass-v2 p-4 rounded-2xl flex justify-between items-center ${active ? 'border-green-500/40' : 'border-yellow-500/40'}">
                             <div><p class="text-xs text-gray-400">طلب #${o.key.substr(-4)}</p><p class="font-black text-white text-sm">${d.total}</p></div>
                             ${active ? `<a href="${d.productLink}" target="_blank" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5"><i class="fa fa-download"></i> تحميل المنتج</a>` : '<span class="text-yellow-400 text-xs font-bold bg-yellow-500/10 px-3 py-1 rounded-full">⏳ قيد المراجعة</span>'}
                         </div>`;
@@ -496,18 +544,18 @@
             const p = allProducts.find(x => x.key === k);
             const yid = window.getYouTubeID(p.youtube);
             Swal.fire({
-                width: window.innerWidth > 768 ? '750px' : '95%',
-                padding: '20px',
+                width: window.innerWidth > 768 ? '780px' : '95%',
+                padding: '24px',
                 showConfirmButton: false,
                 html: `
                     <div class="text-right">
-                        <div class="relative pb-[56.25%] h-0 overflow-hidden rounded-xl mb-4 bg-black">
+                        <div class="relative pb-[56.25%] h-0 overflow-hidden rounded-2xl mb-5 bg-black border border-white/10">
                             ${yid ? `<iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${yid}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>` : `<img src="${p.image}" class="w-full h-full object-cover">`}
                         </div>
-                        <h2 class="text-xl font-black text-white mb-2">${p.title}</h2>
-                        <div class="flex justify-between items-center bg-white/5 p-3 rounded-xl">
-                            <span class="text-2xl font-black text-red-500">$${p.price}</span>
-                            <button onclick="addToCart('${p.key}'); Swal.close()" class="bg-red-600 hover:bg-red-500 text-white px-6 py-2.5 rounded-xl font-bold text-xs shadow-lg transition">إضافة إلى السلة</button>
+                        <h2 class="text-2xl font-black text-white mb-2">${p.title}</h2>
+                        <div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <span class="text-3xl font-black text-red-500">$${p.price}</span>
+                            <button onclick="addToCart('${p.key}'); Swal.close()" class="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-xl font-black text-xs shadow-lg shadow-red-600/40 transition">إضافة إلى السلة</button>
                         </div>
                     </div>
                 `
@@ -519,23 +567,26 @@
             const filtered = currentCat === 'all' ? allProducts : allProducts.filter(p => p.category === currentCat);
             
             if(filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-16 text-gray-500 font-bold">لا توجد منتجات في هذا القسم حالياً.</div>`;
+                grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-500 font-bold">لا توجد منتجات في هذا القسم حالياً.</div>`;
                 return;
             }
 
             filtered.forEach(p => {
                 const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
                 grid.innerHTML += `
-                <div class="product-card group flex flex-col justify-between overflow-hidden relative">
-                    <div class="relative h-48 overflow-hidden cursor-pointer" onclick="openVideoModal('${p.key}')">
+                <div class="product-card-v2 group flex flex-col justify-between overflow-hidden">
+                    <div class="relative h-52 overflow-hidden cursor-pointer" onclick="openVideoModal('${p.key}')">
                         <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        ${p.youtube ? `<span class="absolute bottom-3 right-3 bg-black/70 backdrop-blur-md text-white text-[11px] px-3 py-1 rounded-full font-bold flex items-center gap-1.5 border border-white/10"><i class="fa fa-play text-red-500"></i> معاينة</span>` : ''}
+                        <span class="absolute top-3 right-3 bg-red-600/90 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full font-black flex items-center gap-1 shadow-lg">
+                            <i class="fa fa-bolt"></i> تسليم فوري
+                        </span>
+                        ${p.youtube ? `<span class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md text-white text-[11px] px-3 py-1 rounded-full font-bold flex items-center gap-1.5 border border-white/10"><i class="fa fa-play text-red-500"></i> معاينة</span>` : ''}
                     </div>
                     <div class="p-5 flex-1 flex flex-col justify-between">
-                        <h3 class="font-bold text-white text-base mb-3 leading-snug">${p.title}</h3>
-                        <div class="flex justify-between items-center pt-3 border-t border-white/5">
-                            <span class="text-xl font-black text-red-500">$${p.price}</span>
-                            <button onclick="addToCart('${p.key}')" class="bg-white hover:bg-red-600 hover:text-white text-black px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                        <h3 class="font-black text-white text-base mb-4 leading-snug">${p.title}</h3>
+                        <div class="flex justify-between items-center pt-4 border-t border-white/5">
+                            <span class="text-2xl font-black text-red-500">$${p.price}</span>
+                            <button onclick="addToCart('${p.key}')" class="bg-white hover:bg-red-600 hover:text-white text-black px-5 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 shadow-md">
                                 <i class="fa fa-cart-plus"></i> إضافة
                             </button>
                         </div>
@@ -559,7 +610,7 @@
                     <input id="upid" class="swal2-input" value="${p.paddlePriceId || 'pri_01m0d1b6ktsc65fcmnghdxsmcf'}" placeholder="Paddle Price ID">
                     <input id="uy" class="swal2-input" value="${p.youtube || ''}" placeholder="رابط يوتيوب">
                 `,
-                confirmButtonColor: '#dc2626',
+                confirmButtonColor: '#ef4444',
                 preConfirm: () => ({ 
                     title: document.getElementById('ut').value, 
                     price: document.getElementById('up').value, 
@@ -587,11 +638,11 @@
             document.getElementById('cart-items').innerHTML = cart.map((it, i) => { 
                 sub += it.price * it.qty; 
                 return `
-                <div class="flex justify-between items-center p-3.5 bg-white/5 rounded-xl border border-white/5">
+                <div class="flex justify-between items-center p-3.5 bg-white/5 rounded-2xl border border-white/5">
                     <div class="max-w-[170px]"><p class="text-xs font-bold text-white truncate">${it.title}</p><p class="text-red-400 font-black text-sm">$${it.price}</p></div>
-                    <div class="flex items-center gap-2.5 bg-black/50 px-2.5 py-1 rounded-lg border border-white/5">
+                    <div class="flex items-center gap-2.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/5">
                         <button onclick="updateQty(${i},-1)" class="text-gray-400 hover:text-red-500 font-bold px-1">-</button>
-                        <span class="text-xs font-bold">${it.qty}</span>
+                        <span class="text-xs font-black">${it.qty}</span>
                         <button onclick="updateQty(${i},1)" class="text-gray-400 hover:text-green-500 font-bold px-1">+</button>
                     </div>
                 </div>`; 
@@ -605,7 +656,7 @@
         
         window.filterCat = (c) => { 
             currentCat = c; 
-            document.querySelectorAll('.category-pill').forEach(i=>i.classList.remove('active')); 
+            document.querySelectorAll('.category-tab').forEach(i=>i.classList.remove('active')); 
             document.getElementById('cat-'+c).classList.add('active'); 
             renderProducts(); 
         };
@@ -619,12 +670,12 @@
             Swal.fire({
                 title: 'اختر طريقة الدفع', showConfirmButton: false,
                 html: `
-                    <div class="grid gap-2.5 mt-4">
+                    <div class="grid gap-3 mt-4">
                         ${Object.entries(PAYMENT_DATA).map(([k,v])=>`
-                            <button onclick="showPayDetails('${k}')" class="p-3.5 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-between w-full transition border ${k==='paddle' ? 'border-red-500/40 bg-red-500/5' : 'border-white/5'}">
+                            <button onclick="showPayDetails('${k}')" class="p-4 rounded-2xl bg-white/5 hover:bg-white/10 flex items-center justify-between w-full transition border ${k==='paddle' ? 'border-red-500/50 bg-red-500/10' : 'border-white/5'}">
                                 <div class="flex items-center gap-3">
-                                    <img src="${v.icon}" class="w-6 h-6 object-contain"> 
-                                    <span class="font-bold text-xs text-right text-white">${v.title}</span>
+                                    <img src="${v.icon}" class="w-7 h-7 object-contain"> 
+                                    <span class="font-black text-xs text-right text-white">${v.title}</span>
                                 </div>
                                 <i class="fa fa-chevron-left text-gray-500 text-xs"></i>
                             </button>
@@ -664,17 +715,17 @@
                 return;
             }
 
-            const paypalBtn = k === 'paypal' ? `<a href="${d.link}" target="_blank" class="block w-full bg-blue-600 text-white p-3.5 rounded-xl mb-3 font-bold text-center text-xs shadow-lg">الدفع المباشر عبر PayPal</a>` : '';
+            const paypalBtn = k === 'paypal' ? `<a href="${d.link}" target="_blank" class="block w-full bg-blue-600 text-white p-4 rounded-2xl mb-3 font-bold text-center text-xs shadow-lg">الدفع المباشر عبر PayPal</a>` : '';
             Swal.fire({ 
                 title: d.title, 
                 confirmButtonText: 'تأكيد التحويل وإرسال الطلب', 
-                confirmButtonColor: '#dc2626',
+                confirmButtonColor: '#ef4444',
                 showCancelButton: true, cancelButtonText: 'إلغاء',
                 html: `
                     ${paypalBtn}
-                    <div class="p-3.5 bg-white/5 border border-dashed border-white/20 rounded-xl font-mono text-xs break-all mb-2 select-all">${d.value}</div>
+                    <div class="p-4 bg-white/5 border border-dashed border-white/20 rounded-2xl font-mono text-xs break-all mb-2 select-all">${d.value}</div>
                     ${d.name ? `<div class="text-xs text-gray-400 mb-3">باسم: ${d.name}</div>` : ''}
-                    <p class="text-xs text-gray-400">بعد إتمام التحويل، اضغط على زر التأكيد وسيتم مراجعة الدفع وتفعيل الملفات فوراً في حسابك.</p>` 
+                    <p class="text-xs text-gray-400">بعد إتمام التحويل، اضغط على زر التأكيد وسيتم تفعيل ملفاتك مباشرة في حسابك.</p>` 
             })
             .then(r => { 
                 if(r.isConfirmed) {
@@ -696,7 +747,7 @@
             });
         };
 
-        // Paddle Legal Policies Modal
+        // Paddle Compliance Legal Policies Modal
         window.showLegalModal = (type) => {
             const data = {
                 terms: {
@@ -744,7 +795,7 @@
                 title: data[type].title,
                 html: data[type].content,
                 confirmButtonText: 'إغلاق',
-                confirmButtonColor: '#dc2626'
+                confirmButtonColor: '#ef4444'
             });
         };
     </script>
