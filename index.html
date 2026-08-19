@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>YZ STORE | نظام الطلبات المتطور</title>
+    <title>YZ STORE | يوم التأسيس السعودي 🇸🇦</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -19,17 +19,17 @@
 
     <style>
         :root {
-            --primary-accent: #dc2626;
-            --primary-glow: rgba(220, 38, 38, 0.4);
+            --primary-accent: #c2410c; /* لون يوم التأسيس */
+            --primary-glow: rgba(194, 65, 12, 0.4);
         }
         body { background: #09090b; color: #e4e4e7; font-family: 'Cairo', sans-serif; overflow-x: hidden; }
         .glass { background: rgba(30, 30, 35, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; }
         .card-luxury { background: linear-gradient(145deg, rgba(251, 191, 36, 0.05) 0%, rgba(20, 20, 20, 1) 100%); border: 1px solid rgba(251, 191, 36, 0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
-        .card-premium { background: linear-gradient(145deg, rgba(220, 38, 38, 0.05) 0%, rgba(20, 20, 20, 1) 100%); border: 1px solid rgba(220, 38, 38, 0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .card-premium { background: linear-gradient(145deg, rgba(194, 65, 12, 0.05) 0%, rgba(20, 20, 20, 1) 100%); border: 1px solid rgba(194, 65, 12, 0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
         .card-basic { background: linear-gradient(145deg, rgba(14, 165, 233, 0.05) 0%, rgba(20, 20, 20, 1) 100%); border: 1px solid rgba(14, 165, 233, 0.2); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
-        .side-nav { position: fixed; right: 20px; top: 110px; width: 220px; z-index: 50; }
+        .side-nav { position: fixed; right: 20px; top: 130px; width: 220px; z-index: 50; }
         .nav-item { cursor: pointer; padding: 14px 24px; border-radius: 16px; margin-bottom: 10px; transition: all 0.3s ease; display: flex; align-items: center; gap: 12px; font-weight: 700; background: rgba(255,255,255,0.02); color: #a1a1aa; border: 1px solid transparent; }
-        .nav-item:hover, .nav-item.active { background: rgba(220, 38, 38, 0.1); color: var(--primary-accent); border-color: rgba(220, 38, 38, 0.3); transform: translateX(-5px); }
+        .nav-item:hover, .nav-item.active { background: rgba(194, 65, 12, 0.1); color: var(--primary-accent); border-color: rgba(194, 65, 12, 0.3); transform: translateX(-5px); }
         .cart-sidebar { transform: translateX(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 420px; background: #0f0f10; border-left: 1px solid #333; box-shadow: -20px 0 40px rgba(0,0,0,0.6); }
         .cart-sidebar.open { transform: translateX(0); }
         .swal2-popup { border-radius: 24px !important; background: #121212 !important; border: 1px solid #333 !important; padding: 30px !important; color: #fff !important; }
@@ -43,12 +43,12 @@
         .lightning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
         .bolt { position: absolute; background: white; box-shadow: 0 0 10px 1px white; opacity: 0; }
         @keyframes flash { 0% { opacity: 0; } 50% { opacity: 0.4; } 100% { opacity: 0; } }
-        @keyframes logo-pulse { 0% { filter: drop-shadow(0 0 5px rgba(220, 38, 38, 0.2)); } 50% { filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.6)); } 100% { filter: drop-shadow(0 0 5px rgba(220, 38, 38, 0.2)); } }
+        @keyframes logo-pulse { 0% { filter: drop-shadow(0 0 5px rgba(194, 65, 12, 0.2)); } 50% { filter: drop-shadow(0 0 20px rgba(194, 65, 12, 0.6)); } 100% { filter: drop-shadow(0 0 5px rgba(194, 65, 12, 0.2)); } }
         .logo-animate { animation: logo-pulse 3s infinite ease-in-out; }
         @keyframes btn-lightning { 0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); } 50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.4), 0 0 10px var(--primary-glow); } }
         .btn-lightning-effect { animation: btn-lightning 2s infinite; border: 1px solid rgba(255, 255, 255, 0.2); }
-        .bg-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.03) 0%, transparent 80%); pointer-events: none; z-index: -1; }
-        @media (max-width: 1024px) { .side-nav { position: static; width: 100%; display: flex; overflow-x: auto; margin-top: 80px; padding: 10px; gap: 10px; } main { padding-right: 24px !important; padding-left: 24px !important; } }
+        .bg-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(194, 65, 12, 0.04) 0%, transparent 80%); pointer-events: none; z-index: -1; }
+        @media (max-width: 1024px) { .side-nav { position: static; width: 100%; display: flex; overflow-x: auto; margin-top: 100px; padding: 10px; gap: 10px; } main { padding-right: 24px !important; padding-left: 24px !important; } }
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         .accent-color { color: var(--primary-accent) !important; }
@@ -59,7 +59,13 @@
     <div class="bg-particles"></div>
     <div id="lightning-container" class="lightning"></div>
 
-    <nav id="main-navbar" class="fixed top-0 w-full bg-[#09090b]/80 backdrop-blur-xl z-[100] px-6 py-4 border-b border-white/5 flex justify-between items-center transition-all duration-300">
+    <!-- شريط يوم التأسيس السعودي العلوي -->
+    <div class="fixed top-0 left-0 w-full z-[150] bg-[#c2410c] text-white text-center py-2 px-4 text-xs md:text-sm font-bold shadow-lg shadow-orange-950/40 flex items-center justify-center gap-2">
+        <span>🦅 نبارك لكم يوم التأسيس السعودي! عروض وخصومات مميزة على جميع الخدمات 🇸🇦⚡</span>
+    </div>
+
+    <!-- Navbar مخصص ومتناسق مع الشريط -->
+    <nav id="main-navbar" class="fixed top-[36px] w-full bg-[#09090b]/80 backdrop-blur-xl z-[100] px-6 py-4 border-b border-white/5 flex justify-between items-center transition-all duration-300">
         <div class="text-2xl font-black accent-color italic tracking-tighter uppercase flex items-center gap-2">
             <i class="fa fa-bolt"></i> YZ STORE
         </div>
@@ -91,12 +97,12 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <main class="pt-32 max-w-7xl mx-auto px-6 lg:pr-72 relative z-10 flex-grow w-full">
+    <main class="pt-36 max-w-7xl mx-auto px-6 lg:pr-72 relative z-10 flex-grow w-full">
         <div class="text-center mb-16 space-y-6">
             <h1 class="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase italic"> وجهتك <span class="accent-color">الأفضل</span> ⚡ </h1>
             <p id="store-desc-display" class="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">جاري تحميل الوصف...</p>
             <div class="pt-4">
-                <a href="https://wa.me/905377964233?text=أريد طلب أليرت خاص" target="_blank" class="bg-white text-black px-10 py-4 rounded-full font-black hover:bg-red-600 hover:text-white transition-all transform hover:scale-105 shadow-2xl inline-flex items-center gap-3 btn-lightning-effect">
+                <a href="https://wa.me/905377964233?text=أريد طلب أليرت خاص بمناسبة يوم التأسيس" target="_blank" class="bg-white text-black px-10 py-4 rounded-full font-black hover:bg-[#c2410c] hover:text-white transition-all transform hover:scale-105 shadow-2xl inline-flex items-center gap-3 btn-lightning-effect">
                     <i class="fa fa-wand-magic-sparkles"></i> اطلب أليرتك الخاص
                 </a>
             </div>
@@ -108,7 +114,7 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <button onclick="window.openAddProduct()" class="glass p-8 border-dashed border-white/20 hover:from-white/10 transition flex flex-col items-center justify-center gap-3">
-                    <div class="w-12 h-12 rounded-full bg-red-600/20 flex items-center justify-center accent-color"><i class="fa fa-plus text-xl"></i></div>
+                    <div class="w-12 h-12 rounded-full bg-orange-600/20 flex items-center justify-center accent-color"><i class="fa fa-plus text-xl"></i></div>
                     <span class="font-bold">إضافة منتج جديد</span>
                 </button>
                 <button onclick="window.editStoreDesc()" class="glass p-8 border-dashed border-blue-500/30 hover:bg-blue-500/10 transition flex flex-col items-center justify-center gap-3">
@@ -118,7 +124,7 @@
                 <div class="glass p-6 md:col-span-2 lg:col-span-1">
                     <h3 class="text-sm font-bold mb-4 border-b border-white/10 pb-3 flex justify-between items-center text-gray-400">
                         <span>📦 طلبات قيد الانتظار</span>
-                        <span class="text-xs bg-red-500/10 accent-color px-2 py-1 rounded">Admin</span>
+                        <span class="text-xs bg-orange-500/10 accent-color px-2 py-1 rounded">Admin</span>
                     </h3>
                     <div id="orders-list" class="space-y-3 max-h-64 overflow-y-auto custom-scroll"></div>
                 </div>
@@ -151,7 +157,7 @@
     <div id="cart-drawer" class="cart-sidebar p-8 flex flex-col">
         <div class="flex justify-between items-center mb-10">
             <h2 class="text-2xl font-black">سلة التسوق</h2>
-            <button onclick="toggleCart(false)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-red-600 hover:text-white transition flex items-center justify-center"><i class="fa fa-times"></i></button>
+            <button onclick="toggleCart(false)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-orange-600 hover:text-white transition flex items-center justify-center"><i class="fa fa-times"></i></button>
         </div>
         <div id="cart-items" class="flex-1 space-y-4 overflow-y-auto"></div>
         <div class="mt-8 pt-8 border-t border-white/10">
@@ -162,96 +168,6 @@
             <button onclick="window.startCheckout()" class="w-full accent-bg py-4 rounded-xl font-bold shadow-lg transform hover:-translate-y-1 transition-all">إتمام الطلب والدفع</button>
         </div>
     </div>
-
-    <!-- Script for Automatic GCC Occasions Theme -->
-    <script>
-        (function initOccasions() {
-            const today = new Date();
-            const month = today.getMonth() + 1;
-            const day = today.getDate();
-
-            const occasions = [
-                {
-                    name: "يوم التأسيس السعودي 🇸🇦",
-                    active: month === 2 && day === 22,
-                    primaryColor: "#c2410c",
-                    glowColor: "rgba(194, 65, 12, 0.4)",
-                    bannerText: "نحتفل معكم بـ يوم التأسيس السعودي! 🇸🇦 أهلاً بكم في YZ STORE ⚡"
-                },
-                {
-                    name: "اليوم الوطني السعودي 🇸🇦",
-                    active: month === 9 && day === 23,
-                    primaryColor: "#16a34a",
-                    glowColor: "rgba(22, 163, 74, 0.4)",
-                    bannerText: "دام عزك يا وطن! احتفل معنا باليوم الوطني السعودي 🇸🇦⚡"
-                },
-                {
-                    name: "اليوم الوطني الإماراتي 🇦🇪",
-                    active: month === 12 && (day === 2 || day === 3),
-                    primaryColor: "#059669",
-                    glowColor: "rgba(5, 150, 105, 0.4)",
-                    bannerText: "كل عام والإمارات الحبيبة بخير بمناسبة اليوم الوطني 🇦🇪"
-                },
-                {
-                    name: "اليوم الوطني الكويتي 🇰🇼",
-                    active: month === 2 && (day === 25 || day === 26),
-                    primaryColor: "#0284c7",
-                    glowColor: "rgba(2, 132, 199, 0.4)",
-                    bannerText: "أفراح الكويت.. تهانينا بمناسبة اليوم الوطني وعيد التحرير 🇰🇼"
-                },
-                {
-                    name: "اليوم الوطني القطري 🇶🇦",
-                    active: month === 12 && day === 18,
-                    primaryColor: "#831843",
-                    glowColor: "rgba(131, 24, 67, 0.4)",
-                    bannerText: "نبارك للأشقاء في قطر بمناسبة اليوم الوطني 🇶🇦"
-                },
-                {
-                    name: "اليوم الوطني البحريني 🇧🇭",
-                    active: month === 12 && (day === 16 || day === 17),
-                    primaryColor: "#dc2626",
-                    glowColor: "rgba(220, 38, 38, 0.4)",
-                    bannerText: "تهانينا لمملكة البحرين بمناسبة العيد الوطني المجيد 🇧🇭"
-                },
-                {
-                    name: "اليوم الوطني العماني 🇴🇲",
-                    active: month === 11 && day === 18,
-                    primaryColor: "#15803d",
-                    glowColor: "rgba(21, 128, 61, 0.4)",
-                    bannerText: "كل عام وسلطنة عمان بألف خير بمناسبة اليوم الوطني 🇴🇲"
-                }
-            ];
-
-            const currentEvent = occasions.find(e => e.active);
-
-            if (currentEvent) {
-                document.documentElement.style.setProperty('--primary-accent', currentEvent.primaryColor);
-                document.documentElement.style.setProperty('--primary-glow', currentEvent.glowColor);
-
-                const banner = document.createElement('div');
-                banner.style.cssText = `
-                    background: ${currentEvent.primaryColor};
-                    color: #fff;
-                    text-align: center;
-                    padding: 8px 12px;
-                    font-size: 13px;
-                    font-weight: bold;
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    z-index: 150;
-                    box-shadow: 0 2px 12px ${currentEvent.glowColor};
-                    letter-spacing: -0.2px;
-                `;
-                banner.innerHTML = `<span>${currentEvent.bannerText}</span>`;
-                document.body.prepend(banner);
-
-                const nav = document.getElementById('main-navbar');
-                if (nav) nav.style.top = '36px';
-            }
-        })();
-    </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
@@ -303,7 +219,7 @@
             const cur = document.getElementById('store-desc-display').innerText;
             const { value: text } = await Swal.fire({
                 title: 'تعديل الوصف', input: 'textarea', inputValue: cur,
-                background: '#121212', color: '#fff', confirmButtonColor: '#dc2626',
+                background: '#121212', color: '#fff', confirmButtonColor: '#c2410c',
                 showCancelButton: true, cancelButtonText: 'إلغاء', confirmButtonText: 'حفظ'
             });
             if(text) {
@@ -361,10 +277,11 @@
                             <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" class="w-5"> الدخول بواسطة Google
                         </button>
                         <div class="mt-4 flex flex-col gap-2 text-xs">
-                            <button onclick="window.forgotPass()" class="text-red-500">نسيت كلمة المرور؟</button>
+                            <button onclick="window.forgotPass()" class="text-orange-500">نسيت كلمة المرور؟</button>
                             <button onclick="window.openRegister()" class="text-blue-400">إنشاء حساب جديد</button>
                         </div>`,
                     confirmButtonText: 'دخول',
+                    confirmButtonColor: '#c2410c',
                     showCancelButton: true,
                     cancelButtonText: 'إلغاء'
                 }).then(r => { 
@@ -385,6 +302,7 @@
             const { value: f } = await Swal.fire({
                 title: 'إنشاء حساب', background:'#121212', color:'#fff',
                 html: `<input id="re" class="swal2-input" placeholder="البريد الإلكتروني"><input id="rp" type="password" class="swal2-input" placeholder="كلمة المرور">`,
+                confirmButtonColor: '#c2410c',
                 preConfirm: () => ({ e: document.getElementById('re').value, p: document.getElementById('rp').value })
             });
             if(f) {
@@ -396,7 +314,7 @@
         };
 
         window.forgotPass = async () => {
-            const { value: e } = await Swal.fire({ title: 'استعادة المرور', input: 'email', background:'#121212', color:'#fff', placeholder: 'بريدك الإلكتروني' });
+            const { value: e } = await Swal.fire({ title: 'استعادة المرور', input: 'email', background:'#121212', color:'#fff', placeholder: 'بريدك الإلكتروني', confirmButtonColor: '#c2410c' });
             if(e) {
                 sendPasswordResetEmail(auth, e)
                     .then(() => Swal.fire('تم الإرسال', 'تفقد بريدك الإلكتروني لاستعادة كلمة المرور', 'success'))
@@ -409,6 +327,7 @@
         window.openAddProduct = async () => {
             const { value: f } = await Swal.fire({
                 title: 'إضافة منتج جديد', background: '#121212', color: '#fff',
+                confirmButtonColor: '#c2410c',
                 html: `
                     <input id="nt" class="swal2-input" placeholder="اسم المنتج">
                     <input id="np" type="number" class="swal2-input" placeholder="السعر بالدولار">
@@ -489,7 +408,7 @@
                 showCancelButton: true,
                 confirmButtonText: 'نعم، احذف',
                 cancelButtonText: 'إلغاء',
-                confirmButtonColor: '#dc2626'
+                confirmButtonColor: '#c2410c'
             }).then(r => {
                 if (r.isConfirmed) {
                     remove(ref(db, "orders/" + k)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف' }));
@@ -550,7 +469,7 @@
                     </div>
                     <div class="p-4 border-t border-white/5 flex justify-between items-center bg-black/20">
                         <span class="font-black accent-color">$${p.price}</span>
-                        <button onclick="addToCart('${p.key}')" class="bg-white text-black px-4 py-1 rounded-lg font-bold hover:bg-red-600 hover:text-white transition">إضافة</button>
+                        <button onclick="addToCart('${p.key}')" class="bg-white text-black px-4 py-1 rounded-lg font-bold hover:bg-[#c2410c] hover:text-white transition">إضافة</button>
                     </div>
                     ${isAdmin ? `<div class="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition"><button onclick="window.editProduct('${p.key}')" class="bg-blue-600 w-7 h-7 rounded-full"><i class="fa fa-pen text-[10px]"></i></button><button onclick="window.deleteProduct('${p.key}')" class="bg-red-600 w-7 h-7 rounded-full"><i class="fa fa-trash text-[10px]"></i></button></div>` : ''}
                 </div>`;
@@ -561,6 +480,7 @@
             const p = allProducts.find(x => x.key === k);
             const { value: f } = await Swal.fire({
                 title: 'تعديل المنتج', background: '#121212', color: '#fff',
+                confirmButtonColor: '#c2410c',
                 html: `
                     <input id="ut" class="swal2-input" value="${p.title}" placeholder="الاسم">
                     <input id="up" class="swal2-input" value="${p.price}" placeholder="السعر">
@@ -592,7 +512,7 @@
                 return `<div class="flex justify-between items-center p-3 bg-white/5 rounded-xl mb-2">
                     <div><p class="text-sm font-bold">${it.title}</p><p class="accent-color font-black">$${it.price}</p></div>
                     <div class="flex items-center gap-3 bg-black/40 px-3 py-1 rounded-lg">
-                        <button onclick="updateQty(${i},-1)" class="text-red-500 font-bold">-</button>
+                        <button onclick="updateQty(${i},-1)" class="text-orange-500 font-bold">-</button>
                         <span class="text-xs">${it.qty}</span>
                         <button onclick="updateQty(${i},1)" class="text-green-500 font-bold">+</button>
                     </div>
@@ -617,7 +537,7 @@
                 html: `
                     <div class="grid gap-3">
                         ${Object.entries(PAYMENT_DATA).map(([k,v])=>`
-                            <button onclick="showPayDetails('${k}')" class="p-4 glass flex items-center justify-between w-full hover:bg-white/5 transition border ${k==='paddle' ? 'border-red-500/40 bg-red-500/5' : 'border-white/5'}">
+                            <button onclick="showPayDetails('${k}')" class="p-4 glass flex items-center justify-between w-full hover:bg-white/5 transition border ${k==='paddle' ? 'border-orange-500/40 bg-orange-500/5' : 'border-white/5'}">
                                 <div class="flex items-center gap-3">
                                     <img src="${v.icon}" class="w-8 h-8 object-contain"> 
                                     <span class="font-bold text-sm text-right">${v.title}</span>
@@ -664,12 +584,13 @@
             Swal.fire({ 
                 title: d.title, background:'#121212', color:'#fff', 
                 confirmButtonText: 'لقد قمت بالتحويل بالفعل', 
+                confirmButtonColor: '#c2410c',
                 showCancelButton: true, cancelButtonText: 'إلغاء',
                 html: `
                     ${paypalBtn}
                     <div class="p-4 bg-white/5 border border-dashed border-white/20 rounded-xl font-mono text-sm break-all mb-2 select-all">${d.value}</div>
                     ${d.name ? `<div class="text-xs text-gray-400 mb-4">باسم: ${d.name}</div>` : ''}
-                    <p class="text-xs text-red-400 p-2 bg-red-500/5 rounded-lg">بعد إتمام عملية الدفع، اضغط على الزر أدناه لتأكيد طلبك وتنبيه الإدارة</p>` 
+                    <p class="text-xs text-orange-400 p-2 bg-orange-500/5 rounded-lg">بعد إتمام عملية الدفع، اضغط على الزر أدناه لتأكيد طلبك وتنبيه الإدارة</p>` 
             })
             .then(r => { 
                 if(r.isConfirmed) {
@@ -732,7 +653,7 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-white mb-1">How to Claim</h4>
-                                <p>Contact support at <a href="mailto:osohmde@gmail.com" class="text-red-400 underline">osohmde@gmail.com</a> with your order number. Refunds are processed back to your original payment method within 5-10 business days.</p>
+                                <p>Contact support at <a href="mailto:osohmde@gmail.com" class="text-orange-400 underline">osohmde@gmail.com</a> with your order number. Refunds are processed back to your original payment method within 5-10 business days.</p>
                             </div>
                         </div>
                     `
@@ -752,7 +673,7 @@
                     content: `
                         <div class="text-left text-sm space-y-3 leading-relaxed text-gray-300 font-sans" dir="ltr">
                             <p><strong>Business Name:</strong> YZ STORE (Muhammed Osman)</p>
-                            <p><strong>Support Email:</strong> <a href="mailto:osohmde@gmail.com" class="text-red-400 underline">osohmde@gmail.com</a></p>
+                            <p><strong>Support Email:</strong> <a href="mailto:osohmde@gmail.com" class="text-orange-400 underline">osohmde@gmail.com</a></p>
                             <p><strong>WhatsApp Support:</strong> +90 537 796 42 33</p>
                             <p><strong>Address:</strong> Mimar Sinan Mah. 8504 Sk. No:13, Merkez, Osmaniye, Turkey</p>
                         </div>
@@ -766,7 +687,7 @@
                 background: '#121212',
                 color: '#fff',
                 confirmButtonText: 'Close / إغلاق',
-                confirmButtonColor: '#dc2626'
+                confirmButtonColor: '#c2410c'
             });
         };
     </script>
