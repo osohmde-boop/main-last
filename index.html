@@ -43,7 +43,7 @@
         .custom-scroll::-webkit-scrollbar { width: 5px; }
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #272732; border-radius: 10px; }
-        
+
         .intro-logo-pop { opacity: 0; animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; z-index: 10; }
         @keyframes popUp { 0% { opacity: 0; transform: scale(0.5) translateY(30px); } 100% { opacity: 1; transform: scale(1.2) translateY(0); filter: drop-shadow(0 15px 35px rgba(239, 68, 68, 0.8)); } }
         .intro-fade-out { opacity: 0; visibility: hidden; transform: translateY(-100%); transition: transform 0.6s cubic-bezier(0.8, 0, 0.2, 1), opacity 0.6s ease; }
@@ -61,9 +61,9 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const intro = document.getElementById('yz-intro');
-            setTimeout(() => { if(intro) { intro.classList.add('intro-fade-out'); setTimeout(() => intro.remove(), 700); } }, 800); 
+            setTimeout(() => { if (intro) { intro.classList.add('intro-fade-out'); setTimeout(() => intro.remove(), 700); } }, 800);
         });
-        setTimeout(() => { const intro = document.getElementById('yz-intro'); if(intro) intro.remove(); }, 2500);
+        setTimeout(() => { const intro = document.getElementById('yz-intro'); if (intro) intro.remove(); }, 2500);
     </script>
 
     <div class="fixed inset-0 cyber-grid pointer-events-none z-0"></div>
@@ -75,14 +75,14 @@
             <span class="text-2xl font-black italic tracking-tighter uppercase text-white flex items-center gap-1.5">YZ <span class="text-red-500">STORE</span></span>
         </div>
         <div class="flex items-center gap-3">
-            <a href="https://discord.gg/3VmZzgMMBK" target="_blank" class="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#5865F2]/10 border border-[#5865F2]/20 text-[#5865F2] hover:bg-[#5865F2] hover:text-white transition duration-300 text-xs font-bold"><i class="fab fa-discord"></i> ديسكورد</a>
+            <a href="https://discord.gg/3VmZzgMMBK" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#5865F2]/10 border border-[#5865F2]/20 text-[#5865F2] hover:bg-[#5865F2] hover:text-white transition duration-300 text-xs font-bold"><i class="fab fa-discord"></i> ديسكورد</a>
             <a id="admin-link" href="admin.html" class="hidden items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-white transition duration-300 text-xs font-bold"><i class="fa fa-shield-halved"></i> لوحة التحكم</a>
             <button onclick="toggleCart(true)" class="relative p-3 rounded-xl bg-white/5 border border-white/10 text-gray-200 hover:text-white hover:border-red-500/50 transition"><i class="fa fa-shopping-bag text-lg"></i><span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black shadow-lg shadow-red-600/50">0</span></button>
             <button id="auth-btn" onclick="handleAuth()" class="text-xs font-bold px-5 py-3 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white shadow-lg shadow-red-600/30 transition duration-300">حسابي</button>
         </div>
     </nav>
 
-    <a href="https://wa.me/905377964233" target="_blank" class="whatsapp-btn-float"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://wa.me/905377964233" target="_blank" rel="noopener noreferrer" class="whatsapp-btn-float"><i class="fab fa-whatsapp"></i></a>
 
     <main class="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-grow w-full relative z-10">
         <div class="glass-v2 rounded-3xl p-8 sm:p-12 mb-12 border border-white/10 relative overflow-hidden text-center sm:text-right flex flex-col sm:flex-row justify-between items-center gap-8 shadow-2xl">
@@ -91,11 +91,11 @@
                 <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight">طوّر بثك وحساباتك بأعلى <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-500 to-amber-500">احترافية ⚡</span></h1>
                 <p id="store-desc-display" class="text-gray-400 text-sm sm:text-base leading-relaxed">جاري تحميل وصف المتجر...</p>
                 <div class="pt-2 flex flex-wrap justify-center sm:justify-start gap-3">
-                    <a href="https://wa.me/905377964233" target="_blank" class="px-8 py-3.5 rounded-xl font-black bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/40 transition flex items-center gap-2 text-xs sm:text-sm"><i class="fa fa-wand-magic-sparkles"></i> طلب تصميم خاص</a>
-                    <a href="https://www.youtube.com/@Yzstore130" target="_blank" class="px-6 py-3.5 rounded-xl font-bold bg-white/5 border border-white/10 hover:bg-white/10 text-gray-200 transition text-xs sm:text-sm flex items-center gap-2"><i class="fab fa-youtube text-red-500"></i> استعراض الأعمال</a>
+                    <a href="https://wa.me/905377964233?text=أريد طلب تصميم أو خدمة خاصة" target="_blank" rel="noopener noreferrer" class="px-8 py-3.5 rounded-xl font-black bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/40 transition flex items-center gap-2 text-xs sm:text-sm"><i class="fa fa-wand-magic-sparkles"></i> طلب تصميم خاص</a>
+                    <a href="https://www.youtube.com/@Yzstore130" target="_blank" rel="noopener noreferrer" class="px-6 py-3.5 rounded-xl font-bold bg-white/5 border border-white/10 hover:bg-white/10 text-gray-200 transition text-xs sm:text-sm flex items-center gap-2"><i class="fab fa-youtube text-red-500"></i> استعراض الأعمال</a>
                 </div>
             </div>
-            <div class="relative z-10 flex-shrink-0"><img src="https://i.ibb.co/YT1RPZdx/image.png" class="w-48 sm:w-64 h-auto logo-glow-effect drop-shadow-2xl"></div>
+            <div class="relative z-10 flex-shrink-0"><img src="https://i.ibb.co/YT1RPZdx/image.png" alt="YZ Store" class="w-48 sm:w-64 h-auto logo-glow-effect drop-shadow-2xl"></div>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
@@ -141,7 +141,7 @@
                     <div class="mt-10">
                         <h3 id="vip-2-name" class="font-black text-white text-lg">جاري التحميل...</h3>
                         <p id="vip-2-role" class="text-xs text-gray-400 mb-3">-</p>
-                        <a id="vip-2-link" href="#" target="_blank" class="text-gray-300 hover:text-red-500 transition text-sm flex items-center justify-center gap-1.5"><i class="fab fa-youtube"></i> زيارة القناة</a>
+                        <a id="vip-2-link" href="#" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-red-500 transition text-sm flex items-center justify-center gap-1.5"><i class="fab fa-youtube"></i> زيارة القناة</a>
                     </div>
                 </div>
                 <div class="glass-v2 p-8 rounded-t-3xl border-t-4 border-yellow-500 w-full md:w-1/3 text-center relative order-1 md:order-2 transform md:-translate-y-8 hover:-translate-y-10 transition duration-300 shadow-[0_0_30px_rgba(234,179,8,0.15)] z-10">
@@ -153,7 +153,7 @@
                     <div class="mt-12">
                         <h3 id="vip-1-name" class="font-black text-white text-xl">جاري التحميل...</h3>
                         <p id="vip-1-role" class="text-xs text-yellow-500/80 mb-4 font-bold">-</p>
-                        <a id="vip-1-link" href="#" target="_blank" class="inline-block bg-yellow-500/20 border border-yellow-500/50 text-yellow-500 hover:bg-yellow-500 hover:text-black px-5 py-2.5 rounded-xl text-xs font-black transition"><i class="fab fa-youtube"></i> زيارة القناة</a>
+                        <a id="vip-1-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-block bg-yellow-500/20 border border-yellow-500/50 text-yellow-500 hover:bg-yellow-500 hover:text-black px-5 py-2.5 rounded-xl text-xs font-black transition"><i class="fab fa-youtube"></i> زيارة القناة</a>
                     </div>
                 </div>
                 <div class="glass-v2 p-6 rounded-t-3xl border-t-4 border-amber-700 w-full md:w-1/3 text-center relative order-3 md:order-3 hover:-translate-y-2 transition duration-300">
@@ -164,7 +164,7 @@
                     <div class="mt-10">
                         <h3 id="vip-3-name" class="font-black text-white text-lg">جاري التحميل...</h3>
                         <p id="vip-3-role" class="text-xs text-gray-400 mb-3">-</p>
-                        <a id="vip-3-link" href="#" target="_blank" class="text-gray-300 hover:text-red-500 transition text-sm flex items-center justify-center gap-1.5"><i class="fab fa-youtube"></i> زيارة القناة</a>
+                        <a id="vip-3-link" href="#" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-red-500 transition text-sm flex items-center justify-center gap-1.5"><i class="fab fa-youtube"></i> زيارة القناة</a>
                     </div>
                 </div>
             </div>
@@ -197,7 +197,7 @@
                 <span class="text-gray-400 text-sm font-bold">المجموع:</span><span id="total-price" class="text-2xl font-black text-red-500">$0.00</span>
             </div>
             <button onclick="window.startCheckout()" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white py-4 rounded-xl font-black shadow-lg shadow-red-600/40 transform hover:-translate-y-0.5 transition-all text-sm"><i class="fa fa-bolt ml-1"></i> إتمام الطلب والدفع الإلكتروني</button>
-            <a href="https://wa.me/905377964233?text=أريد الاستفسار عن طرق دفع أخرى" target="_blank" class="mt-3 w-full flex items-center justify-center gap-2 text-gray-400 hover:text-green-400 py-2 text-xs font-bold transition"><i class="fab fa-whatsapp text-green-500"></i> طرق دفع أخرى؟ تواصل معنا</a>
+            <a href="https://wa.me/905377964233?text=أريد الاستفسار عن طرق دفع أخرى" target="_blank" rel="noopener noreferrer" class="mt-3 w-full flex items-center justify-center gap-2 text-gray-400 hover:text-green-400 py-2 text-xs font-bold transition"><i class="fab fa-whatsapp text-green-500"></i> طرق دفع أخرى؟ تواصل معنا</a>
         </div>
     </div>
 
@@ -225,9 +225,9 @@
             const r1 = data.rank1 || { name: 'المكان متاح', img: 'https://i.ibb.co/YT1RPZdx/image.png', role: 'VIP', link: '#' };
             const r2 = data.rank2 || { name: 'المكان متاح', img: 'https://i.ibb.co/YT1RPZdx/image.png', role: 'VIP', link: '#' };
             const r3 = data.rank3 || { name: 'المكان متاح', img: 'https://i.ibb.co/YT1RPZdx/image.png', role: 'VIP', link: '#' };
-            document.getElementById('vip-1-name').textContent = r1.name + ' 👑'; document.getElementById('vip-1-role').textContent = r1.role; document.getElementById('vip-1-img').src = r1.img; document.getElementById('vip-1-link').href = r1.link;
-            document.getElementById('vip-2-name').textContent = r2.name; document.getElementById('vip-2-role').textContent = r2.role; document.getElementById('vip-2-img').src = r2.img; document.getElementById('vip-2-link').href = r2.link;
-            document.getElementById('vip-3-name').textContent = r3.name; document.getElementById('vip-3-role').textContent = r3.role; document.getElementById('vip-3-img').src = r3.img; document.getElementById('vip-3-link').href = r3.link;
+            document.getElementById('vip-1-name').textContent = r1.name + ' 👑'; document.getElementById('vip-1-role').textContent = r1.role; document.getElementById('vip-1-img').src = safeUrl(r1.img); document.getElementById('vip-1-link').href = safeUrl(r1.link);
+            document.getElementById('vip-2-name').textContent = r2.name; document.getElementById('vip-2-role').textContent = r2.role; document.getElementById('vip-2-img').src = safeUrl(r2.img); document.getElementById('vip-2-link').href = safeUrl(r2.link);
+            document.getElementById('vip-3-name').textContent = r3.name; document.getElementById('vip-3-role').textContent = r3.role; document.getElementById('vip-3-img').src = safeUrl(r3.img); document.getElementById('vip-3-link').href = safeUrl(r3.link);
         });
 
         const loadReviews = () => {
@@ -236,45 +236,130 @@
                 if (!s.exists()) {
                     html = `<div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1"><div class="flex gap-1 text-amber-400 text-xs mb-4"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"شغل احترافي جداً وتسليم فوري! الأليرتات أضافت طابع خرافي للبث عندي."</p><div class="flex items-center gap-3 border-t border-white/5 pt-4"><div class="w-10 h-10 rounded-full bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 font-black">A</div><div><p class="text-white font-bold text-sm">أحمد س.</p><p class="text-[10px] text-gray-500">صانع محتوى</p></div></div></div>`;
                 } else {
-                    const reviews = []; s.forEach(child => { reviews.push(child.val()); }); reviews.reverse(); 
-                    reviews.slice(0, 6).forEach(rev => { 
-                        let starsHtml = ''; for(let i=0; i<5; i++) { starsHtml += `<i class="fa fa-star ${i < rev.rating ? 'text-amber-400' : 'text-gray-600/50'}"></i>`; }
+                    const reviews = []; s.forEach(child => { reviews.push(child.val()); }); reviews.reverse();
+                    reviews.slice(0, 6).forEach(rev => {
+                        let starsHtml = ''; for (let i = 0; i < 5; i++) { starsHtml += `<i class="fa fa-star ${i < rev.rating ? 'text-amber-400' : 'text-gray-600/50'}"></i>`; }
                         html += `<div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1"><div class="flex gap-1 text-xs mb-4">${starsHtml}</div><p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"${escapeHtml(rev.text)}"</p><div class="flex items-center gap-3 border-t border-white/5 pt-4"><div class="w-10 h-10 rounded-full bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 font-black">${escapeHtml(rev.initial)}</div><div><p class="text-white font-bold text-sm">${escapeHtml(rev.name)}</p><p class="text-[10px] text-green-400"><i class="fa fa-check-circle"></i> مشتري موثق</p></div></div></div>`;
                     });
                 }
                 container.innerHTML = html;
             });
         };
-        loadReviews(); 
+        loadReviews();
 
         window.addReview = async () => {
             const { value: formValues } = await Swal.fire({ title: 'تقييم تجربتك معنا', html: `<div class="mb-5 text-right"><label class="block text-gray-400 text-sm mb-2 font-bold">تقييمك (من 1 إلى 5)</label><input id="rev-rating" type="number" min="1" max="5" value="5" class="swal2-input text-center text-xl font-black"></div><div class="text-right"><label class="block text-gray-400 text-sm mb-2 font-bold">رأيك بالخدمة</label><textarea id="rev-text" class="swal2-textarea h-24" placeholder="كيف كانت تجربتك؟"></textarea></div>`, confirmButtonText: 'نشر التقييم', confirmButtonColor: '#16a34a', showCancelButton: true, cancelButtonText: 'إلغاء', preConfirm: () => { const rating = document.getElementById('rev-rating').value; const text = document.getElementById('rev-text').value; if (!rating || rating < 1 || rating > 5) return Swal.showValidationMessage('تقييم غير صحيح'); if (!text.trim()) return Swal.showValidationMessage('يرجى كتابة رأيك'); return { rating: parseInt(rating), text: text.trim() }; } });
             if (formValues && auth.currentUser) { const userEmail = auth.currentUser.email; const userName = userEmail.split('@')[0]; const initial = userName.charAt(0).toUpperCase(); push(ref(db, "reviews"), { name: userName, initial: initial, rating: formValues.rating, text: formValues.text, date: new Date().toISOString() }).then(() => { Toast.fire({ icon: 'success', title: 'تم إضافته بنجاح 🎉' }); }); }
         };
 
-        onValue(ref(db, "products"), s => { allProducts = []; s.forEach(p => { allProducts.push({ ...p.val(), key: p.key }); }); renderProducts(); }, err => { const grid = document.getElementById('products-grid'); grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-500 font-bold">تعذر تحميل المنتجات</div>`; });
+        onValue(ref(db, "products"), s => { allProducts = []; s.forEach(p => { allProducts.push({ ...p.val(), key: p.key }); }); renderProducts(); }, err => { console.error('Failed to load products:', err); const grid = document.getElementById('products-grid'); grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-500 font-bold"><i class="fa fa-triangle-exclamation text-red-500 text-2xl mb-3 block"></i>تعذر تحميل المنتجات، يرجى تحديث الصفحة أو المحاولة لاحقاً.</div>`; });
 
         let ordersUserRef = null;
-        onAuthStateChanged(auth, user => { const isAdmin = user && user.email === ADMIN_EMAIL; document.getElementById('admin-link').classList.toggle('hidden', !isAdmin); document.getElementById('admin-link').classList.toggle('flex', isAdmin); document.getElementById('user-orders-section').classList.toggle('hidden', !user); document.getElementById('auth-btn').innerText = user ? "حسابي (خروج)" : "تسجيل الدخول"; if (ordersUserRef) { off(ordersUserRef); ordersUserRef = null; } if (user) loadUserOrders(user.uid); });
+        onAuthStateChanged(auth, user => {
+            const isAdmin = user && user.email === ADMIN_EMAIL;
+            document.getElementById('admin-link').classList.toggle('hidden', !isAdmin);
+            document.getElementById('admin-link').classList.toggle('flex', isAdmin);
+            document.getElementById('user-orders-section').classList.toggle('hidden', !user);
+            document.getElementById('auth-btn').innerText = user ? "حسابي (خروج)" : "تسجيل الدخول";
+            if (ordersUserRef) { off(ordersUserRef); ordersUserRef = null; }
+            if (user) loadUserOrders(user.uid);
+            else { const reviewBtn = document.getElementById('add-review-btn'); if (reviewBtn) { reviewBtn.classList.add('hidden'); reviewBtn.classList.remove('flex'); } }
+        });
 
-        window.loginWithGoogle = () => { Swal.showLoading(); signInWithPopup(auth, googleProvider).then((result) => { Swal.close(); Toast.fire({ icon: 'success', title: 'تم تسجيل الدخول بنجاح!' }); }).catch((error) => { Swal.fire('خطأ في تسجيل الدخول', error.message, 'error'); }); };
-        window.handleAuth = () => { if(auth.currentUser) { signOut(auth).then(() => { Toast.fire({ icon: 'success', title: 'تم تسجيل الخروج بنجاح' }); setTimeout(() => location.reload(), 1000); }); } else { Swal.fire({ title: 'تسجيل الدخول إلى حسابك', html: `<input id="e" class="swal2-input" placeholder="البريد الإلكتروني"><input id="p" type="password" class="swal2-input" placeholder="كلمة المرور"><button onclick="window.loginWithGoogle()" class="w-full mt-4 p-3.5 bg-white text-black rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition text-sm"><img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" class="w-4"> الدخول السريع بواسطة Google</button><div class="mt-4 flex justify-between text-xs text-gray-400"><button onclick="window.forgotPass()" class="hover:text-red-400">نسيت كلمة المرور؟</button><button onclick="window.openRegister()" class="text-blue-400 font-bold">إنشاء حساب جديد</button></div>`, confirmButtonText: 'دخول', confirmButtonColor: '#ef4444', showCancelButton: true, cancelButtonText: 'إلغاء' }).then(r => { if(r.isConfirmed) { const email = document.getElementById('e').value; const pass = document.getElementById('p').value; if(!email || !pass) return Toast.fire({ icon: 'error', title: 'يرجى ملء الحقول' }); signInWithEmailAndPassword(auth, email, pass).then(() => Toast.fire({ icon: 'success', title: 'أهلاً بك مجدداً!' })).catch(() => Swal.fire('خطأ', 'بيانات الدخول غير صحيحة', 'error')); } }); } };
-        window.openRegister = async () => { const { value: f } = await Swal.fire({ title: 'إنشاء حساب جديد', html: `<input id="re" class="swal2-input" placeholder="البريد الإلكتروني"><input id="rp" type="password" class="swal2-input" placeholder="كلمة المرور">`, confirmButtonText: 'تسجيل', confirmButtonColor: '#ef4444', preConfirm: () => ({ e: document.getElementById('re').value, p: document.getElementById('rp').value }) }); if(f) { if(!f.e || !f.p) return Toast.fire({ icon: 'error', title: 'يرجى ملء البيانات' }); createUserWithEmailAndPassword(auth, f.e, f.p).then(() => Toast.fire({ icon: 'success', title: 'تم إنشاء الحساب بنجاح' })).catch(e => Swal.fire('خطأ', e.message, 'error')); } };
-        window.forgotPass = async () => { const { value: e } = await Swal.fire({ title: 'استعادة كلمة المرور', input: 'email', placeholder: 'بريدك الإلكتروني', confirmButtonColor: '#ef4444' }); if(e) { sendPasswordResetEmail(auth, e).then(() => Swal.fire('تم الإرسال', 'تفقد بريدك الإلكتروني لتعيين كلمة مرور جديدة', 'success')).catch(() => Toast.fire({ icon: 'error', title: 'البريد غير مسجل' })); } };
-        window.getYouTubeID = (url) => { if(!url) return null; const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/); return (match && match[2].length === 11) ? match[2] : null; };
+        window.loginWithGoogle = () => { Swal.showLoading(); signInWithPopup(auth, googleProvider).then(() => { Swal.close(); Toast.fire({ icon: 'success', title: 'تم تسجيل الدخول بنجاح!' }); }).catch((error) => { Swal.fire('خطأ في تسجيل الدخول', error.message, 'error'); }); };
+        window.handleAuth = () => {
+            if (auth.currentUser) {
+                signOut(auth).then(() => { Toast.fire({ icon: 'success', title: 'تم تسجيل الخروج بنجاح' }); setTimeout(() => location.reload(), 1000); });
+            } else {
+                Swal.fire({
+                    title: 'تسجيل الدخول إلى حسابك',
+                    html: `<input id="e" class="swal2-input" placeholder="البريد الإلكتروني"><input id="p" type="password" class="swal2-input" placeholder="كلمة المرور"><button onclick="window.loginWithGoogle()" class="w-full mt-4 p-3.5 bg-white text-black rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition text-sm"><img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" class="w-4"> الدخول السريع بواسطة Google</button><div class="mt-4 flex justify-between text-xs text-gray-400"><button onclick="window.forgotPass()" class="hover:text-red-400">نسيت كلمة المرور؟</button><button onclick="window.openRegister()" class="text-blue-400 font-bold">إنشاء حساب جديد</button></div>`,
+                    confirmButtonText: 'دخول', confirmButtonColor: '#ef4444', showCancelButton: true, cancelButtonText: 'إلغاء'
+                }).then(r => {
+                    if (r.isConfirmed) {
+                        const email = document.getElementById('e').value; const pass = document.getElementById('p').value;
+                        if (!email || !pass) return Toast.fire({ icon: 'error', title: 'يرجى ملء الحقول' });
+                        signInWithEmailAndPassword(auth, email, pass).then(() => Toast.fire({ icon: 'success', title: 'أهلاً بك مجدداً!' })).catch(() => Swal.fire('خطأ', 'بيانات الدخول غير صحيحة', 'error'));
+                    }
+                });
+            }
+        };
+        window.openRegister = async () => {
+            const { value: f } = await Swal.fire({ title: 'إنشاء حساب جديد', html: `<input id="re" class="swal2-input" placeholder="البريد الإلكتروني"><input id="rp" type="password" class="swal2-input" placeholder="كلمة المرور">`, confirmButtonText: 'تسجيل', confirmButtonColor: '#ef4444', preConfirm: () => ({ e: document.getElementById('re').value, p: document.getElementById('rp').value }) });
+            if (f) { if (!f.e || !f.p) return Toast.fire({ icon: 'error', title: 'يرجى ملء البيانات' }); createUserWithEmailAndPassword(auth, f.e, f.p).then(() => Toast.fire({ icon: 'success', title: 'تم إنشاء الحساب بنجاح' })).catch(e => Swal.fire('خطأ', e.message, 'error')); }
+        };
+        window.forgotPass = async () => {
+            const { value: e } = await Swal.fire({ title: 'استعادة كلمة المرور', input: 'email', placeholder: 'بريدك الإلكتروني', confirmButtonColor: '#ef4444' });
+            if (e) { sendPasswordResetEmail(auth, e).then(() => Swal.fire('تم الإرسال', 'تفقد بريدك الإلكتروني لتعيين كلمة مرور جديدة', 'success')).catch(() => Toast.fire({ icon: 'error', title: 'البريد غير مسجل' })); }
+        };
+        window.getYouTubeID = (url) => { if (!url) return null; const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/); return (match && match[2].length === 11) ? match[2] : null; };
 
-        window.openVideoModal = (k) => { const p = allProducts.find(x => x.key === k); if(!p) return; const yid = window.getYouTubeID(p.youtube); Swal.fire({ width: window.innerWidth > 768 ? '780px' : '95%', padding: '24px', showConfirmButton: false, html: `<div class="text-right"><div class="relative pb-[56.25%] h-0 overflow-hidden rounded-2xl mb-5 bg-black border border-white/10">${yid ? `<iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${encodeURIComponent(yid)}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>` : `<img src="${safeUrl(p.image)}" class="w-full h-full object-cover">`}</div><h2 class="text-2xl font-black text-white mb-2">${escapeHtml(p.title)}</h2><div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5"><span class="text-3xl font-black text-red-500">$${escapeHtml(p.price)}</span><button onclick="addToCart('${p.key}'); Swal.close()" class="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-xl font-black text-xs shadow-lg shadow-red-600/40 transition">إضافة إلى السلة</button></div></div>` }); };
-        window.renderProducts = () => { const grid = document.getElementById('products-grid'); grid.innerHTML = ""; const filtered = currentCat === 'all' ? allProducts : allProducts.filter(p => p.category === currentCat); if(filtered.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-500 font-bold">لا توجد منتجات في هذا القسم حالياً.</div>`; return; } filtered.forEach(p => { grid.innerHTML += `<div class="product-card-v2 group flex flex-col justify-between overflow-hidden"><div class="relative h-52 overflow-hidden cursor-pointer" onclick="openVideoModal('${p.key}')"><img src="${safeUrl(p.image)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"><span class="absolute top-3 right-3 bg-red-600/90 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full font-black flex items-center gap-1 shadow-lg"><i class="fa fa-bolt"></i> تسليم فوري</span>${p.youtube ? `<span class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md text-white text-[11px] px-3 py-1 rounded-full font-bold flex items-center gap-1.5 border border-white/10"><i class="fa fa-play text-red-500"></i> معاينة</span>` : ''}</div><div class="p-5 flex-1 flex flex-col justify-between"><h3 class="font-black text-white text-base mb-4 leading-snug">${escapeHtml(p.title)}</h3><div class="flex justify-between items-center pt-4 border-t border-white/5"><span class="text-2xl font-black text-red-500">$${escapeHtml(p.price)}</span><button onclick="addToCart('${p.key}')" class="bg-white hover:bg-red-600 hover:text-white text-black px-5 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 shadow-md"><i class="fa fa-cart-plus"></i> إضافة</button></div></div></div>`; }); };
-        window.addToCart = (k) => { const it = allProducts.find(x => x.key === k); if(!it) return; const ex = cart.find(x => x.key === k); if(ex) ex.qty++; else cart.push({...it, qty: 1}); updateCartUI(); Toast.fire({ icon: 'success', title: 'تمت الإضافة للسلة' }); };
-        const updateCartUI = () => { let sub = 0; document.getElementById('cart-items').innerHTML = cart.map((it, i) => { sub += it.price * it.qty; return `<div class="flex justify-between items-center p-3.5 bg-white/5 rounded-2xl border border-white/5"><div class="max-w-[170px]"><p class="text-xs font-bold text-white truncate">${escapeHtml(it.title)}</p><p class="text-red-400 font-black text-sm">$${escapeHtml(it.price)}</p></div><div class="flex items-center gap-2.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/5"><button onclick="updateQty(${i},-1)" class="text-gray-400 hover:text-red-500 font-bold px-1">-</button><span class="text-xs font-black">${it.qty}</span><button onclick="updateQty(${i},1)" class="text-gray-400 hover:text-green-500 font-bold px-1">+</button></div></div>`; }).join(''); document.getElementById('total-price').innerText = `$${sub.toFixed(2)}`; document.getElementById('cart-count').innerText = cart.reduce((a,b)=>a+b.qty,0); };
-        window.updateQty = (i,d) => { cart[i].qty+=d; if(cart[i].qty<1) cart.splice(i,1); updateCartUI(); };
+        window.openVideoModal = (k) => {
+            const p = allProducts.find(x => x.key === k); if (!p) return;
+            const yid = window.getYouTubeID(p.youtube);
+            Swal.fire({
+                width: window.innerWidth > 768 ? '780px' : '95%', padding: '24px', showConfirmButton: false,
+                html: `<div class="text-right"><div class="relative pb-[56.25%] h-0 overflow-hidden rounded-2xl mb-5 bg-black border border-white/10">${yid ? `<iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${encodeURIComponent(yid)}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>` : `<img src="${safeUrl(p.image)}" class="w-full h-full object-cover">`}</div><h2 class="text-2xl font-black text-white mb-2">${escapeHtml(p.title)}</h2><div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5"><span class="text-3xl font-black text-red-500">$${escapeHtml(p.price)}</span><button onclick="addToCart('${p.key}'); Swal.close()" class="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-xl font-black text-xs shadow-lg shadow-red-600/40 transition">إضافة إلى السلة</button></div></div>`
+            });
+        };
+        window.renderProducts = () => {
+            const grid = document.getElementById('products-grid'); grid.innerHTML = "";
+            const filtered = currentCat === 'all' ? allProducts : allProducts.filter(p => p.category === currentCat);
+            if (filtered.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-500 font-bold">لا توجد منتجات في هذا القسم حالياً.</div>`; return; }
+            filtered.forEach(p => {
+                grid.innerHTML += `<div class="product-card-v2 group flex flex-col justify-between overflow-hidden"><div class="relative h-52 overflow-hidden cursor-pointer" onclick="openVideoModal('${p.key}')"><img src="${safeUrl(p.image)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500"><span class="absolute top-3 right-3 bg-red-600/90 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full font-black flex items-center gap-1 shadow-lg"><i class="fa fa-bolt"></i> تسليم فوري</span>${p.youtube ? `<span class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md text-white text-[11px] px-3 py-1 rounded-full font-bold flex items-center gap-1.5 border border-white/10"><i class="fa fa-play text-red-500"></i> معاينة</span>` : ''}</div><div class="p-5 flex-1 flex flex-col justify-between"><h3 class="font-black text-white text-base mb-4 leading-snug">${escapeHtml(p.title)}</h3><div class="flex justify-between items-center pt-4 border-t border-white/5"><span class="text-2xl font-black text-red-500">$${escapeHtml(p.price)}</span><button onclick="addToCart('${p.key}')" class="bg-white hover:bg-red-600 hover:text-white text-black px-5 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 shadow-md"><i class="fa fa-cart-plus"></i> إضافة</button></div></div></div>`;
+            });
+        };
+        window.addToCart = (k) => { const it = allProducts.find(x => x.key === k); if (!it) return; const ex = cart.find(x => x.key === k); if (ex) ex.qty++; else cart.push({ ...it, qty: 1 }); updateCartUI(); Toast.fire({ icon: 'success', title: 'تمت الإضافة للسلة' }); };
+        const updateCartUI = () => {
+            let sub = 0;
+            document.getElementById('cart-items').innerHTML = cart.map((it, i) => {
+                sub += it.price * it.qty;
+                return `<div class="flex justify-between items-center p-3.5 bg-white/5 rounded-2xl border border-white/5"><div class="max-w-[170px]"><p class="text-xs font-bold text-white truncate">${escapeHtml(it.title)}</p><p class="text-red-400 font-black text-sm">$${escapeHtml(it.price)}</p></div><div class="flex items-center gap-2.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/5"><button onclick="updateQty(${i},-1)" class="text-gray-400 hover:text-red-500 font-bold px-1">-</button><span class="text-xs font-black">${it.qty}</span><button onclick="updateQty(${i},1)" class="text-gray-400 hover:text-green-500 font-bold px-1">+</button></div></div>`;
+            }).join('');
+            document.getElementById('total-price').innerText = `$${sub.toFixed(2)}`;
+            document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.qty, 0);
+        };
+        window.updateQty = (i, d) => { cart[i].qty += d; if (cart[i].qty < 1) cart.splice(i, 1); updateCartUI(); };
         window.toggleCart = (s) => document.getElementById('cart-drawer').classList.toggle('open', s);
-        window.filterCat = (c) => { currentCat = c; document.querySelectorAll('.category-tab').forEach(i=>i.classList.remove('active')); document.getElementById('cat-'+c).classList.add('active'); renderProducts(); };
-        
-        const loadUserOrders = (uid) => { ordersUserRef = ref(db, `orders/${uid}`); onValue(ordersUserRef, s => { const list = document.getElementById('user-orders-list'); list.innerHTML = ""; let hasActiveOrder = false; s.forEach(o => { const d = o.val(); const active = d.status === 'active'; if (active) hasActiveOrder = true; list.innerHTML += `<div class="glass-v2 p-4 rounded-2xl flex justify-between items-center ${active ? 'border-green-500/40' : 'border-yellow-500/40'}"><div><p class="text-xs text-gray-400">طلب #${escapeHtml(o.key.substr(-4))}</p><p class="font-black text-white text-sm">${escapeHtml(d.total)}</p></div>${active ? `<a href="${safeUrl(d.productLink)}" target="_blank" rel="noopener noreferrer" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5"><i class="fa fa-download"></i> تحميل المنتج</a>` : '<span class="text-yellow-400 text-xs font-bold bg-yellow-500/10 px-3 py-1 rounded-full">⏳ قيد المراجعة</span>'}</div>`; }); const reviewBtn = document.getElementById('add-review-btn'); if (reviewBtn) { reviewBtn.classList.toggle('hidden', !hasActiveOrder); reviewBtn.classList.toggle('flex', hasActiveOrder); } }); };
-        window.startCheckout = () => { if(!auth.currentUser) { toggleCart(false); return handleAuth(); } if(cart.length === 0) return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' }); const missing = cart.filter(item => !item.paddlePriceId); if(missing.length > 0) { return Swal.fire('تعذر إتمام الدفع', 'بعض المنتجات في السلة لا تملك معرف سعر Paddle صالح. يرجى التواصل مع الدعم.', 'error'); } toggleCart(false); window.openPaddleCheckout(cart); };
-        window.openPaddleCheckout = (itemsList) => { const paddleItems = itemsList.map(item => ({ priceId: item.paddlePriceId, quantity: item.qty || 1 })); const discountCodeInput = document.getElementById('discount-input').value.trim().toUpperCase(); let checkoutConfig = { items: paddleItems, customer: { email: auth.currentUser ? auth.currentUser.email : "" }, settings: { displayMode: "overlay", theme: "dark", locale: "ar" } }; if (discountCodeInput) { checkoutConfig.discountCode = discountCodeInput; } Paddle.Checkout.open(checkoutConfig); };
-        window.showLegalModal = (type) => { const data = { terms: { title: 'Terms of Service', content: `<p>1. Services: YZ STORE provides digital streaming assets...</p>` }, refund: { title: 'Refund Policy', content: `<p>Refunds are granted within 14 days if the product is defective.</p>` }, privacy: { title: 'Privacy Policy', content: `<p>We respect your privacy and process payments securely via Paddle.</p>` }, contact: { title: 'Contact Us', content: `<p>WhatsApp: +90 537 796 42 33</p>` } }; Swal.fire({ title: data[type].title, html: `<div class="text-left text-xs space-y-3 text-gray-300 font-sans" dir="ltr">${data[type].content}</div>`, confirmButtonText: 'إغلاق', confirmButtonColor: '#ef4444' }); };
+        window.filterCat = (c) => { currentCat = c; document.querySelectorAll('.category-tab').forEach(i => i.classList.remove('active')); document.getElementById('cat-' + c).classList.add('active'); renderProducts(); };
+
+        const loadUserOrders = (uid) => {
+            ordersUserRef = ref(db, `orders/${uid}`);
+            onValue(ordersUserRef, s => {
+                const list = document.getElementById('user-orders-list'); list.innerHTML = ""; let hasActiveOrder = false;
+                s.forEach(o => {
+                    const d = o.val(); const active = d.status === 'active'; if (active) hasActiveOrder = true;
+                    list.innerHTML += `<div class="glass-v2 p-4 rounded-2xl flex justify-between items-center ${active ? 'border-green-500/40' : 'border-yellow-500/40'}"><div><p class="text-xs text-gray-400">طلب #${escapeHtml(o.key.substr(-4))}</p><p class="font-black text-white text-sm">${escapeHtml(d.total)}</p></div>${active ? `<a href="${safeUrl(d.productLink)}" target="_blank" rel="noopener noreferrer" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5"><i class="fa fa-download"></i> تحميل المنتج</a>` : '<span class="text-yellow-400 text-xs font-bold bg-yellow-500/10 px-3 py-1 rounded-full">⏳ قيد المراجعة</span>'}</div>`;
+                });
+                const reviewBtn = document.getElementById('add-review-btn');
+                if (reviewBtn) { reviewBtn.classList.toggle('hidden', !hasActiveOrder); reviewBtn.classList.toggle('flex', hasActiveOrder); }
+            });
+        };
+        window.startCheckout = () => {
+            if (!auth.currentUser) { toggleCart(false); return handleAuth(); }
+            if (cart.length === 0) return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' });
+            const missing = cart.filter(item => !item.paddlePriceId);
+            if (missing.length > 0) return Swal.fire('تعذر إتمام الدفع', 'بعض المنتجات في السلة لا تملك معرف سعر Paddle صالح. يرجى التواصل مع الدعم عبر واتساب.', 'error');
+            toggleCart(false);
+            window.openPaddleCheckout(cart);
+        };
+        window.openPaddleCheckout = (itemsList) => {
+            const paddleItems = itemsList.map(item => ({ priceId: item.paddlePriceId, quantity: item.qty || 1 }));
+            const discountCodeInput = document.getElementById('discount-input').value.trim().toUpperCase();
+            let checkoutConfig = { items: paddleItems, customer: { email: auth.currentUser ? auth.currentUser.email : "" }, settings: { displayMode: "overlay", theme: "dark", locale: "ar" } };
+            if (discountCodeInput) checkoutConfig.discountCode = discountCodeInput;
+            Paddle.Checkout.open(checkoutConfig);
+        };
+        window.showLegalModal = (type) => {
+            const data = {
+                terms: { title: 'Terms of Service | شروط الخدمة', content: `<p><strong>1. Services:</strong> YZ STORE provides digital streaming assets, sound alerts, overlays, and graphics.</p><p><strong>2. Delivery:</strong> All goods are delivered electronically via instant download on your dashboard upon payment.</p><p><strong>3. Payments:</strong> All orders are paid electronically through Paddle.com (Apple Pay / Visa / Mada / cards).</p><p><strong>4. Merchant of Record:</strong> Paddle.com is the Merchant of Record for all orders and handles customer inquiries.</p>` },
+                refund: { title: 'Refund Policy | سياسة الاسترجاع', content: `<p>Because digital files are accessible immediately upon purchase, sales are generally final once downloaded.</p><p><strong>14-Day Guarantee:</strong> Refunds are granted within 14 days if the product is defective or undelivered.</p><p>Contact support at <a href="mailto:zero@yzstoreonline.com" class="text-red-400 underline">zero@yzstoreonline.com</a>.</p>` },
+                privacy: { title: 'Privacy Policy | سياسة الخصوصية', content: `<p>We respect your privacy and only collect essential information required for order fulfillment and support. Payments are processed securely via Paddle.com.</p>` },
+                contact: { title: 'Contact Us | اتصل بنا', content: `<p><strong>Business Name:</strong> YZ STORE</p><p><strong>Email:</strong> <a href="mailto:zero@yzstoreonline.com" class="text-red-400 underline">zero@yzstoreonline.com</a></p><p><strong>WhatsApp:</strong> +90 537 796 42 33</p>` }
+            };
+            Swal.fire({ title: data[type].title, html: `<div class="text-left text-xs space-y-3 leading-relaxed text-gray-300 font-sans" dir="ltr">${data[type].content}</div>`, confirmButtonText: 'إغلاق', confirmButtonColor: '#ef4444' });
+        };
     </script>
 </body>
 </html>
