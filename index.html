@@ -131,9 +131,136 @@
         .custom-scroll::-webkit-scrollbar { width: 5px; }
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #272732; border-radius: 10px; }
+
+        /* حركات الدخولية - العيون الحمراء واللوجو */
+        .eyes-container {
+            display: flex;
+            gap: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+        }
+        .eye {
+            width: 70px;
+            height: 25px;
+            background: #ef4444; /* لون أحمر */
+            border-radius: 80% 20% 80% 20% / 80% 20% 80% 20%; /* شكل العين المسحوبة */
+            transform: scaleY(0) rotate(45deg); /* مغلقة في البداية */
+            box-shadow: 0 0 30px #ef4444, inset 0 0 15px #7f1d1d;
+            position: relative;
+            animation: openEyes 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        .eye:nth-child(2) {
+            border-radius: 20% 80% 20% 80% / 20% 80% 20% 80%;
+            transform: scaleY(0) rotate(-45deg);
+            animation: openEyesRight 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        /* البؤبؤ الأسود داخل العين */
+        .eye::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 25px;
+            background: #000;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #000;
+        }
+        
+        @keyframes openEyes {
+            0% { transform: scaleY(0) rotate(45deg); opacity: 0; filter: brightness(0.5); }
+            50% { transform: scaleY(1.3) rotate(45deg); opacity: 1; filter: brightness(1.5); }
+            100% { transform: scaleY(1) rotate(45deg); opacity: 1; filter: brightness(1); }
+        }
+        @keyframes openEyesRight {
+            0% { transform: scaleY(0) rotate(-45deg); opacity: 0; filter: brightness(0.5); }
+            50% { transform: scaleY(1.3) rotate(-45deg); opacity: 1; filter: brightness(1.5); }
+            100% { transform: scaleY(1) rotate(-45deg); opacity: 1; filter: brightness(1); }
+        }
+
+        .hide-eyes {
+            animation: fadeOutEyes 0.4s ease-in forwards !important;
+        }
+        @keyframes fadeOutEyes {
+            to { opacity: 0; transform: scaleY(0) rotate(45deg); }
+        }
+
+        /* حركة اللوجو */
+        .intro-logo-container {
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.3);
+            z-index: 30;
+        }
+        .show-logo {
+            animation: revealLogo 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        @keyframes revealLogo {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); filter: drop-shadow(0 0 0px rgba(239, 68, 68, 0)); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 15px 35px rgba(239, 68, 68, 0.7)); }
+        }
+
+        /* إخفاء الشاشة كاملة */
+        .intro-fade-out {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-100%);
+            transition: all 0.8s cubic-bezier(0.8, 0, 0.2, 1);
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen relative">
+
+    <!-- شاشة الدخولية السينمائية (العيون الحمراء) -->
+    <div id="yz-intro" class="fixed inset-0 z-[99999] bg-[#050507] transition-all duration-1000 origin-top overflow-hidden">
+        
+        <!-- العيون الحمراء -->
+        <div id="intro-eyes" class="eyes-container">
+            <div class="eye"></div> <!-- العين اليسرى -->
+            <div class="eye"></div> <!-- العين اليمنى -->
+        </div>
+        
+        <!-- الشعار الذي سيظهر بعد العيون -->
+        <div id="intro-logo" class="intro-logo-container w-48 sm:w-64">
+            <div class="absolute inset-0 bg-red-600 blur-[60px] opacity-30 rounded-full animate-pulse"></div>
+            <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="YZ STORE" class="w-full h-auto relative z-10">
+        </div>
+
+    </div>
+
+    <!-- كود التحكم بتسلسل الحركات -->
+    <script>
+        window.addEventListener('load', () => {
+            const eyes = document.getElementById('intro-eyes');
+            const logo = document.getElementById('intro-logo');
+            const intro = document.getElementById('yz-intro');
+
+            // بعد 1.5 ثانية (بعد ما تفتح العيون وتخوف الزائر شوي 😅)
+            setTimeout(() => {
+                // نخفي العيون
+                eyes.classList.add('hide-eyes');
+                
+                // وبعد جزء بسيط من الثانية، نظهر اللوجو بانفجار فخم
+                setTimeout(() => {
+                    logo.classList.add('show-logo');
+                }, 200);
+                
+            }, 1500);
+
+            // بعد 3.8 ثواني (تكون كل الحركات خلصت)، نرفع الشاشة للأعلى ونفتح الموقع
+            setTimeout(() => {
+                intro.classList.add('intro-fade-out');
+                // نحذف الكود بعد انتهائه لتسريع الموقع
+                setTimeout(() => intro.remove(), 800);
+            }, 3800);
+        });
+    </script>
 
     <div class="fixed inset-0 cyber-grid pointer-events-none z-0"></div>
     <div class="fixed inset-0 hero-gradient pointer-events-none z-0"></div>
@@ -207,7 +334,6 @@
             </div>
             <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
                 <i class="fa fa-crown text-amber-500 text-xl mb-1"></i>
-                <!-- تم التعديل إلى 3000 عميل -->
                 <h4 class="font-black text-white text-base sm:text-lg">+3000 عميل</h4>
                 <p class="text-[11px] text-gray-400">ثقة صناع المحتوى</p>
             </div>
@@ -245,17 +371,74 @@
                 <h2 class="text-2xl sm:text-3xl font-black text-white inline-flex items-center gap-3">
                     <i class="fa fa-star text-amber-400"></i> آراء شركاء النجاح
                 </h2>
-                <!-- تم التعديل إلى 3000 ستريمر -->
                 <p class="text-gray-400 text-sm mt-2">نفخر بثقة أكثر من 3000 ستريمر وصانع محتوى في مجتمعنا ⚡</p>
                 
-                <!-- زر أضف تقييمك (يظهر فقط للمشترين الموثقين) -->
                 <button id="add-review-btn" onclick="window.addReview()" class="hidden mt-4 bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500 hover:text-white px-6 py-2.5 rounded-xl font-bold text-sm transition mx-auto flex items-center gap-2">
                     <i class="fa fa-pen"></i> أضف تقييمك
                 </button>
             </div>
             
-            <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- سيتم جلب التقييمات الحقيقية هنا. إن لم يوجد، ستظهر التقييمات الافتراضية -->
+            <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+        </div>
+
+        <!-- لوحة شرف الستريمرز (VIP Leaderboard) -->
+        <div class="mt-20 mb-10">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl sm:text-3xl font-black text-white inline-flex items-center gap-3">
+                    <i class="fa fa-trophy text-yellow-400"></i> لوحة شرف YZ STORE
+                </h2>
+                <p class="text-gray-400 text-sm mt-2">أبرز صناع المحتوى الذين يثقون بأعمالنا 🏆</p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-center items-end gap-6 max-w-4xl mx-auto mt-20 px-4">
+                <!-- المركز الثاني (الفضي) -->
+                <div class="glass-v2 p-6 rounded-t-3xl border-t-4 border-gray-400 w-full md:w-1/3 text-center relative order-2 md:order-1 hover:-translate-y-2 transition duration-300">
+                    <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
+                        <div class="w-20 h-20 rounded-full border-4 border-gray-400 bg-gray-900 overflow-hidden">
+                            <!-- رابط صورة الستريمر -->
+                            <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="Streamer 2" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-gray-400 text-black font-black px-3 py-0.5 rounded-full text-xs">#2</div>
+                    </div>
+                    <div class="mt-10">
+                        <h3 class="font-black text-white text-lg">اسم الستريمر</h3>
+                        <p class="text-xs text-gray-400 mb-3">Twitch Streamer</p>
+                        <a href="#" target="_blank" class="text-gray-300 hover:text-red-500 transition text-sm flex items-center justify-center gap-1.5"><i class="fab fa-twitch"></i> زيارة القناة</a>
+                    </div>
+                </div>
+
+                <!-- المركز الأول (الذهبي) -->
+                <div class="glass-v2 p-8 rounded-t-3xl border-t-4 border-yellow-500 w-full md:w-1/3 text-center relative order-1 md:order-2 transform md:-translate-y-8 hover:-translate-y-10 transition duration-300 shadow-[0_0_30px_rgba(234,179,8,0.15)] z-10">
+                    <div class="absolute -top-16 left-1/2 transform -translate-x-1/2">
+                        <i class="fa fa-crown text-4xl text-yellow-500 absolute -top-10 left-1/2 transform -translate-x-1/2 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]"></i>
+                        <div class="w-24 h-24 rounded-full border-4 border-yellow-500 bg-gray-900 overflow-hidden">
+                            <!-- رابط صورة الستريمر -->
+                            <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="Streamer 1" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-black font-black px-4 py-0.5 rounded-full text-sm">#1</div>
+                    </div>
+                    <div class="mt-12">
+                        <h3 class="font-black text-white text-xl">اسم الستريمر 👑</h3>
+                        <p class="text-xs text-yellow-500/80 mb-4 font-bold">Top VIP Buyer</p>
+                        <a href="#" target="_blank" class="inline-block bg-yellow-500/20 border border-yellow-500/50 text-yellow-500 hover:bg-yellow-500 hover:text-black px-5 py-2.5 rounded-xl text-xs font-black transition"><i class="fab fa-youtube"></i> زيارة القناة</a>
+                    </div>
+                </div>
+
+                <!-- المركز الثالث (البرونزي) -->
+                <div class="glass-v2 p-6 rounded-t-3xl border-t-4 border-amber-700 w-full md:w-1/3 text-center relative order-3 md:order-3 hover:-translate-y-2 transition duration-300">
+                    <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
+                        <div class="w-20 h-20 rounded-full border-4 border-amber-700 bg-gray-900 overflow-hidden">
+                            <!-- رابط صورة الستريمر -->
+                            <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="Streamer 3" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-amber-700 text-white font-black px-3 py-0.5 rounded-full text-xs">#3</div>
+                    </div>
+                    <div class="mt-10">
+                        <h3 class="font-black text-white text-lg">اسم الستريمر</h3>
+                        <p class="text-xs text-gray-400 mb-3">Content Creator</p>
+                        <a href="#" target="_blank" class="text-gray-300 hover:text-red-500 transition text-sm flex items-center justify-center gap-1.5"><i class="fab fa-youtube"></i> زيارة القناة</a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -359,14 +542,12 @@
             document.getElementById('store-desc-display').textContent = s.val() || "مرحباً بك في YZ STORE، المتجر الأفضل لتطوير تجربة البث المباشر وشراء الاشتراكات والخدمات الرقمية.";
         });
 
-        // ------------------ نظام التقييمات الجديد ------------------
         const loadReviews = () => {
             onValue(ref(db, "reviews"), s => {
                 const container = document.getElementById('reviews-container');
                 let html = '';
                 
                 if (!s.exists()) {
-                    // التقييمات الافتراضية للبداية
                     html = `
                     <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
                         <div class="flex gap-1 text-amber-400 text-xs mb-4"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
@@ -395,9 +576,9 @@
                 } else {
                     const reviews = [];
                     s.forEach(child => { reviews.push(child.val()); });
-                    reviews.reverse(); // لعرض الأحدث أولاً
+                    reviews.reverse(); 
                     
-                    reviews.slice(0, 6).forEach(rev => { // عرض آخر 6 تقييمات كحد أقصى
+                    reviews.slice(0, 6).forEach(rev => { 
                         let starsHtml = '';
                         for(let i=0; i<5; i++) {
                             starsHtml += `<i class="fa fa-star ${i < rev.rating ? 'text-amber-400' : 'text-gray-600/50'}"></i>`;
@@ -420,7 +601,7 @@
                 container.innerHTML = html;
             });
         };
-        loadReviews(); // جلب التقييمات فوراً
+        loadReviews(); 
 
         window.addReview = async () => {
             const { value: formValues } = await Swal.fire({
@@ -464,7 +645,6 @@
                 });
             }
         };
-        // -----------------------------------------------------------
 
         onValue(
             ref(db, "products"),
@@ -660,7 +840,7 @@
             ordersUserRef = ref(db, `orders/${uid}`);
             onValue(ordersUserRef, s => {
                 const list = document.getElementById('user-orders-list'); list.innerHTML = "";
-                let hasActiveOrder = false; // التحقق من وجود طلب مفعل
+                let hasActiveOrder = false; 
                 
                 s.forEach(o => {
                     const d = o.val();
@@ -673,7 +853,6 @@
                     </div>`;
                 });
 
-                // إظهار زر التقييم إذا كان العميل يملك طلباً مفعلاً
                 const reviewBtn = document.getElementById('add-review-btn');
                 if (reviewBtn) {
                     reviewBtn.classList.toggle('hidden', !hasActiveOrder);
