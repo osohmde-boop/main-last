@@ -140,7 +140,8 @@
 
     <!-- Navigation Bar -->
     <nav class="fixed top-0 w-full glass-v2 z-50 px-6 py-4 border-b border-white/5 flex justify-between items-center">
-        <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+        <!-- تم إضافة dir="ltr" لحل مشكلة اللخبطة -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})" dir="ltr">
             <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="YZ STORE" class="h-11 w-auto logo-glow-effect">
             <span class="text-2xl font-black italic tracking-tighter uppercase text-white flex items-center gap-1.5">
                 YZ <span class="text-red-500">STORE</span>
@@ -236,6 +237,64 @@
         </div>
 
         <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+
+        <!-- قسم تقييم العملاء (مضاف حديثاً) -->
+        <div class="mt-20 mb-10">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl sm:text-3xl font-black text-white inline-flex items-center gap-3">
+                    <i class="fa fa-star text-amber-400"></i> آراء شركاء النجاح
+                </h2>
+                <p class="text-gray-400 text-sm mt-2">نفخر بثقة أكثر من 500 صانع محتوى ولاعب ⚡</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- التقييم الأول -->
+                <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
+                    <div class="flex gap-1 text-amber-400 text-xs mb-4">
+                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"شغل احترافي جداً وتسليم فوري! الأليرتات أضافت طابع خرافي للبث عندي، وتجاوب الدعم الفني سريع جداً."</p>
+                    <div class="flex items-center gap-3 border-t border-white/5 pt-4">
+                        <div class="w-10 h-10 rounded-full bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 font-black">A</div>
+                        <div>
+                            <p class="text-white font-bold text-sm">أحمد س.</p>
+                            <p class="text-[10px] text-gray-500">صانع محتوى على Twitch</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- التقييم الثاني -->
+                <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
+                    <div class="flex gap-1 text-amber-400 text-xs mb-4">
+                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"بكج التصاميم تفجير! الألوان والتفاصيل الدقيقة واضحة، وسهولة التركيب على OBS مريحة جداً."</p>
+                    <div class="flex items-center gap-3 border-t border-white/5 pt-4">
+                        <div class="w-10 h-10 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-500 font-black">K</div>
+                        <div>
+                            <p class="text-white font-bold text-sm">خالد م.</p>
+                            <p class="text-[10px] text-gray-500">ستريمر ألعاب</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- التقييم الثالث -->
+                <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
+                    <div class="flex gap-1 text-amber-400 text-xs mb-4">
+                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"صراحة كنت متردد بس التجربة أثبتت لي إنكم الأفضل. الدفع آمن ووصلني الرابط فوراً. شكراً لكم."</p>
+                    <div class="flex items-center gap-3 border-t border-white/5 pt-4">
+                        <div class="w-10 h-10 rounded-full bg-amber-600/20 border border-amber-500/30 flex items-center justify-center text-amber-500 font-black">S</div>
+                        <div>
+                            <p class="text-white font-bold text-sm">سالم ج.</p>
+                            <p class="text-[10px] text-gray-500">يوتيوبر</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <footer class="border-t border-white/5 py-12 bg-[#050507] text-center w-full mt-auto relative z-10">
@@ -264,7 +323,7 @@
         </div>
         <div id="cart-items" class="flex-1 space-y-3 overflow-y-auto custom-scroll pr-1"></div>
         
-        <!-- حقل كود الخصم الجديد -->
+        <!-- حقل كود الخصم -->
         <div class="mt-4 pb-4 border-b border-white/10">
             <input id="discount-input" type="text" placeholder="لديك كود خصم؟ أدخله هنا" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-green-500 outline-none transition text-center uppercase" style="text-transform:uppercase">
         </div>
@@ -287,7 +346,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
         import { getDatabase, ref, onValue, off, push } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
-        // تغيير signInWithPopup إلى signInWithRedirect وإضافة getRedirectResult لحل مشكلة المتصفحات
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -306,7 +364,6 @@
         const ADMIN_EMAIL = "osohmde@gmail.com";
         const Toast = Swal.mixin({ toast: true, position: 'top-start', showConfirmButton: false, timer: 2000, background: '#181822', color: '#fff' });
 
-        // التحقق من نتيجة تسجيل الدخول عبر Google عند تحميل الصفحة
         getRedirectResult(auth).then((result) => {
             if (result) {
                 Toast.fire({ icon: 'success', title: 'تم تسجيل الدخول بنجاح!' });
@@ -370,7 +427,6 @@
 
         window.loginWithGoogle = () => {
             Swal.showLoading();
-            // استخدام Redirect بدلاً من Popup لتجنب مشكلة حظر المتصفحات
             signInWithRedirect(auth, googleProvider);
         };
 
@@ -566,7 +622,6 @@
                 quantity: item.qty || 1
             }));
 
-            // جلب كود الخصم من الحقل إن وجد وتمريره لـ Paddle
             const discountCodeInput = document.getElementById('discount-input').value.trim().toUpperCase();
 
             let checkoutConfig = {
