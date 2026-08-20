@@ -2,280 +2,334 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>لوحة التحكم | YZ STORE</title>
+    <title>YZ STORE | المنصة الأولى لخدمات البث والاشتراكات</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="icon" type="image/png" href="https://i.ibb.co/YT1RPZdx/image.png">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/YT1RPZdx/image.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+    <script>
+        Paddle.Initialize({ token: "live_9dac314ac3bb7e4c5a22a38360c" });
+    </script>
 
     <style>
-        body { background: #070709; color: #fff; font-family: 'Cairo', sans-serif; }
-        .glass-panel { background: #121218; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 24px; }
-        input, select, textarea { background: #1a1a24; border: 1px solid #272732; color: white; padding: 10px 14px; border-radius: 8px; width: 100%; font-family: 'Cairo', sans-serif; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #ef4444; }
-        .swal2-popup { background: #121218 !important; color: #fff !important; border-radius: 16px !important; }
+        :root { --primary-red: #ef4444; --bg-dark: #070709; }
+        body { background: var(--bg-dark); color: #f4f4f5; font-family: 'Cairo', sans-serif; overflow-x: hidden; }
+        .cyber-grid { background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(circle at center, black 40%, transparent 80%); -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%); }
+        .glass-v2 { background: rgba(18, 18, 24, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .hero-gradient { background: radial-gradient(circle at 50% -20%, rgba(239, 68, 68, 0.25) 0%, rgba(7, 7, 9, 0) 70%); }
+        .product-card-v2 { background: linear-gradient(180deg, rgba(24, 24, 32, 0.8) 0%, rgba(12, 12, 16, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 22px; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
+        .product-card-v2:hover { transform: translateY(-8px) scale(1.01); border-color: rgba(239, 68, 68, 0.5); box-shadow: 0 20px 40px -15px rgba(239, 68, 68, 0.35); }
+        .category-tab { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); color: #a1a1aa; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .category-tab:hover, .category-tab.active { background: #ef4444; border-color: #ef4444; color: #ffffff; box-shadow: 0 0 25px rgba(239, 68, 68, 0.5); transform: scale(1.04); }
+        .cart-sidebar { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 440px; background: #0d0d12; border-left: 1px solid rgba(255, 255, 255, 0.1); box-shadow: -25px 0 50px rgba(0,0,0,0.8); }
+        .cart-sidebar.open { transform: translateX(0); }
+        .swal2-popup { border-radius: 24px !important; background: #121218 !important; border: 1px solid #272732 !important; padding: 24px !important; color: #fff !important; }
+        .swal2-title { color: #fff !important; font-family: 'Cairo', sans-serif !important; font-weight: 900 !important; }
+        .swal2-input, .swal2-textarea { background: #1a1a24 !important; color: #fff !important; border: 1px solid #3f3f50 !important; border-radius: 12px !important; padding: 12px !important; font-family: 'Cairo', sans-serif !important; }
+        .swal2-input:focus, .swal2-textarea:focus { border-color: var(--primary-red) !important; }
+        .whatsapp-btn-float { position: fixed; bottom: 25px; left: 25px; background: #22c55e; color: white; width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4); z-index: 90; transition: all 0.3s ease; }
+        .whatsapp-btn-float:hover { transform: scale(1.1) rotate(12deg); background: #16a34a; }
+        @keyframes pulse-slow { 0%, 100% { filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.3)); } 50% { filter: drop-shadow(0 0 25px rgba(239, 68, 68, 0.7)); } }
+        .logo-glow-effect { animation: pulse-slow 3s infinite ease-in-out; }
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #272732; border-radius: 10px; }
+        
+        /* الدخولية الآمنة */
+        .intro-logo-pop { opacity: 0; animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; z-index: 10; }
+        @keyframes popUp { 0% { opacity: 0; transform: scale(0.5) translateY(30px); } 100% { opacity: 1; transform: scale(1.2) translateY(0); filter: drop-shadow(0 15px 35px rgba(239, 68, 68, 0.8)); } }
+        .intro-fade-out { opacity: 0; visibility: hidden; transform: translateY(-100%); transition: transform 0.6s cubic-bezier(0.8, 0, 0.2, 1), opacity 0.6s ease; }
     </style>
 </head>
-<body class="hidden" id="admin-body">
+<body class="flex flex-col min-h-screen relative">
 
-    <!-- شريط التنقل للإدارة -->
-    <nav class="bg-[#121218] border-b border-white/5 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center gap-3">
-            <img src="https://i.ibb.co/YT1RPZdx/image.png" class="h-10 w-auto">
-            <span class="font-black text-xl text-white">لوحة الإدارة | <span class="text-red-500">YZ STORE</span></span>
+    <!-- شاشة الدخولية -->
+    <div id="yz-intro" class="fixed inset-0 z-[99999] bg-[#050507] flex items-center justify-center transition-all duration-700 overflow-hidden origin-top">
+        <div class="relative flex items-center justify-center w-full h-full">
+            <div class="absolute bg-red-600 blur-[80px] opacity-20 rounded-full animate-pulse w-64 h-64 z-0"></div>
+            <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="YZ STORE" class="w-64 sm:w-80 h-auto relative intro-logo-pop">
         </div>
-        <div class="flex gap-3">
-            <a href="index.html" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition"><i class="fa fa-home"></i> العودة للمتجر</a>
-            <button onclick="window.logoutAdmin()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg font-bold text-sm transition"><i class="fa fa-sign-out-alt"></i> تسجيل الخروج</button>
+    </div>
+
+    <!-- كود حماية الدخولية من التعليق -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const intro = document.getElementById('yz-intro');
+            setTimeout(() => {
+                if(intro) {
+                    intro.classList.add('intro-fade-out');
+                    setTimeout(() => intro.remove(), 700); 
+                }
+            }, 800); 
+        });
+        // خطة طوارئ: مسح الشاشة بعد ثانيتين لضمان عدم قفل الموقع أبداً
+        setTimeout(() => {
+            const intro = document.getElementById('yz-intro');
+            if(intro) intro.remove();
+        }, 2500);
+    </script>
+
+    <div class="fixed inset-0 cyber-grid pointer-events-none z-0"></div>
+    <div class="fixed inset-0 hero-gradient pointer-events-none z-0"></div>
+
+    <nav class="fixed top-0 w-full glass-v2 z-50 px-6 py-4 border-b border-white/5 flex justify-between items-center">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})" dir="ltr">
+            <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="YZ STORE" class="h-11 w-auto logo-glow-effect">
+            <span class="text-2xl font-black italic tracking-tighter uppercase text-white flex items-center gap-1.5">YZ <span class="text-red-500">STORE</span></span>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="https://discord.gg/3VmZzgMMBK" target="_blank" class="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#5865F2]/10 border border-[#5865F2]/20 text-[#5865F2] hover:bg-[#5865F2] hover:text-white transition duration-300 text-xs font-bold"><i class="fab fa-discord"></i> ديسكورد</a>
+            <a id="admin-link" href="admin.html" class="hidden items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-white transition duration-300 text-xs font-bold"><i class="fa fa-shield-halved"></i> الإدارة</a>
+            <button onclick="toggleCart(true)" class="relative p-3 rounded-xl bg-white/5 border border-white/10 text-gray-200 hover:text-white hover:border-red-500/50 transition"><i class="fa fa-shopping-bag text-lg"></i><span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black shadow-lg shadow-red-600/50">0</span></button>
+            <button id="auth-btn" onclick="handleAuth()" class="text-xs font-bold px-5 py-3 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white shadow-lg shadow-red-600/30 transition duration-300">حسابي</button>
         </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto px-4 py-8 space-y-8">
+    <a href="https://wa.me/905377964233" target="_blank" class="whatsapp-btn-float"><i class="fab fa-whatsapp"></i></a>
 
-        <!-- 1. إدارة وصف المتجر -->
-        <div class="glass-panel">
-            <h2 class="text-xl font-black text-white mb-4"><i class="fa fa-pen text-red-500"></i> تعديل وصف المتجر (الرئيسية)</h2>
-            <textarea id="store-desc-input" rows="3" placeholder="اكتب الوصف هنا..."></textarea>
-            <button onclick="window.saveStoreDesc()" class="mt-4 bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-lg font-bold transition">حفظ الوصف</button>
+    <main class="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-grow w-full relative z-10">
+        <div class="glass-v2 rounded-3xl p-8 sm:p-12 mb-12 border border-white/10 relative overflow-hidden text-center sm:text-right flex flex-col sm:flex-row justify-between items-center gap-8 shadow-2xl">
+            <div class="space-y-4 max-w-xl z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-600/10 border border-red-500/30 text-red-400 text-xs font-black"><i class="fa fa-bolt"></i> المتجر الرسمي لصناع المحتوى واللاعبين</div>
+                <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight">طوّر بثك وحساباتك بأعلى <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-500 to-amber-500">احترافية ⚡</span></h1>
+                <p id="store-desc-display" class="text-gray-400 text-sm sm:text-base leading-relaxed">جاري تحميل وصف المتجر...</p>
+                <div class="pt-2 flex flex-wrap justify-center sm:justify-start gap-3">
+                    <a href="https://wa.me/905377964233" target="_blank" class="px-8 py-3.5 rounded-xl font-black bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/40 transition flex items-center gap-2 text-xs sm:text-sm"><i class="fa fa-wand-magic-sparkles"></i> طلب تصميم خاص</a>
+                    <a href="https://www.youtube.com/@Yzstore130" target="_blank" class="px-6 py-3.5 rounded-xl font-bold bg-white/5 border border-white/10 hover:bg-white/10 text-gray-200 transition text-xs sm:text-sm flex items-center gap-2"><i class="fab fa-youtube text-red-500"></i> استعراض الأعمال</a>
+                </div>
+            </div>
+            <div class="relative z-10 flex-shrink-0"><img src="https://i.ibb.co/YT1RPZdx/image.png" class="w-48 sm:w-64 h-auto logo-glow-effect drop-shadow-2xl"></div>
         </div>
 
-        <!-- 2. إدارة لوحة الشرف (VIP Leaderboard) -->
-        <div class="glass-panel border-yellow-500/30 border">
-            <h2 class="text-xl font-black text-yellow-400 mb-6 flex items-center gap-2">
-                <i class="fa fa-trophy"></i> إدارة لوحة الشرف (Top 3)
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                <!-- المركز الأول -->
-                <div class="bg-[#1a1a24] p-5 rounded-xl border border-yellow-500">
-                    <h3 class="text-yellow-500 font-bold mb-4 text-center">المركز الأول 🥇</h3>
-                    <div class="space-y-3">
-                        <input id="vip-name-1" type="text" placeholder="اسم الستريمر">
-                        <input id="vip-role-1" type="text" placeholder="اللقب (مثل: أكبر داعم)">
-                        <input id="vip-img-1" type="text" placeholder="رابط صورة الستريمر">
-                        <input id="vip-link-1" type="text" placeholder="رابط القناة (يوتيوب/تويتش)">
-                        <button onclick="window.saveVIP(1)" class="w-full bg-yellow-600 hover:bg-yellow-500 text-white py-2 rounded-lg font-bold transition">حفظ المركز الأول</button>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
+            <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5"><i class="fa fa-bolt text-red-500 text-xl mb-1"></i><h4 class="font-black text-white text-base sm:text-lg">تسليم فوري</h4><p class="text-[11px] text-gray-400">مباشرة بعد إتمام الدفع</p></div>
+            <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5"><i class="fa fa-shield-check text-green-500 text-xl mb-1"></i><h4 class="font-black text-white text-base sm:text-lg">دفع آمن 100%</h4></div>
+            <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5"><i class="fa fa-crown text-amber-500 text-xl mb-1"></i><h4 class="font-black text-white text-base sm:text-lg">+3000 عميل</h4></div>
+            <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5"><i class="fa fa-headset text-blue-500 text-xl mb-1"></i><h4 class="font-black text-white text-base sm:text-lg">دعم 24/7</h4></div>
+        </div>
+
+        <div class="flex items-center justify-center gap-3 mb-10 overflow-x-auto pb-2 custom-scroll">
+            <button onclick="window.filterCat('all')" class="category-tab active px-7 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 whitespace-nowrap" id="cat-all"><i class="fa fa-border-all"></i> جميع المنتجات</button>
+            <button onclick="window.filterCat('alerts')" class="category-tab px-7 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 whitespace-nowrap" id="cat-alerts"><i class="fa fa-bell"></i> الأليرتات والتصاميم</button>
+            <button onclick="window.filterCat('packages')" class="category-tab px-7 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 whitespace-nowrap" id="cat-packages"><i class="fa fa-box-open"></i> البكجات والاشتراكات</button>
+        </div>
+
+        <div id="user-orders-section" class="hidden mb-12">
+            <h2 class="text-xl font-black text-white mb-4 flex items-center gap-2"><i class="fa fa-download text-blue-400"></i> مشترياتي</h2>
+            <div id="user-orders-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+
+        <div class="mt-20 mb-10">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl sm:text-3xl font-black text-white inline-flex items-center gap-3"><i class="fa fa-star text-amber-400"></i> آراء شركاء النجاح</h2>
+                <p class="text-gray-400 text-sm mt-2">نفخر بثقة أكثر من 3000 ستريمر وصانع محتوى في مجتمعنا ⚡</p>
+                <button id="add-review-btn" onclick="window.addReview()" class="hidden mt-4 bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500 hover:text-white px-6 py-2.5 rounded-xl font-bold text-sm transition mx-auto flex items-center gap-2"><i class="fa fa-pen"></i> أضف تقييمك</button>
+            </div>
+            <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+        </div>
+
+        <!-- لوحة شرف الستريمرز -->
+        <div class="mt-20 mb-10">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl sm:text-3xl font-black text-white inline-flex items-center gap-3"><i class="fa fa-trophy text-yellow-400"></i> لوحة شرف YZ STORE</h2>
+                <p class="text-gray-400 text-sm mt-2">أبرز صناع المحتوى الذين يثقون بأعمالنا 🏆</p>
+            </div>
+            <div class="flex flex-col md:flex-row justify-center items-end gap-6 max-w-4xl mx-auto mt-20 px-4">
+                <div class="glass-v2 p-6 rounded-t-3xl border-t-4 border-gray-400 w-full md:w-1/3 text-center relative order-2 md:order-1 hover:-translate-y-2 transition duration-300">
+                    <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
+                        <div class="w-20 h-20 rounded-full border-4 border-gray-400 bg-gray-900 overflow-hidden"><img id="vip-2-img" src="https://i.ibb.co/YT1RPZdx/image.png" class="w-full h-full object-cover"></div>
+                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-gray-400 text-black font-black px-3 py-0.5 rounded-full text-xs">#2</div>
+                    </div>
+                    <div class="mt-10">
+                        <h3 id="vip-2-name" class="font-black text-white text-lg">جاري التحميل...</h3>
+                        <p id="vip-2-role" class="text-xs text-gray-400 mb-3">-</p>
+                        <a id="vip-2-link" href="#" target="_blank" class="text-gray-300 hover:text-red-500 transition text-sm flex items-center justify-center gap-1.5"><i class="fab fa-youtube"></i> زيارة القناة</a>
                     </div>
                 </div>
-
-                <!-- المركز الثاني -->
-                <div class="bg-[#1a1a24] p-5 rounded-xl border border-gray-400">
-                    <h3 class="text-gray-400 font-bold mb-4 text-center">المركز الثاني 🥈</h3>
-                    <div class="space-y-3">
-                        <input id="vip-name-2" type="text" placeholder="اسم الستريمر">
-                        <input id="vip-role-2" type="text" placeholder="اللقب">
-                        <input id="vip-img-2" type="text" placeholder="رابط صورة الستريمر">
-                        <input id="vip-link-2" type="text" placeholder="رابط القناة">
-                        <button onclick="window.saveVIP(2)" class="w-full bg-gray-500 hover:bg-gray-400 text-white py-2 rounded-lg font-bold transition">حفظ المركز الثاني</button>
+                <div class="glass-v2 p-8 rounded-t-3xl border-t-4 border-yellow-500 w-full md:w-1/3 text-center relative order-1 md:order-2 transform md:-translate-y-8 hover:-translate-y-10 transition duration-300 shadow-[0_0_30px_rgba(234,179,8,0.15)] z-10">
+                    <div class="absolute -top-16 left-1/2 transform -translate-x-1/2">
+                        <i class="fa fa-crown text-4xl text-yellow-500 absolute -top-10 left-1/2 transform -translate-x-1/2 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]"></i>
+                        <div class="w-24 h-24 rounded-full border-4 border-yellow-500 bg-gray-900 overflow-hidden"><img id="vip-1-img" src="https://i.ibb.co/YT1RPZdx/image.png" class="w-full h-full object-cover"></div>
+                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-black font-black px-4 py-0.5 rounded-full text-sm">#1</div>
+                    </div>
+                    <div class="mt-12">
+                        <h3 id="vip-1-name" class="font-black text-white text-xl">جاري التحميل...</h3>
+                        <p id="vip-1-role" class="text-xs text-yellow-500/80 mb-4 font-bold">-</p>
+                        <a id="vip-1-link" href="#" target="_blank" class="inline-block bg-yellow-500/20 border border-yellow-500/50 text-yellow-500 hover:bg-yellow-500 hover:text-black px-5 py-2.5 rounded-xl text-xs font-black transition"><i class="fab fa-youtube"></i> زيارة القناة</a>
                     </div>
                 </div>
-
-                <!-- المركز الثالث -->
-                <div class="bg-[#1a1a24] p-5 rounded-xl border border-amber-700">
-                    <h3 class="text-amber-600 font-bold mb-4 text-center">المركز الثالث 🥉</h3>
-                    <div class="space-y-3">
-                        <input id="vip-name-3" type="text" placeholder="اسم الستريمر">
-                        <input id="vip-role-3" type="text" placeholder="اللقب">
-                        <input id="vip-img-3" type="text" placeholder="رابط صورة الستريمر">
-                        <input id="vip-link-3" type="text" placeholder="رابط القناة">
-                        <button onclick="window.saveVIP(3)" class="w-full bg-amber-700 hover:bg-amber-600 text-white py-2 rounded-lg font-bold transition">حفظ المركز الثالث</button>
+                <div class="glass-v2 p-6 rounded-t-3xl border-t-4 border-amber-700 w-full md:w-1/3 text-center relative order-3 md:order-3 hover:-translate-y-2 transition duration-300">
+                    <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
+                        <div class="w-20 h-20 rounded-full border-4 border-amber-700 bg-gray-900 overflow-hidden"><img id="vip-3-img" src="https://i.ibb.co/YT1RPZdx/image.png" class="w-full h-full object-cover"></div>
+                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-amber-700 text-white font-black px-3 py-0.5 rounded-full text-xs">#3</div>
+                    </div>
+                    <div class="mt-10">
+                        <h3 id="vip-3-name" class="font-black text-white text-lg">جاري التحميل...</h3>
+                        <p id="vip-3-role" class="text-xs text-gray-400 mb-3">-</p>
+                        <a id="vip-3-link" href="#" target="_blank" class="text-gray-300 hover:text-red-500 transition text-sm flex items-center justify-center gap-1.5"><i class="fab fa-youtube"></i> زيارة القناة</a>
                     </div>
                 </div>
-
             </div>
         </div>
+    </main>
 
-        <!-- 3. إضافة منتج جديد -->
-        <div class="glass-panel">
-            <h2 class="text-xl font-black text-white mb-4"><i class="fa fa-plus text-green-500"></i> إضافة منتج جديد</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input id="p-title" type="text" placeholder="اسم المنتج">
-                <input id="p-price" type="number" placeholder="السعر (بالدولار)">
-                <input id="p-image" type="text" placeholder="رابط صورة المنتج (ImgBB)">
-                <input id="p-paddle" type="text" placeholder="معرف السعر من Paddle (Price ID)">
-                <input id="p-youtube" type="text" placeholder="رابط يوتيوب للمعاينة (اختياري)">
-                <select id="p-cat">
-                    <option value="alerts">الأليرتات والتصاميم</option>
-                    <option value="packages">البكجات والاشتراكات</option>
-                </select>
-            </div>
-            <button onclick="window.addProduct()" class="mt-4 bg-green-600 hover:bg-green-500 text-white px-8 py-2 rounded-lg font-bold transition">إضافة المنتج</button>
-        </div>
-
-        <!-- 4. قائمة المنتجات الحالية -->
-        <div class="glass-panel">
-            <h2 class="text-xl font-black text-white mb-4"><i class="fa fa-box text-blue-500"></i> المنتجات الحالية</h2>
-            <div id="admin-products-list" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- سيتم عرض المنتجات هنا برمجياً -->
+    <footer class="border-t border-white/5 py-12 bg-[#050507] text-center w-full mt-auto relative z-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-gray-400">
+            <div>جميع الحقوق محفوظة © 2026 <span class="text-white font-bold">YZ STORE</span></div>
+            <div class="flex flex-wrap justify-center gap-6">
+                <button onclick="window.showLegalModal('terms')" class="hover:text-white transition">Terms of Service</button>
+                <button onclick="window.showLegalModal('refund')" class="hover:text-white transition">Refund Policy</button>
+                <button onclick="window.showLegalModal('privacy')" class="hover:text-white transition">Privacy Policy</button>
             </div>
         </div>
+    </footer>
 
+    <!-- Cart Drawer -->
+    <div id="cart-drawer" class="cart-sidebar p-6 sm:p-8 flex flex-col">
+        <div class="flex justify-between items-center pb-6 border-b border-white/10 mb-6">
+            <h2 class="text-xl font-black text-white flex items-center gap-2"><i class="fa fa-shopping-bag text-red-500"></i> سلة التسوق</h2>
+            <button onclick="toggleCart(false)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-red-600 hover:text-white transition flex items-center justify-center text-sm"><i class="fa fa-times"></i></button>
+        </div>
+        <div id="cart-items" class="flex-1 space-y-3 overflow-y-auto custom-scroll pr-1"></div>
+        <div class="mt-4 pb-4 border-b border-white/10">
+            <input id="discount-input" type="text" placeholder="لديك كود خصم؟ أدخله هنا" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-green-500 outline-none transition text-center uppercase" style="text-transform:uppercase">
+        </div>
+        <div class="mt-4 pt-2">
+            <div class="flex justify-between items-center mb-6"><span class="text-gray-400 text-sm font-bold">المجموع:</span><span id="total-price" class="text-2xl font-black text-red-500">$0.00</span></div>
+            <button onclick="window.startCheckout()" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white py-4 rounded-xl font-black shadow-lg shadow-red-600/40 transform hover:-translate-y-0.5 transition-all text-sm"><i class="fa fa-bolt ml-1"></i> إتمام الطلب والدفع</button>
+        </div>
     </div>
 
     <!-- Firebase Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-        import { getDatabase, ref, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+        import { getDatabase, ref, onValue, off, push } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 
-        // إعدادات قاعدة البيانات الخاصة بك (نفسها بالضبط الموجودة في index)
-        const firebaseConfig = {
-            apiKey: "AIzaSyCt5H1t5dqUxileT88DqkIT5WRSGx45Lps",
-            authDomain: "osman-70f42.firebaseapp.com",
-            databaseURL: "https://osman-70f42-default-rtdb.firebaseio.com",
-            projectId: "osman-70f42",
-            storageBucket: "osman-70f42.firebasestorage.app"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyCt5H1t5dqUxileT88DqkIT5WRSGx45Lps", authDomain: "osman-70f42.firebaseapp.com", databaseURL: "https://osman-70f42-default-rtdb.firebaseio.com", projectId: "osman-70f42", storageBucket: "osman-70f42.firebasestorage.app" };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
         const ADMIN_EMAIL = "osohmde@gmail.com";
+        const Toast = Swal.mixin({ toast: true, position: 'top-start', showConfirmButton: false, timer: 2000, background: '#181822', color: '#fff' });
 
-        // حماية صفحة الإدارة (لا يدخلها إلا الأدمن)
-        onAuthStateChanged(auth, user => {
-            if (user && user.email === ADMIN_EMAIL) {
-                document.getElementById('admin-body').classList.remove('hidden');
-            } else {
-                Swal.fire({
-                    title: 'غير مصرح!',
-                    text: 'ليس لديك صلاحية لدخول لوحة التحكم',
-                    icon: 'error',
-                    confirmButtonText: 'العودة للمتجر',
-                    allowOutsideClick: false
-                }).then(() => {
-                    window.location.href = 'index.html';
-                });
-            }
+        let cart = [], allProducts = [], currentCat = 'all';
+        const escapeHtml = (str) => { if (str === null || str === undefined) return ''; return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); };
+        const safeUrl = (url) => { try { const u = new URL(url, window.location.href); if (u.protocol === 'http:' || u.protocol === 'https:') return u.href; } catch (e) {} return '#'; };
+
+        onValue(ref(db, "store_settings/desc"), s => { document.getElementById('store-desc-display').textContent = s.val() || "مرحباً بك في YZ STORE."; });
+        onValue(ref(db, "store_settings/leaderboard"), s => {
+            const data = s.val() || {};
+            const r1 = data.rank1 || { name: 'المكان متاح', img: 'https://i.ibb.co/YT1RPZdx/image.png', role: 'VIP', link: '#' };
+            const r2 = data.rank2 || { name: 'المكان متاح', img: 'https://i.ibb.co/YT1RPZdx/image.png', role: 'VIP', link: '#' };
+            const r3 = data.rank3 || { name: 'المكان متاح', img: 'https://i.ibb.co/YT1RPZdx/image.png', role: 'VIP', link: '#' };
+            document.getElementById('vip-1-name').textContent = r1.name + ' 👑'; document.getElementById('vip-1-role').textContent = r1.role; document.getElementById('vip-1-img').src = r1.img; document.getElementById('vip-1-link').href = r1.link;
+            document.getElementById('vip-2-name').textContent = r2.name; document.getElementById('vip-2-role').textContent = r2.role; document.getElementById('vip-2-img').src = r2.img; document.getElementById('vip-2-link').href = r2.link;
+            document.getElementById('vip-3-name').textContent = r3.name; document.getElementById('vip-3-role').textContent = r3.role; document.getElementById('vip-3-img').src = r3.img; document.getElementById('vip-3-link').href = r3.link;
         });
 
-        window.logoutAdmin = () => {
-            signOut(auth).then(() => {
-                window.location.href = 'index.html';
-            });
-        };
-
-        // --- نظام وصف المتجر ---
-        onValue(ref(db, "store_settings/desc"), snapshot => {
-            document.getElementById('store-desc-input').value = snapshot.val() || "";
-        });
-        window.saveStoreDesc = () => {
-            const desc = document.getElementById('store-desc-input').value;
-            set(ref(db, "store_settings/desc"), desc).then(() => {
-                Swal.fire('نجاح', 'تم تحديث وصف المتجر', 'success');
-            });
-        };
-
-        // --- نظام لوحة الشرف (VIP Leaderboard) ---
-        // تحميل البيانات الحالية للستريمرز ووضعها في الحقول
-        onValue(ref(db, "store_settings/leaderboard"), snapshot => {
-            const data = snapshot.val() || {};
-            if(data.rank1) {
-                document.getElementById('vip-name-1').value = data.rank1.name || '';
-                document.getElementById('vip-role-1').value = data.rank1.role || '';
-                document.getElementById('vip-img-1').value = data.rank1.img || '';
-                document.getElementById('vip-link-1').value = data.rank1.link || '';
-            }
-            if(data.rank2) {
-                document.getElementById('vip-name-2').value = data.rank2.name || '';
-                document.getElementById('vip-role-2').value = data.rank2.role || '';
-                document.getElementById('vip-img-2').value = data.rank2.img || '';
-                document.getElementById('vip-link-2').value = data.rank2.link || '';
-            }
-            if(data.rank3) {
-                document.getElementById('vip-name-3').value = data.rank3.name || '';
-                document.getElementById('vip-role-3').value = data.rank3.role || '';
-                document.getElementById('vip-img-3').value = data.rank3.img || '';
-                document.getElementById('vip-link-3').value = data.rank3.link || '';
-            }
-        });
-
-        // دالة حفظ بيانات المركز المختار
-        window.saveVIP = (rank) => {
-            const name = document.getElementById(`vip-name-${rank}`).value;
-            const role = document.getElementById(`vip-role-${rank}`).value;
-            const img = document.getElementById(`vip-img-${rank}`).value;
-            const link = document.getElementById(`vip-link-${rank}`).value;
-
-            set(ref(db, `store_settings/leaderboard/rank${rank}`), {
-                name: name,
-                role: role,
-                img: img,
-                link: link
-            }).then(() => {
-                Swal.fire('تم الحفظ', `تم تحديث بيانات المركز ${rank} بنجاح، وستظهر فوراً في المتجر!`, 'success');
-            }).catch(error => {
-                Swal.fire('خطأ', error.message, 'error');
-            });
-        };
-
-        // --- نظام المنتجات ---
-        window.addProduct = () => {
-            const title = document.getElementById('p-title').value;
-            const price = document.getElementById('p-price').value;
-            const image = document.getElementById('p-image').value;
-            const paddlePriceId = document.getElementById('p-paddle').value;
-            const youtube = document.getElementById('p-youtube').value;
-            const category = document.getElementById('p-cat').value;
-
-            if(!title || !price || !image || !paddlePriceId) {
-                return Swal.fire('تنبيه', 'يرجى تعبئة جميع الحقول الأساسية', 'warning');
-            }
-
-            push(ref(db, "products"), {
-                title, price, image, paddlePriceId, youtube, category
-            }).then(() => {
-                Swal.fire('نجاح', 'تم إضافة المنتج بنجاح', 'success');
-                // تفريغ الحقول
-                document.getElementById('p-title').value = '';
-                document.getElementById('p-price').value = '';
-                document.getElementById('p-image').value = '';
-                document.getElementById('p-paddle').value = '';
-                document.getElementById('p-youtube').value = '';
-            });
-        };
-
-        onValue(ref(db, "products"), snapshot => {
-            const list = document.getElementById('admin-products-list');
-            list.innerHTML = "";
-            snapshot.forEach(child => {
-                const p = child.val();
-                list.innerHTML += `
-                <div class="bg-[#1a1a24] border border-white/5 p-4 rounded-xl flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <img src="${p.image}" class="w-12 h-12 rounded object-cover">
-                        <div>
-                            <p class="font-bold text-sm text-white">${p.title}</p>
-                            <p class="text-red-500 text-xs font-black">$${p.price}</p>
-                        </div>
-                    </div>
-                    <button onclick="window.deleteProduct('${child.key}')" class="bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white w-8 h-8 rounded-lg flex items-center justify-center transition">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </div>`;
-            });
-        });
-
-        window.deleteProduct = (key) => {
-            Swal.fire({
-                title: 'هل أنت متأكد؟',
-                text: "لن تتمكن من التراجع عن حذف هذا المنتج!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#272732',
-                confirmButtonText: 'نعم، احذفه!',
-                cancelButtonText: 'إلغاء'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    remove(ref(db, `products/${key}`)).then(() => {
-                        Swal.fire('تم الحذف!', 'تم مسح المنتج من المتجر.', 'success');
+        const loadReviews = () => {
+            onValue(ref(db, "reviews"), s => {
+                const container = document.getElementById('reviews-container');
+                let html = '';
+                if (!s.exists()) {
+                    html = `<div class="glass-v2 p-6 rounded-2xl border border-white/5"><div class="flex gap-1 text-amber-400 text-xs mb-4"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div><p class="text-gray-300 text-sm mb-6">"شغل احترافي وتسليم فوري!"</p><div class="flex items-center gap-3 border-t border-white/5 pt-4"><div class="w-10 h-10 rounded-full bg-red-600/20 text-red-500 font-black flex items-center justify-center">A</div><div><p class="text-white font-bold text-sm">أحمد</p></div></div></div>`;
+                } else {
+                    const reviews = []; s.forEach(child => { reviews.push(child.val()); }); reviews.reverse();
+                    reviews.slice(0, 6).forEach(rev => { 
+                        let starsHtml = ''; for(let i=0; i<5; i++) { starsHtml += `<i class="fa fa-star ${i < rev.rating ? 'text-amber-400' : 'text-gray-600/50'}"></i>`; }
+                        html += `<div class="glass-v2 p-6 rounded-2xl border border-white/5"><div class="flex gap-1 text-xs mb-4">${starsHtml}</div><p class="text-gray-300 text-sm mb-6">"${escapeHtml(rev.text)}"</p><div class="flex items-center gap-3 border-t border-white/5 pt-4"><div class="w-10 h-10 rounded-full bg-red-600/20 text-red-500 font-black flex items-center justify-center">${escapeHtml(rev.initial)}</div><div><p class="text-white font-bold text-sm">${escapeHtml(rev.name)}</p></div></div></div>`;
                     });
                 }
+                container.innerHTML = html;
             });
+        };
+        loadReviews(); 
+
+        window.addReview = async () => {
+            const { value: formValues } = await Swal.fire({
+                title: 'تقييم تجربتك معنا',
+                html: `<div class="mb-5 text-right"><label class="block text-gray-400 text-sm mb-2 font-bold">تقييمك</label><input id="rev-rating" type="number" min="1" max="5" value="5" class="swal2-input text-center text-xl font-black"></div><div class="text-right"><label class="block text-gray-400 text-sm mb-2 font-bold">رأيك بالخدمة</label><textarea id="rev-text" class="swal2-textarea h-24"></textarea></div>`,
+                confirmButtonText: 'نشر التقييم', confirmButtonColor: '#16a34a', showCancelButton: true,
+                preConfirm: () => {
+                    const rating = document.getElementById('rev-rating').value; const text = document.getElementById('rev-text').value;
+                    if (!rating || rating < 1 || rating > 5) return Swal.showValidationMessage('تقييم غير صحيح');
+                    if (!text.trim()) return Swal.showValidationMessage('يرجى كتابة رأيك');
+                    return { rating: parseInt(rating), text: text.trim() };
+                }
+            });
+            if (formValues && auth.currentUser) {
+                const userEmail = auth.currentUser.email; const userName = userEmail.split('@')[0];
+                push(ref(db, "reviews"), { name: userName, initial: userName.charAt(0).toUpperCase(), rating: formValues.rating, text: formValues.text, date: new Date().toISOString() }).then(() => { Toast.fire({ icon: 'success', title: 'تمت الإضافة!' }); });
+            }
+        };
+
+        onValue(ref(db, "products"), s => { allProducts = []; s.forEach(p => { allProducts.push({ ...p.val(), key: p.key }); }); renderProducts(); });
+
+        let ordersUserRef = null;
+        onAuthStateChanged(auth, user => {
+            const isAdmin = user && user.email === ADMIN_EMAIL;
+            document.getElementById('admin-link').classList.toggle('hidden', !isAdmin); document.getElementById('admin-link').classList.toggle('flex', isAdmin);
+            document.getElementById('user-orders-section').classList.toggle('hidden', !user); document.getElementById('auth-btn').innerText = user ? "حسابي (خروج)" : "تسجيل الدخول";
+            if (ordersUserRef) { off(ordersUserRef); ordersUserRef = null; }
+            if (user) loadUserOrders(user.uid);
+        });
+
+        window.loginWithGoogle = () => { Swal.showLoading(); signInWithPopup(auth, googleProvider).then(() => { Swal.close(); Toast.fire({ icon: 'success', title: 'تم الدخول!' }); }).catch(err => Swal.fire('خطأ', err.message, 'error')); };
+        window.handleAuth = () => { if(auth.currentUser) { signOut(auth).then(() => location.reload()); } else { Swal.fire({ title: 'تسجيل الدخول', html: `<input id="e" class="swal2-input" placeholder="البريد"><input id="p" type="password" class="swal2-input" placeholder="كلمة المرور"><button onclick="window.loginWithGoogle()" class="w-full mt-4 p-3.5 bg-white text-black rounded-xl font-bold flex items-center justify-center gap-2">الدخول بواسطة Google</button>`, confirmButtonText: 'دخول', confirmButtonColor: '#ef4444', showCancelButton: true }).then(r => { if(r.isConfirmed) { const e = document.getElementById('e').value, p = document.getElementById('p').value; signInWithEmailAndPassword(auth, e, p).then(() => Toast.fire({ icon: 'success', title: 'أهلاً بك!' })).catch(() => Swal.fire('خطأ', 'بيانات الدخول غير صحيحة', 'error')); } }); } };
+        window.getYouTubeID = (url) => { if(!url) return null; const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/); return (match && match[2].length === 11) ? match[2] : null; };
+
+        window.openVideoModal = (k) => {
+            const p = allProducts.find(x => x.key === k); if(!p) return; const yid = window.getYouTubeID(p.youtube);
+            Swal.fire({
+                width: window.innerWidth > 768 ? '780px' : '95%', padding: '24px', showConfirmButton: false,
+                html: `<div class="text-right"><div class="relative pb-[56.25%] h-0 overflow-hidden rounded-2xl mb-5 bg-black border border-white/10">${yid ? `<iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${encodeURIComponent(yid)}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>` : `<img src="${safeUrl(p.image)}" class="w-full h-full object-cover">`}</div><h2 class="text-2xl font-black text-white mb-2">${escapeHtml(p.title)}</h2><div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5"><span class="text-3xl font-black text-red-500">$${escapeHtml(p.price)}</span><button onclick="addToCart('${p.key}'); Swal.close()" class="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-xl font-black text-xs">إضافة إلى السلة</button></div></div>`
+            });
+        };
+
+        window.renderProducts = () => {
+            const grid = document.getElementById('products-grid'); grid.innerHTML = "";
+            const filtered = currentCat === 'all' ? allProducts : allProducts.filter(p => p.category === currentCat);
+            if(filtered.length === 0) { grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-500 font-bold">لا توجد منتجات حالياً.</div>`; return; }
+            filtered.forEach(p => {
+                grid.innerHTML += `<div class="product-card-v2 group flex flex-col justify-between overflow-hidden"><div class="relative h-52 overflow-hidden cursor-pointer" onclick="openVideoModal('${p.key}')"><img src="${safeUrl(p.image)}" class="w-full h-full object-cover group-hover:scale-105 transition"><span class="absolute top-3 right-3 bg-red-600/90 text-white text-[10px] px-3 py-1 rounded-full font-black">تسليم فوري</span></div><div class="p-5 flex-1 flex flex-col justify-between"><h3 class="font-black text-white text-base mb-4">${escapeHtml(p.title)}</h3><div class="flex justify-between items-center pt-4 border-t border-white/5"><span class="text-2xl font-black text-red-500">$${escapeHtml(p.price)}</span><button onclick="addToCart('${p.key}')" class="bg-white hover:bg-red-600 hover:text-white text-black px-5 py-2.5 rounded-xl text-xs font-black">إضافة</button></div></div></div>`;
+            });
+        };
+
+        window.addToCart = (k) => { const it = allProducts.find(x => x.key === k); if(!it) return; const ex = cart.find(x => x.key === k); if(ex) ex.qty++; else cart.push({...it, qty: 1}); updateCartUI(); Toast.fire({ icon: 'success', title: 'تمت الإضافة' }); };
+        const updateCartUI = () => { let sub = 0; document.getElementById('cart-items').innerHTML = cart.map((it, i) => { sub += it.price * it.qty; return `<div class="flex justify-between items-center p-3.5 bg-white/5 rounded-2xl border border-white/5"><div class="max-w-[170px]"><p class="text-xs font-bold text-white truncate">${escapeHtml(it.title)}</p><p class="text-red-400 font-black text-sm">$${escapeHtml(it.price)}</p></div><div class="flex items-center gap-2.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/5"><button onclick="updateQty(${i},-1)" class="text-gray-400 hover:text-red-500 px-1">-</button><span class="text-xs font-black">${it.qty}</span><button onclick="updateQty(${i},1)" class="text-gray-400 hover:text-green-500 px-1">+</button></div></div>`; }).join(''); document.getElementById('total-price').innerText = `$${sub.toFixed(2)}`; document.getElementById('cart-count').innerText = cart.reduce((a,b)=>a+b.qty,0); };
+        window.updateQty = (i,d) => { cart[i].qty+=d; if(cart[i].qty<1) cart.splice(i,1); updateCartUI(); };
+        window.toggleCart = (s) => document.getElementById('cart-drawer').classList.toggle('open', s);
+        window.filterCat = (c) => { currentCat = c; document.querySelectorAll('.category-tab').forEach(i=>i.classList.remove('active')); document.getElementById('cat-'+c).classList.add('active'); renderProducts(); };
+        
+        const loadUserOrders = (uid) => {
+            ordersUserRef = ref(db, `orders/${uid}`);
+            onValue(ordersUserRef, s => {
+                const list = document.getElementById('user-orders-list'); list.innerHTML = ""; let hasActiveOrder = false;
+                s.forEach(o => { const d = o.val(); const active = d.status === 'active'; if (active) hasActiveOrder = true; list.innerHTML += `<div class="glass-v2 p-4 rounded-2xl flex justify-between items-center ${active ? 'border-green-500/40' : 'border-yellow-500/40'}"><div><p class="text-xs text-gray-400">طلب #${escapeHtml(o.key.substr(-4))}</p><p class="font-black text-white text-sm">${escapeHtml(d.total)}</p></div>${active ? `<a href="${safeUrl(d.productLink)}" target="_blank" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5"><i class="fa fa-download"></i> تحميل المنتج</a>` : '<span class="text-yellow-400 text-xs font-bold bg-yellow-500/10 px-3 py-1 rounded-full">⏳ قيد المراجعة</span>'}</div>`; });
+                const reviewBtn = document.getElementById('add-review-btn'); if (reviewBtn) { reviewBtn.classList.toggle('hidden', !hasActiveOrder); reviewBtn.classList.toggle('flex', hasActiveOrder); }
+            });
+        };
+
+        window.startCheckout = () => { if(!auth.currentUser) return handleAuth(); if(cart.length === 0) return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' }); toggleCart(false); const paddleItems = cart.map(item => ({ priceId: item.paddlePriceId, quantity: item.qty || 1 })); let checkoutConfig = { items: paddleItems, customer: { email: auth.currentUser.email }, settings: { displayMode: "overlay", theme: "dark", locale: "ar" } }; const discountCodeInput = document.getElementById('discount-input').value.trim().toUpperCase(); if (discountCodeInput) { checkoutConfig.discountCode = discountCodeInput; } Paddle.Checkout.open(checkoutConfig); };
+        
+        window.showLegalModal = (type) => {
+            const data = {
+                terms: { title: 'شروط الخدمة', content: `<p>الخدمات رقمية وتسلم فوراً عبر المنصة بعد الدفع عبر Paddle.</p>` },
+                refund: { title: 'سياسة الاسترجاع', content: `<p>يتم الاسترجاع خلال 14 يوم في حال وجود خلل بالملف الرقمي.</p>` },
+                privacy: { title: 'سياسة الخصوصية', content: `<p>نحن نحترم خصوصيتك ونعالج الدفع بآمان عبر Paddle.</p>` }
+            };
+            Swal.fire({ title: data[type].title, html: `<div class="text-right text-sm text-gray-300 font-sans">${data[type].content}</div>`, confirmButtonText: 'إغلاق', confirmButtonColor: '#ef4444' });
         };
     </script>
 </body>
