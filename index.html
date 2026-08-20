@@ -151,10 +151,6 @@
             <a href="https://discord.gg/3VmZzgMMBK" target="_blank" class="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#5865F2]/10 border border-[#5865F2]/20 text-[#5865F2] hover:bg-[#5865F2] hover:text-white transition duration-300 text-xs font-bold">
                 <i class="fab fa-discord"></i> ديسكورد
             </a>
-            <!-- Shown only after the client confirms (via Firebase Auth) that the
-                 signed-in user is the admin. Never trust this link alone for
-                 security -- the real gate is the Firebase Database Rules and the
-                 auth check inside admin.html itself. -->
             <a id="admin-link" href="admin.html" class="hidden items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-white transition duration-300 text-xs font-bold">
                 <i class="fa fa-shield-halved"></i> لوحة التحكم
             </a>
@@ -232,13 +228,6 @@
             </button>
         </div>
 
-        <!-- NOTE: the admin control panel used to live here as a hidden <div>.
-             It has been removed entirely from this file. Admins now manage the
-             store exclusively from admin.html, which is never linked from this
-             page's HTML/JS except the small "لوحة التحكم" button above, which
-             itself only appears after Firebase confirms the signed-in user is
-             the admin. -->
-
         <div id="user-orders-section" class="hidden mb-12">
             <h2 class="text-xl font-black text-white mb-4 flex items-center gap-2">
                 <i class="fa fa-download text-blue-400"></i> مشترياتي وملفاتي المحملة
@@ -263,6 +252,7 @@
         </div>
     </footer>
 
+    <!-- Cart Drawer -->
     <div id="cart-drawer" class="cart-sidebar p-6 sm:p-8 flex flex-col">
         <div class="flex justify-between items-center pb-6 border-b border-white/10 mb-6">
             <h2 class="text-xl font-black text-white flex items-center gap-2">
@@ -273,7 +263,13 @@
             </button>
         </div>
         <div id="cart-items" class="flex-1 space-y-3 overflow-y-auto custom-scroll pr-1"></div>
-        <div class="mt-6 pt-6 border-t border-white/10">
+        
+        <!-- حقل كود الخصم الجديد -->
+        <div class="mt-4 pb-4 border-b border-white/10">
+            <input id="discount-input" type="text" placeholder="لديك كود خصم؟ أدخله هنا" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-green-500 outline-none transition text-center uppercase" style="text-transform:uppercase">
+        </div>
+
+        <div class="mt-4 pt-2">
             <div class="flex justify-between items-center mb-6">
                 <span class="text-gray-400 text-sm font-bold">المجموع:</span>
                 <span id="total-price" class="text-2xl font-black text-red-500">$0.00</span>
@@ -287,12 +283,12 @@
         </div>
     </div>
 
-    <!-- Firebase & Store Logic (customer-facing only -- no product/order write
-         functions live in this file anymore) -->
+    <!-- Firebase & Store Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
         import { getDatabase, ref, onValue, off, push } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
-        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+        // تغيير signInWithPopup إلى signInWithRedirect وإضافة getRedirectResult لحل مشكلة المتصفحات
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCt5H1t5dqUxileT88DqkIT5WRSGx45Lps",
@@ -309,6 +305,15 @@
 
         const ADMIN_EMAIL = "osohmde@gmail.com";
         const Toast = Swal.mixin({ toast: true, position: 'top-start', showConfirmButton: false, timer: 2000, background: '#181822', color: '#fff' });
+
+        // التحقق من نتيجة تسجيل الدخول عبر Google عند تحميل الصفحة
+        getRedirectResult(auth).then((result) => {
+            if (result) {
+                Toast.fire({ icon: 'success', title: 'تم تسجيل الدخول بنجاح!' });
+            }
+        }).catch((error) => {
+            Swal.fire('خطأ في تسجيل الدخول', error.message, 'error');
+        });
 
         let cart = [], allProducts = [], currentCat = 'all';
 
@@ -354,13 +359,8 @@
 
         onAuthStateChanged(auth, user => {
             const isAdmin = user && user.email === ADMIN_EMAIL;
-
-            // Only toggles a link's visibility. admin.html independently
-            // re-verifies the user with Firebase Auth on its own -- this
-            // client-side check is a convenience, never a security boundary.
             document.getElementById('admin-link').classList.toggle('hidden', !isAdmin);
             document.getElementById('admin-link').classList.toggle('flex', isAdmin);
-
             document.getElementById('user-orders-section').classList.toggle('hidden', !user);
             document.getElementById('auth-btn').innerText = user ? "حسابي (خروج)" : "تسجيل الدخول";
 
@@ -369,12 +369,9 @@
         });
 
         window.loginWithGoogle = () => {
-            signInWithPopup(auth, googleProvider)
-                .then(() => {
-                    Swal.close();
-                    Toast.fire({ icon: 'success', title: 'تم تسجيل الدخول عبر Google' });
-                })
-                .catch(err => Swal.fire('خطأ', err.message, 'error'));
+            Swal.showLoading();
+            // استخدام Redirect بدلاً من Popup لتجنب مشكلة حظر المتصفحات
+            signInWithRedirect(auth, googleProvider);
         };
 
         window.handleAuth = () => {
@@ -547,10 +544,6 @@
             });
         };
 
-        // Checkout is now electronic-only (Paddle: Apple Pay / Visa / Mada / cards).
-        // Manual methods (Binance, IBAN, PayPal transfer) were removed; customers
-        // who need another method are pointed to WhatsApp via the link in the
-        // cart drawer instead.
         window.startCheckout = () => {
             if(!auth.currentUser) {
                 toggleCart(false);
@@ -573,7 +566,10 @@
                 quantity: item.qty || 1
             }));
 
-            Paddle.Checkout.open({
+            // جلب كود الخصم من الحقل إن وجد وتمريره لـ Paddle
+            const discountCodeInput = document.getElementById('discount-input').value.trim().toUpperCase();
+
+            let checkoutConfig = {
                 items: paddleItems,
                 customer: {
                     email: auth.currentUser ? auth.currentUser.email : ""
@@ -583,7 +579,13 @@
                     theme: "dark",
                     locale: "ar"
                 }
-            });
+            };
+
+            if (discountCodeInput) {
+                checkoutConfig.discountCode = discountCodeInput;
+            }
+
+            Paddle.Checkout.open(checkoutConfig);
         };
 
         window.showLegalModal = (type) => {
