@@ -13,8 +13,8 @@
 
     <style>
         body { background: #070709; color: #fff; font-family: 'Cairo', sans-serif; }
-        .glass-panel { background: #121218; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        input, select, textarea { background: #1a1a24; border: 1px solid #272732; color: white; padding: 12px 16px; border-radius: 10px; width: 100%; font-family: 'Cairo', sans-serif; transition: border 0.3s; }
+        .glass-panel { background: #121218; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 24px; }
+        input, select, textarea { background: #1a1a24; border: 1px solid #272732; color: white; padding: 12px 16px; border-radius: 10px; width: 100%; font-family: 'Cairo', sans-serif; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: #ef4444; }
         .swal2-popup { background: #121218 !important; color: #fff !important; border-radius: 16px !important; border: 1px solid #272732 !important; }
         .swal2-title { font-family: 'Cairo', sans-serif !important; font-weight: 900 !important; }
@@ -29,7 +29,7 @@
             <span class="font-black text-xl text-white">لوحة الإدارة | <span class="text-red-500">YZ STORE</span></span>
         </div>
         <div class="flex gap-3">
-            <!-- زر العودة للمتجر يعمل فوراً وبدون تعليق -->
+            <!-- زر العودة للمتجر تم إصلاحه ليعمل فوراً -->
             <button onclick="window.location.href='index.html'" class="bg-gray-800 hover:bg-gray-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2">
                 <i class="fa fa-home"></i> العودة للمتجر
             </button>
@@ -39,29 +39,28 @@
         </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto px-4 py-10 space-y-8">
+    <div class="max-w-7xl mx-auto px-4 py-8 space-y-8">
 
-        <!-- القسم الأول: وصف المتجر + زر لوحة الشرف (مدمجين بذكاء كما طلبت) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- تعديل الوصف -->
-            <div class="glass-panel md:col-span-2">
-                <h2 class="text-xl font-black text-white mb-4"><i class="fa fa-pen text-red-500"></i> تعديل وصف المتجر (الرئيسية)</h2>
-                <textarea id="store-desc-input" rows="4" placeholder="اكتب وصف المتجر هنا..."></textarea>
-                <button onclick="window.saveStoreDesc()" class="mt-4 bg-red-600 hover:bg-red-500 text-white px-8 py-2.5 rounded-xl font-bold transition shadow-lg shadow-red-600/30">حفظ الوصف</button>
+        <!-- القسم الأول: وصف المتجر + زر لوحة الشرف (مدمجين للترتيب) -->
+        <div class="flex flex-col md:flex-row gap-6">
+            <div class="glass-panel flex-1">
+                <h2 class="text-xl font-black text-white mb-4"><i class="fa fa-pen text-red-500"></i> تعديل وصف المتجر</h2>
+                <textarea id="store-desc-input" rows="3" placeholder="اكتب الوصف هنا..."></textarea>
+                <button onclick="window.saveStoreDesc()" class="mt-4 bg-red-600 hover:bg-red-500 text-white px-8 py-2.5 rounded-xl font-bold transition">حفظ الوصف</button>
             </div>
             
-            <!-- زر إدارة لوحة الشرف الذكي (بديل المربعات الثلاثة) -->
-            <div class="glass-panel border-yellow-500/30 border flex flex-col justify-center items-center text-center bg-gradient-to-b from-[#121218] to-yellow-900/10">
-                <i class="fa fa-trophy text-5xl text-yellow-500 mb-4 drop-shadow-[0_0_15px_rgba(234,179,8,0.5)]"></i>
-                <h3 class="font-black text-white text-lg mb-1">إدارة لوحة الشرف</h3>
-                <p class="text-xs text-gray-400 mb-5">تعديل الـ Top 3 في الرئيسية</p>
-                <button onclick="window.manageVIP()" class="w-full bg-yellow-600 hover:bg-yellow-500 text-white py-3 rounded-xl font-black transition flex items-center justify-center gap-2 shadow-lg shadow-yellow-600/30">
+            <!-- زر لوحة الشرف (بديل المربعات الثلاثة المزعجة) -->
+            <div class="glass-panel border-yellow-500/30 border w-full md:w-1/3 flex flex-col justify-center items-center text-center">
+                <i class="fa fa-trophy text-4xl text-yellow-500 mb-3"></i>
+                <h3 class="font-black text-white text-lg mb-1">إدارة ضيوف الشرف</h3>
+                <p class="text-xs text-gray-400 mb-4">تعديل الـ Top 3</p>
+                <button onclick="window.manageVIP()" class="w-full bg-yellow-600 hover:bg-yellow-500 text-white py-3 rounded-xl font-black transition flex items-center justify-center gap-2">
                     <i class="fa fa-sliders"></i> تعديل الآن
                 </button>
             </div>
         </div>
 
-        <!-- القسم الثاني: إضافة منتج جديد (اللوحة القديمة التي طلبتها) -->
+        <!-- القسم الثاني: إضافة منتج جديد (اللوحة القديمة الكلاسيكية) -->
         <div class="glass-panel">
             <h2 class="text-xl font-black text-white mb-6"><i class="fa fa-plus text-green-500"></i> إضافة منتج جديد</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -75,15 +74,13 @@
                     <option value="packages">البكجات والاشتراكات</option>
                 </select>
             </div>
-            <button onclick="window.addProduct()" class="mt-6 bg-green-600 hover:bg-green-500 text-white px-10 py-3 rounded-xl font-black transition shadow-lg shadow-green-600/30">إضافة المنتج</button>
+            <button onclick="window.addProduct()" class="mt-6 bg-green-600 hover:bg-green-500 text-white px-10 py-3 rounded-xl font-black transition">إضافة المنتج</button>
         </div>
 
         <!-- القسم الثالث: المنتجات الحالية -->
         <div class="glass-panel">
-            <h2 class="text-xl font-black text-white mb-6"><i class="fa fa-box text-blue-500"></i> المنتجات الحالية في المتجر</h2>
-            <div id="admin-products-list" class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <!-- ستظهر المنتجات هنا -->
-            </div>
+            <h2 class="text-xl font-black text-white mb-6"><i class="fa fa-box text-blue-500"></i> المنتجات الحالية</h2>
+            <div id="admin-products-list" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
         </div>
 
     </div>
@@ -107,162 +104,45 @@
         const auth = getAuth(app);
         const ADMIN_EMAIL = "osohmde@gmail.com";
 
-        // حماية الإدارة
         onAuthStateChanged(auth, user => {
             if (!user || user.email !== ADMIN_EMAIL) {
-                Swal.fire({
-                    title: 'غير مصرح!',
-                    text: 'يجب تسجيل الدخول بحساب الإدارة أولاً.',
-                    icon: 'error',
-                    confirmButtonText: 'العودة للمتجر',
-                    allowOutsideClick: false
-                }).then(() => {
-                    window.location.href = 'index.html';
-                });
+                Swal.fire({ title: 'غير مصرح!', text: 'يجب تسجيل الدخول بحساب الإدارة.', icon: 'error', confirmButtonText: 'العودة للمتجر', allowOutsideClick: false }).then(() => { window.location.href = 'index.html'; });
             }
         });
 
-        window.logoutAdmin = () => {
-            signOut(auth).then(() => {
-                window.location.href = 'index.html';
-            });
-        };
+        window.logoutAdmin = () => { signOut(auth).then(() => { window.location.href = 'index.html'; }); };
 
-        // إدارة وصف المتجر
-        onValue(ref(db, "store_settings/desc"), snapshot => {
-            document.getElementById('store-desc-input').value = snapshot.val() || "";
-        });
-        window.saveStoreDesc = () => {
-            const desc = document.getElementById('store-desc-input').value;
-            set(ref(db, "store_settings/desc"), desc).then(() => {
-                Swal.fire('نجاح', 'تم تحديث وصف المتجر', 'success');
-            });
-        };
+        onValue(ref(db, "store_settings/desc"), snapshot => { document.getElementById('store-desc-input').value = snapshot.val() || ""; });
+        window.saveStoreDesc = () => { set(ref(db, "store_settings/desc"), document.getElementById('store-desc-input').value).then(() => { Swal.fire('نجاح', 'تم تحديث الوصف', 'success'); }); };
 
-        // النافذة الذكية لإدارة لوحة الشرف
+        // زر إدارة لوحة الشرف
         window.manageVIP = async () => {
-            const { value: rank } = await Swal.fire({
-                title: 'إدارة لوحة الشرف 🏆',
-                text: 'اختر المركز الذي تريد تعديله:',
-                input: 'select',
-                inputOptions: {
-                    '1': 'المركز الأول 🥇',
-                    '2': 'المركز الثاني 🥈',
-                    '3': 'المركز الثالث 🥉'
-                },
-                inputPlaceholder: 'اختر المركز',
-                showCancelButton: true,
-                confirmButtonText: 'التالي &larr;',
-                cancelButtonText: 'إلغاء',
-                confirmButtonColor: '#eab308'
-            });
-
+            const { value: rank } = await Swal.fire({ title: 'إدارة لوحة الشرف 🏆', text: 'اختر المركز لتعديله:', input: 'select', inputOptions: { '1': 'المركز الأول 🥇', '2': 'المركز الثاني 🥈', '3': 'المركز الثالث 🥉' }, showCancelButton: true, confirmButtonText: 'التالي &larr;', cancelButtonText: 'إلغاء', confirmButtonColor: '#eab308' });
             if (rank) {
                 Swal.showLoading();
                 const snapshot = await get(ref(db, `store_settings/leaderboard/rank${rank}`));
                 const data = snapshot.val() || { name: '', role: '', img: '', link: '' };
                 Swal.close();
-
-                const { value: formValues } = await Swal.fire({
-                    title: `تعديل المركز ${rank}`,
-                    html: `
-                        <input id="vip-name" class="swal2-input" placeholder="اسم الستريمر" value="${data.name}" style="width: 85%; margin: 8px auto;">
-                        <input id="vip-role" class="swal2-input" placeholder="اللقب (مثل: أكبر داعم)" value="${data.role}" style="width: 85%; margin: 8px auto;">
-                        <input id="vip-img" class="swal2-input" placeholder="رابط الصورة (ImgBB)" value="${data.img}" style="width: 85%; margin: 8px auto;">
-                        <input id="vip-link" class="swal2-input" placeholder="رابط القناة (يوتيوب/تويتش)" value="${data.link}" style="width: 85%; margin: 8px auto;">
-                    `,
-                    focusConfirm: false,
-                    showCancelButton: true,
-                    confirmButtonText: 'حفظ التعديلات',
-                    cancelButtonText: 'إلغاء',
-                    confirmButtonColor: '#16a34a',
-                    preConfirm: () => {
-                        return {
-                            name: document.getElementById('vip-name').value,
-                            role: document.getElementById('vip-role').value,
-                            img: document.getElementById('vip-img').value,
-                            link: document.getElementById('vip-link').value
-                        }
-                    }
-                });
-
-                if (formValues) {
-                    set(ref(db, `store_settings/leaderboard/rank${rank}`), formValues).then(() => {
-                        Swal.fire({
-                            title: 'تم الحفظ!',
-                            text: `تم تحديث المركز ${rank} بنجاح!`,
-                            icon: 'success',
-                            confirmButtonColor: '#16a34a'
-                        });
-                    });
-                }
+                const { value: formValues } = await Swal.fire({ title: `تعديل المركز ${rank}`, html: `<input id="vip-name" class="swal2-input" placeholder="اسم الستريمر" value="${data.name}" style="width: 85%; margin: 8px auto;"><input id="vip-role" class="swal2-input" placeholder="اللقب" value="${data.role}" style="width: 85%; margin: 8px auto;"><input id="vip-img" class="swal2-input" placeholder="رابط الصورة (ImgBB)" value="${data.img}" style="width: 85%; margin: 8px auto;"><input id="vip-link" class="swal2-input" placeholder="رابط القناة" value="${data.link}" style="width: 85%; margin: 8px auto;">`, focusConfirm: false, showCancelButton: true, confirmButtonText: 'حفظ', cancelButtonText: 'إلغاء', confirmButtonColor: '#16a34a', preConfirm: () => { return { name: document.getElementById('vip-name').value, role: document.getElementById('vip-role').value, img: document.getElementById('vip-img').value, link: document.getElementById('vip-link').value } } });
+                if (formValues) { set(ref(db, `store_settings/leaderboard/rank${rank}`), formValues).then(() => { Swal.fire({ title: 'تم الحفظ!', text: `تم تحديث المركز ${rank}`, icon: 'success', confirmButtonColor: '#16a34a' }); }); }
             }
         };
 
-        // إدارة المنتجات
         window.addProduct = () => {
-            const title = document.getElementById('p-title').value;
-            const price = document.getElementById('p-price').value;
-            const image = document.getElementById('p-image').value;
-            const paddlePriceId = document.getElementById('p-paddle').value;
-            const youtube = document.getElementById('p-youtube').value;
-            const category = document.getElementById('p-cat').value;
-
-            if(!title || !price || !image || !paddlePriceId) {
-                return Swal.fire('تنبيه', 'يرجى تعبئة جميع الحقول الأساسية', 'warning');
-            }
-
-            push(ref(db, "products"), {
-                title, price, image, paddlePriceId, youtube, category
-            }).then(() => {
-                Swal.fire('نجاح', 'تم إضافة المنتج بنجاح', 'success');
-                document.getElementById('p-title').value = '';
-                document.getElementById('p-price').value = '';
-                document.getElementById('p-image').value = '';
-                document.getElementById('p-paddle').value = '';
-                document.getElementById('p-youtube').value = '';
-            });
+            const title = document.getElementById('p-title').value; const price = document.getElementById('p-price').value; const image = document.getElementById('p-image').value; const paddlePriceId = document.getElementById('p-paddle').value; const youtube = document.getElementById('p-youtube').value; const category = document.getElementById('p-cat').value;
+            if(!title || !price || !image || !paddlePriceId) return Swal.fire('تنبيه', 'يرجى تعبئة الحقول الأساسية', 'warning');
+            push(ref(db, "products"), { title, price, image, paddlePriceId, youtube, category }).then(() => { Swal.fire('نجاح', 'تم الإضافة', 'success'); document.getElementById('p-title').value = ''; document.getElementById('p-price').value = ''; document.getElementById('p-image').value = ''; document.getElementById('p-paddle').value = ''; document.getElementById('p-youtube').value = ''; });
         };
 
         onValue(ref(db, "products"), snapshot => {
-            const list = document.getElementById('admin-products-list');
-            list.innerHTML = "";
+            const list = document.getElementById('admin-products-list'); list.innerHTML = "";
             snapshot.forEach(child => {
                 const p = child.val();
-                list.innerHTML += `
-                <div class="bg-[#1a1a24] border border-white/5 p-4 rounded-xl flex justify-between items-center transition hover:border-red-500/50">
-                    <div class="flex items-center gap-4">
-                        <img src="${p.image}" class="w-14 h-14 rounded-lg object-cover">
-                        <div>
-                            <p class="font-bold text-sm text-white">${p.title}</p>
-                            <p class="text-red-500 text-xs font-black mt-1">$${p.price}</p>
-                        </div>
-                    </div>
-                    <button onclick="window.deleteProduct('${child.key}')" class="bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white w-10 h-10 rounded-xl flex items-center justify-center transition">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </div>`;
+                list.innerHTML += `<div class="bg-[#1a1a24] border border-white/5 p-4 rounded-xl flex justify-between items-center"><div class="flex items-center gap-4"><img src="${p.image}" class="w-14 h-14 rounded-lg object-cover"><div><p class="font-bold text-sm text-white">${p.title}</p><p class="text-red-500 text-xs font-black mt-1">$${p.price}</p></div></div><button onclick="window.deleteProduct('${child.key}')" class="bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white w-10 h-10 rounded-xl flex items-center justify-center transition"><i class="fa fa-trash"></i></button></div>`;
             });
         });
 
-        window.deleteProduct = (key) => {
-            Swal.fire({
-                title: 'هل أنت متأكد؟',
-                text: "لن تتمكن من التراجع عن حذف هذا المنتج!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#272732',
-                confirmButtonText: 'نعم، احذفه!',
-                cancelButtonText: 'إلغاء'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    remove(ref(db, `products/${key}`)).then(() => {
-                        Swal.fire('تم الحذف!', 'تم مسح المنتج من المتجر.', 'success');
-                    });
-                }
-            });
-        };
+        window.deleteProduct = (key) => { Swal.fire({ title: 'تأكيد الحذف؟', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#272732', confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء' }).then((result) => { if (result.isConfirmed) { remove(ref(db, `products/${key}`)).then(() => { Swal.fire('تم الحذف!', '', 'success'); }); } }); };
     </script>
 </body>
 </html>
