@@ -207,7 +207,8 @@
             </div>
             <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
                 <i class="fa fa-crown text-amber-500 text-xl mb-1"></i>
-                <h4 class="font-black text-white text-base sm:text-lg">+500 عميل</h4>
+                <!-- تم التعديل إلى 3000 عميل -->
+                <h4 class="font-black text-white text-base sm:text-lg">+3000 عميل</h4>
                 <p class="text-[11px] text-gray-400">ثقة صناع المحتوى</p>
             </div>
             <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
@@ -238,60 +239,23 @@
 
         <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></div>
 
-        <!-- قسم تقييم العملاء (مضاف حديثاً) -->
+        <!-- قسم التقييمات الديناميكي -->
         <div class="mt-20 mb-10">
             <div class="text-center mb-10">
                 <h2 class="text-2xl sm:text-3xl font-black text-white inline-flex items-center gap-3">
                     <i class="fa fa-star text-amber-400"></i> آراء شركاء النجاح
                 </h2>
-                <p class="text-gray-400 text-sm mt-2">نفخر بثقة أكثر من 500 صانع محتوى ولاعب ⚡</p>
+                <!-- تم التعديل إلى 3000 ستريمر -->
+                <p class="text-gray-400 text-sm mt-2">نفخر بثقة أكثر من 3000 ستريمر وصانع محتوى في مجتمعنا ⚡</p>
+                
+                <!-- زر أضف تقييمك (يظهر فقط للمشترين الموثقين) -->
+                <button id="add-review-btn" onclick="window.addReview()" class="hidden mt-4 bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500 hover:text-white px-6 py-2.5 rounded-xl font-bold text-sm transition mx-auto flex items-center gap-2">
+                    <i class="fa fa-pen"></i> أضف تقييمك
+                </button>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- التقييم الأول -->
-                <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
-                    <div class="flex gap-1 text-amber-400 text-xs mb-4">
-                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                    </div>
-                    <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"شغل احترافي جداً وتسليم فوري! الأليرتات أضافت طابع خرافي للبث عندي، وتجاوب الدعم الفني سريع جداً."</p>
-                    <div class="flex items-center gap-3 border-t border-white/5 pt-4">
-                        <div class="w-10 h-10 rounded-full bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 font-black">A</div>
-                        <div>
-                            <p class="text-white font-bold text-sm">أحمد س.</p>
-                            <p class="text-[10px] text-gray-500">صانع محتوى على Twitch</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- التقييم الثاني -->
-                <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
-                    <div class="flex gap-1 text-amber-400 text-xs mb-4">
-                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                    </div>
-                    <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"بكج التصاميم تفجير! الألوان والتفاصيل الدقيقة واضحة، وسهولة التركيب على OBS مريحة جداً."</p>
-                    <div class="flex items-center gap-3 border-t border-white/5 pt-4">
-                        <div class="w-10 h-10 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-500 font-black">K</div>
-                        <div>
-                            <p class="text-white font-bold text-sm">خالد م.</p>
-                            <p class="text-[10px] text-gray-500">ستريمر ألعاب</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- التقييم الثالث -->
-                <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
-                    <div class="flex gap-1 text-amber-400 text-xs mb-4">
-                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                    </div>
-                    <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"صراحة كنت متردد بس التجربة أثبتت لي إنكم الأفضل. الدفع آمن ووصلني الرابط فوراً. شكراً لكم."</p>
-                    <div class="flex items-center gap-3 border-t border-white/5 pt-4">
-                        <div class="w-10 h-10 rounded-full bg-amber-600/20 border border-amber-500/30 flex items-center justify-center text-amber-500 font-black">S</div>
-                        <div>
-                            <p class="text-white font-bold text-sm">سالم ج.</p>
-                            <p class="text-[10px] text-gray-500">يوتيوبر</p>
-                        </div>
-                    </div>
-                </div>
+            <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- سيتم جلب التقييمات الحقيقية هنا. إن لم يوجد، ستظهر التقييمات الافتراضية -->
             </div>
         </div>
 
@@ -394,6 +358,113 @@
         onValue(ref(db, "store_settings/desc"), s => {
             document.getElementById('store-desc-display').textContent = s.val() || "مرحباً بك في YZ STORE، المتجر الأفضل لتطوير تجربة البث المباشر وشراء الاشتراكات والخدمات الرقمية.";
         });
+
+        // ------------------ نظام التقييمات الجديد ------------------
+        const loadReviews = () => {
+            onValue(ref(db, "reviews"), s => {
+                const container = document.getElementById('reviews-container');
+                let html = '';
+                
+                if (!s.exists()) {
+                    // التقييمات الافتراضية للبداية
+                    html = `
+                    <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
+                        <div class="flex gap-1 text-amber-400 text-xs mb-4"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"شغل احترافي جداً وتسليم فوري! الأليرتات أضافت طابع خرافي للبث عندي، وتجاوب الدعم الفني سريع جداً."</p>
+                        <div class="flex items-center gap-3 border-t border-white/5 pt-4">
+                            <div class="w-10 h-10 rounded-full bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 font-black">A</div>
+                            <div><p class="text-white font-bold text-sm">أحمد س.</p><p class="text-[10px] text-gray-500">صانع محتوى على Twitch</p></div>
+                        </div>
+                    </div>
+                    <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
+                        <div class="flex gap-1 text-amber-400 text-xs mb-4"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"بكج التصاميم تفجير! الألوان والتفاصيل الدقيقة واضحة، وسهولة التركيب على OBS مريحة جداً."</p>
+                        <div class="flex items-center gap-3 border-t border-white/5 pt-4">
+                            <div class="w-10 h-10 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-500 font-black">K</div>
+                            <div><p class="text-white font-bold text-sm">خالد م.</p><p class="text-[10px] text-gray-500">ستريمر ألعاب</p></div>
+                        </div>
+                    </div>
+                    <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
+                        <div class="flex gap-1 text-amber-400 text-xs mb-4"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"صراحة كنت متردد بس التجربة أثبتت لي إنكم الأفضل. الدفع آمن ووصلني الرابط فوراً. شكراً لكم."</p>
+                        <div class="flex items-center gap-3 border-t border-white/5 pt-4">
+                            <div class="w-10 h-10 rounded-full bg-amber-600/20 border border-amber-500/30 flex items-center justify-center text-amber-500 font-black">S</div>
+                            <div><p class="text-white font-bold text-sm">سالم ج.</p><p class="text-[10px] text-gray-500">يوتيوبر</p></div>
+                        </div>
+                    </div>`;
+                } else {
+                    const reviews = [];
+                    s.forEach(child => { reviews.push(child.val()); });
+                    reviews.reverse(); // لعرض الأحدث أولاً
+                    
+                    reviews.slice(0, 6).forEach(rev => { // عرض آخر 6 تقييمات كحد أقصى
+                        let starsHtml = '';
+                        for(let i=0; i<5; i++) {
+                            starsHtml += `<i class="fa fa-star ${i < rev.rating ? 'text-amber-400' : 'text-gray-600/50'}"></i>`;
+                        }
+                        
+                        html += `
+                        <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
+                            <div class="flex gap-1 text-xs mb-4">${starsHtml}</div>
+                            <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"${escapeHtml(rev.text)}"</p>
+                            <div class="flex items-center gap-3 border-t border-white/5 pt-4">
+                                <div class="w-10 h-10 rounded-full bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 font-black">${escapeHtml(rev.initial)}</div>
+                                <div>
+                                    <p class="text-white font-bold text-sm">${escapeHtml(rev.name)}</p>
+                                    <p class="text-[10px] text-green-400"><i class="fa fa-check-circle"></i> مشتري موثق</p>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                }
+                container.innerHTML = html;
+            });
+        };
+        loadReviews(); // جلب التقييمات فوراً
+
+        window.addReview = async () => {
+            const { value: formValues } = await Swal.fire({
+                title: 'تقييم تجربتك معنا',
+                html: `
+                    <div class="mb-5 text-right">
+                        <label class="block text-gray-400 text-sm mb-2 font-bold">تقييمك (من 1 إلى 5)</label>
+                        <input id="rev-rating" type="number" min="1" max="5" value="5" class="swal2-input text-center text-xl font-black">
+                    </div>
+                    <div class="text-right">
+                        <label class="block text-gray-400 text-sm mb-2 font-bold">رأيك بالخدمة</label>
+                        <textarea id="rev-text" class="swal2-textarea h-24" placeholder="كيف كانت تجربتك؟ الأليرتات، التسليم، الدعم..."></textarea>
+                    </div>
+                `,
+                confirmButtonText: 'نشر التقييم',
+                confirmButtonColor: '#16a34a',
+                showCancelButton: true,
+                cancelButtonText: 'إلغاء',
+                preConfirm: () => {
+                    const rating = document.getElementById('rev-rating').value;
+                    const text = document.getElementById('rev-text').value;
+                    if (!rating || rating < 1 || rating > 5) return Swal.showValidationMessage('يرجى إدخال تقييم صحيح من 1 إلى 5');
+                    if (!text.trim()) return Swal.showValidationMessage('يرجى كتابة رأيك لتفيد غيرك');
+                    return { rating: parseInt(rating), text: text.trim() };
+                }
+            });
+
+            if (formValues && auth.currentUser) {
+                const userEmail = auth.currentUser.email;
+                const userName = userEmail.split('@')[0]; 
+                const initial = userName.charAt(0).toUpperCase();
+                
+                push(ref(db, "reviews"), {
+                    name: userName,
+                    initial: initial,
+                    rating: formValues.rating,
+                    text: formValues.text,
+                    date: new Date().toISOString()
+                }).then(() => {
+                    Toast.fire({ icon: 'success', title: 'شكراً لتقييمك! تم إضافته بنجاح 🎉' });
+                });
+            }
+        };
+        // -----------------------------------------------------------
 
         onValue(
             ref(db, "products"),
@@ -589,14 +660,25 @@
             ordersUserRef = ref(db, `orders/${uid}`);
             onValue(ordersUserRef, s => {
                 const list = document.getElementById('user-orders-list'); list.innerHTML = "";
+                let hasActiveOrder = false; // التحقق من وجود طلب مفعل
+                
                 s.forEach(o => {
                     const d = o.val();
                     const active = d.status === 'active';
+                    if (active) hasActiveOrder = true;
+                    
                     list.innerHTML += `<div class="glass-v2 p-4 rounded-2xl flex justify-between items-center ${active ? 'border-green-500/40' : 'border-yellow-500/40'}">
                         <div><p class="text-xs text-gray-400">طلب #${escapeHtml(o.key.substr(-4))}</p><p class="font-black text-white text-sm">${escapeHtml(d.total)}</p></div>
                         ${active ? `<a href="${safeUrl(d.productLink)}" target="_blank" rel="noopener noreferrer" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5"><i class="fa fa-download"></i> تحميل المنتج</a>` : '<span class="text-yellow-400 text-xs font-bold bg-yellow-500/10 px-3 py-1 rounded-full">⏳ قيد المراجعة</span>'}
                     </div>`;
                 });
+
+                // إظهار زر التقييم إذا كان العميل يملك طلباً مفعلاً
+                const reviewBtn = document.getElementById('add-review-btn');
+                if (reviewBtn) {
+                    reviewBtn.classList.toggle('hidden', !hasActiveOrder);
+                    reviewBtn.classList.toggle('flex', hasActiveOrder);
+                }
             });
         };
 
