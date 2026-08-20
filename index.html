@@ -279,8 +279,11 @@
                 <span id="total-price" class="text-2xl font-black text-red-500">$0.00</span>
             </div>
             <button onclick="window.startCheckout()" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white py-4 rounded-xl font-black shadow-lg shadow-red-600/40 transform hover:-translate-y-0.5 transition-all text-sm">
-                إتمام الطلب والدفع السريع
+                <i class="fa fa-bolt ml-1"></i> إتمام الطلب والدفع الإلكتروني
             </button>
+            <a href="https://wa.me/905377964233?text=أريد الاستفسار عن طرق دفع أخرى" target="_blank" class="mt-3 w-full flex items-center justify-center gap-2 text-gray-400 hover:text-green-400 py-2 text-xs font-bold transition">
+                <i class="fab fa-whatsapp text-green-500"></i> طرق دفع أخرى؟ تواصل معنا
+            </a>
         </div>
     </div>
 
@@ -330,22 +333,22 @@
             document.getElementById('store-desc-display').textContent = s.val() || "مرحباً بك في YZ STORE، المتجر الأفضل لتطوير تجربة البث المباشر وشراء الاشتراكات والخدمات الرقمية.";
         });
 
-        const PAYMENT_DATA = {
-            paddle: {
-                title: 'الدفع الإلكتروني (Apple Pay / فيزا / مدى)',
-                icon: 'https://cdn-icons-png.flaticon.com/512/888/888870.png',
-                isPaddle: true
+        onValue(
+            ref(db, "products"),
+            s => {
+                allProducts = [];
+                s.forEach(p => { allProducts.push({ ...p.val(), key: p.key }); });
+                renderProducts();
             },
-            paypal: { title: 'PayPal', icon: 'https://cdn-icons-png.flaticon.com/512/174/174861.png', value: 'yazen.makki@gmail.com', link: 'https://paypal.me/yzstore0' },
-            binance: { title: 'Binance Pay (USDT)', icon: 'https://cryptologos.cc/logos/binance-coin-bnb-logo.png', value: '86551336', name: 'YZ STORE' },
-            bank: { title: 'التحويل البنكي (تركيا والسعودية)', icon: 'https://cdn-icons-png.flaticon.com/512/2830/2830284.png', value: 'SA9230000000123456784849', name: 'يزن عادل حسن' }
-        };
-
-        onValue(ref(db, "products"), s => {
-            allProducts = [];
-            s.forEach(p => { allProducts.push({ ...p.val(), key: p.key }); });
-            renderProducts();
-        });
+            err => {
+                console.error("Failed to load products:", err);
+                const grid = document.getElementById('products-grid');
+                grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-500 font-bold">
+                    <i class="fa fa-triangle-exclamation text-red-500 text-2xl mb-3 block"></i>
+                    تعذر تحميل المنتجات، يرجى تحديث الصفحة أو المحاولة لاحقاً.
+                </div>`;
+            }
+        );
 
         let ordersUserRef = null;
 
@@ -544,35 +547,27 @@
             });
         };
 
+        // Checkout is now electronic-only (Paddle: Apple Pay / Visa / Mada / cards).
+        // Manual methods (Binance, IBAN, PayPal transfer) were removed; customers
+        // who need another method are pointed to WhatsApp via the link in the
+        // cart drawer instead.
         window.startCheckout = () => {
             if(!auth.currentUser) {
                 toggleCart(false);
                 return handleAuth();
             }
             if(cart.length === 0) return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' });
-            Swal.fire({
-                title: 'اختر طريقة الدفع', showConfirmButton: false,
-                html: `
-                    <div class="grid gap-3 mt-4">
-                        ${Object.entries(PAYMENT_DATA).map(([k,v])=>`
-                            <button onclick="showPayDetails('${k}')" class="p-4 rounded-2xl bg-white/5 hover:bg-white/10 flex items-center justify-between w-full transition border ${k==='paddle' ? 'border-red-500/50 bg-red-500/10' : 'border-white/5'}">
-                                <div class="flex items-center gap-3">
-                                    <img src="${v.icon}" class="w-7 h-7 object-contain">
-                                    <span class="font-black text-xs text-right text-white">${escapeHtml(v.title)}</span>
-                                </div>
-                                <i class="fa fa-chevron-left text-gray-500 text-xs"></i>
-                            </button>
-                        `).join('')}
-                    </div>
-                `
-            });
+
+            const missing = cart.filter(item => !item.paddlePriceId);
+            if(missing.length > 0) {
+                return Swal.fire('تعذر إتمام الدفع', 'بعض المنتجات في السلة لا تملك معرف سعر Paddle صالح. يرجى التواصل مع الدعم عبر واتساب.', 'error');
+            }
+
+            toggleCart(false);
+            window.openPaddleCheckout(cart);
         };
 
         window.openPaddleCheckout = (itemsList) => {
-            const missing = itemsList.filter(item => !item.paddlePriceId);
-            if(missing.length > 0) {
-                return Swal.fire('تعذر إتمام الدفع', 'بعض المنتجات في السلة لا تملك معرف سعر Paddle صالح. يرجى التواصل مع الدعم.', 'error');
-            }
             const paddleItems = itemsList.map(item => ({
                 priceId: item.paddlePriceId,
                 quantity: item.qty || 1
@@ -591,50 +586,6 @@
             });
         };
 
-        window.showPayDetails = (k) => {
-            const d = PAYMENT_DATA[k];
-            const total = document.getElementById('total-price').innerText;
-
-            if (d.isPaddle) {
-                Swal.close();
-                toggleCart(false);
-                window.openPaddleCheckout(cart);
-                return;
-            }
-
-            const paypalBtn = k === 'paypal' ? `<a href="${safeUrl(d.link)}" target="_blank" rel="noopener noreferrer" class="block w-full bg-blue-600 text-white p-4 rounded-2xl mb-3 font-bold text-center text-xs shadow-lg">الدفع المباشر عبر PayPal</a>` : '';
-            Swal.fire({
-                title: d.title,
-                confirmButtonText: 'تأكيد التحويل وإرسال الطلب',
-                confirmButtonColor: '#ef4444',
-                showCancelButton: true, cancelButtonText: 'إلغاء',
-                html: `
-                    ${paypalBtn}
-                    <div class="p-4 bg-white/5 border border-dashed border-white/20 rounded-2xl font-mono text-xs break-all mb-2 select-all">${escapeHtml(d.value)}</div>
-                    ${d.name ? `<div class="text-xs text-gray-400 mb-3">باسم: ${escapeHtml(d.name)}</div>` : ''}
-                    <p class="text-xs text-gray-400">بعد إتمام التحويل، اضغط على زر التأكيد وسيتم تفعيل ملفاتك مباشرة في حسابك.</p>`
-            })
-            .then(r => {
-                if(r.isConfirmed) {
-                    push(ref(db, `orders/${auth.currentUser.uid}`), {
-                        uid: auth.currentUser.uid,
-                        email: auth.currentUser.email,
-                        total: total,
-                        method: k,
-                        status: 'pending',
-                        items: cart,
-                        timestamp: Date.now()
-                    }).then(() => {
-                        window.open(`https://wa.me/905377964233?text=${encodeURIComponent('طلب جديد بقيمة ' + total + ' عبر ' + k + ' من: ' + auth.currentUser.email)}`, '_blank');
-                        cart = [];
-                        updateCartUI();
-                        toggleCart(false);
-                        Swal.fire('تم استلام طلبك', 'سيتم التحقق وتجهيز ملفاتك خلال لحظات', 'success');
-                    });
-                }
-            });
-        };
-
         window.showLegalModal = (type) => {
             const data = {
                 terms: {
@@ -643,7 +594,8 @@
                         <div class="text-left text-xs space-y-3 leading-relaxed text-gray-300 font-sans" dir="ltr">
                             <p><strong>1. Services:</strong> YZ STORE provides digital streaming assets, sound alerts, overlays, and graphics.</p>
                             <p><strong>2. Delivery:</strong> All goods are delivered electronically via instant download on your dashboard upon payment.</p>
-                            <p><strong>3. Merchant of Record:</strong> Paddle.com is the Merchant of Record for all orders and handles customer inquiries.</p>
+                            <p><strong>3. Payments:</strong> All orders are paid electronically through Paddle.com (Apple Pay / Visa / Mada / cards).</p>
+                            <p><strong>4. Merchant of Record:</strong> Paddle.com is the Merchant of Record for all orders and handles customer inquiries.</p>
                         </div>
                     `
                 },
