@@ -16,13 +16,12 @@
         .glass-panel { background: #121218; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 24px; }
         input, select, textarea { background: #1a1a24; border: 1px solid #272732; color: white; padding: 10px 14px; border-radius: 8px; width: 100%; font-family: 'Cairo', sans-serif; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: #ef4444; }
-        .swal2-popup { background: #121218 !important; color: #fff !important; border-radius: 16px !important; border: 1px solid #272732 !important; }
-        .swal2-title { font-family: 'Cairo', sans-serif !important; }
+        .swal2-popup { background: #121218 !important; color: #fff !important; border-radius: 16px !important; }
     </style>
 </head>
 <body class="bg-[#070709] text-white">
 
-    <!-- شاشة التحميل (بديل الشاشة البيضاء) -->
+    <!-- شاشة التحميل السوداء (لحين التحقق من الصلاحيات) -->
     <div id="loading-screen" class="fixed inset-0 flex items-center justify-center bg-[#070709] z-[99999]">
         <div class="flex flex-col items-center gap-4">
             <i class="fa fa-circle-notch fa-spin text-red-500 text-4xl"></i>
@@ -30,7 +29,7 @@
         </div>
     </div>
 
-    <!-- محتوى لوحة التحكم (مخفي حتى يتم التحقق) -->
+    <!-- محتوى الإدارة -->
     <div id="admin-content" class="hidden opacity-0 transition-opacity duration-500">
         
         <!-- شريط التنقل للإدارة -->
@@ -54,17 +53,50 @@
                 <button onclick="window.saveStoreDesc()" class="mt-4 bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-lg font-bold transition">حفظ الوصف</button>
             </div>
 
-            <!-- 2. إدارة لوحة الشرف -->
-            <div class="glass-panel border-yellow-500/30 border flex flex-col md:flex-row justify-between items-center gap-4">
-                <div>
-                    <h2 class="text-xl font-black text-yellow-400 mb-1 flex items-center gap-2">
-                        <i class="fa fa-trophy"></i> إدارة لوحة الشرف (Top 3)
-                    </h2>
-                    <p class="text-sm text-gray-400">تحكم بأسماء وصور الستريمرز في الصفحة الرئيسية بخطوة واحدة.</p>
+            <!-- 2. إدارة لوحة الشرف (التصميم الأساسي القديم) -->
+            <div class="glass-panel border-yellow-500/30 border">
+                <h2 class="text-xl font-black text-yellow-400 mb-6 flex items-center gap-2">
+                    <i class="fa fa-trophy"></i> إدارة لوحة الشرف (Top 3)
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- المركز الأول -->
+                    <div class="bg-[#1a1a24] p-5 rounded-xl border border-yellow-500">
+                        <h3 class="text-yellow-500 font-bold mb-4 text-center">المركز الأول 🥇</h3>
+                        <div class="space-y-3">
+                            <input id="vip-name-1" type="text" placeholder="اسم الستريمر">
+                            <input id="vip-role-1" type="text" placeholder="اللقب (مثل: أكبر داعم)">
+                            <input id="vip-img-1" type="text" placeholder="رابط صورة الستريمر">
+                            <input id="vip-link-1" type="text" placeholder="رابط القناة (يوتيوب/تويتش)">
+                            <button onclick="window.saveVIP(1)" class="w-full bg-yellow-600 hover:bg-yellow-500 text-white py-2 rounded-lg font-bold transition">حفظ المركز الأول</button>
+                        </div>
+                    </div>
+
+                    <!-- المركز الثاني -->
+                    <div class="bg-[#1a1a24] p-5 rounded-xl border border-gray-400">
+                        <h3 class="text-gray-400 font-bold mb-4 text-center">المركز الثاني 🥈</h3>
+                        <div class="space-y-3">
+                            <input id="vip-name-2" type="text" placeholder="اسم الستريمر">
+                            <input id="vip-role-2" type="text" placeholder="اللقب">
+                            <input id="vip-img-2" type="text" placeholder="رابط صورة الستريمر">
+                            <input id="vip-link-2" type="text" placeholder="رابط القناة">
+                            <button onclick="window.saveVIP(2)" class="w-full bg-gray-500 hover:bg-gray-400 text-white py-2 rounded-lg font-bold transition">حفظ المركز الثاني</button>
+                        </div>
+                    </div>
+
+                    <!-- المركز الثالث -->
+                    <div class="bg-[#1a1a24] p-5 rounded-xl border border-amber-700">
+                        <h3 class="text-amber-600 font-bold mb-4 text-center">المركز الثالث 🥉</h3>
+                        <div class="space-y-3">
+                            <input id="vip-name-3" type="text" placeholder="اسم الستريمر">
+                            <input id="vip-role-3" type="text" placeholder="اللقب">
+                            <input id="vip-img-3" type="text" placeholder="رابط صورة الستريمر">
+                            <input id="vip-link-3" type="text" placeholder="رابط القناة">
+                            <button onclick="window.saveVIP(3)" class="w-full bg-amber-700 hover:bg-amber-600 text-white py-2 rounded-lg font-bold transition">حفظ المركز الثالث</button>
+                        </div>
+                    </div>
+
                 </div>
-                <button onclick="window.manageVIP()" class="bg-yellow-600 hover:bg-yellow-500 text-white px-8 py-3 rounded-xl font-black transition flex items-center gap-2 shadow-lg shadow-yellow-600/20">
-                    <i class="fa fa-pen"></i> إدارة لوحة الشرف
-                </button>
             </div>
 
             <!-- 3. إضافة منتج جديد -->
@@ -87,7 +119,9 @@
             <!-- 4. قائمة المنتجات الحالية -->
             <div class="glass-panel">
                 <h2 class="text-xl font-black text-white mb-4"><i class="fa fa-box text-blue-500"></i> المنتجات الحالية</h2>
-                <div id="admin-products-list" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+                <div id="admin-products-list" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- سيتم عرض المنتجات هنا برمجياً -->
+                </div>
             </div>
 
         </div>
@@ -96,7 +130,7 @@
     <!-- Firebase Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-        import { getDatabase, ref, set, push, onValue, remove, get } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+        import { getDatabase, ref, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -112,7 +146,7 @@
         const auth = getAuth(app);
         const ADMIN_EMAIL = "osohmde@gmail.com";
 
-        // حماية صفحة الإدارة وإزالة شاشة التحميل
+        // حماية صفحة الإدارة
         onAuthStateChanged(auth, user => {
             const loadingScreen = document.getElementById('loading-screen');
             if (loadingScreen) loadingScreen.remove();
@@ -140,10 +174,10 @@
             });
         };
 
+        // --- نظام وصف المتجر ---
         onValue(ref(db, "store_settings/desc"), snapshot => {
             document.getElementById('store-desc-input').value = snapshot.val() || "";
         });
-        
         window.saveStoreDesc = () => {
             const desc = document.getElementById('store-desc-input').value;
             set(ref(db, "store_settings/desc"), desc).then(() => {
@@ -151,66 +185,48 @@
             });
         };
 
-        // إدارة لوحة الشرف
-        window.manageVIP = async () => {
-            const { value: rank } = await Swal.fire({
-                title: 'إدارة لوحة الشرف 🏆',
-                text: 'اختر المركز الذي تريد تعديله:',
-                input: 'select',
-                inputOptions: {
-                    '1': 'المركز الأول 🥇',
-                    '2': 'المركز الثاني 🥈',
-                    '3': 'المركز الثالث 🥉'
-                },
-                inputPlaceholder: 'اختر المركز',
-                showCancelButton: true,
-                confirmButtonText: 'التالي &larr;',
-                cancelButtonText: 'إلغاء',
-                confirmButtonColor: '#eab308'
-            });
-
-            if (rank) {
-                Swal.showLoading();
-                const snapshot = await get(ref(db, `store_settings/leaderboard/rank${rank}`));
-                const data = snapshot.val() || { name: '', role: '', img: '', link: '' };
-                Swal.close();
-
-                const { value: formValues } = await Swal.fire({
-                    title: `تعديل المركز ${rank}`,
-                    html: `
-                        <input id="vip-name" class="swal2-input" placeholder="اسم الستريمر" value="${data.name}" style="width: 85%; margin: 8px auto;">
-                        <input id="vip-role" class="swal2-input" placeholder="اللقب (مثل: أكبر داعم)" value="${data.role}" style="width: 85%; margin: 8px auto;">
-                        <input id="vip-img" class="swal2-input" placeholder="رابط الصورة (ImgBB)" value="${data.img}" style="width: 85%; margin: 8px auto;">
-                        <input id="vip-link" class="swal2-input" placeholder="رابط القناة (يوتيوب/تويتش)" value="${data.link}" style="width: 85%; margin: 8px auto;">
-                    `,
-                    focusConfirm: false,
-                    showCancelButton: true,
-                    confirmButtonText: 'حفظ التعديلات',
-                    cancelButtonText: 'إلغاء',
-                    confirmButtonColor: '#16a34a',
-                    preConfirm: () => {
-                        return {
-                            name: document.getElementById('vip-name').value,
-                            role: document.getElementById('vip-role').value,
-                            img: document.getElementById('vip-img').value,
-                            link: document.getElementById('vip-link').value
-                        }
-                    }
-                });
-
-                if (formValues) {
-                    set(ref(db, `store_settings/leaderboard/rank${rank}`), formValues).then(() => {
-                        Swal.fire({
-                            title: 'تم الحفظ!',
-                            text: `تم تحديث المركز ${rank} بنجاح`,
-                            icon: 'success',
-                            confirmButtonColor: '#16a34a'
-                        });
-                    });
-                }
+        // --- نظام لوحة الشرف (VIP Leaderboard) القديم الأساسي ---
+        onValue(ref(db, "store_settings/leaderboard"), snapshot => {
+            const data = snapshot.val() || {};
+            if(data.rank1) {
+                document.getElementById('vip-name-1').value = data.rank1.name || '';
+                document.getElementById('vip-role-1').value = data.rank1.role || '';
+                document.getElementById('vip-img-1').value = data.rank1.img || '';
+                document.getElementById('vip-link-1').value = data.rank1.link || '';
             }
+            if(data.rank2) {
+                document.getElementById('vip-name-2').value = data.rank2.name || '';
+                document.getElementById('vip-role-2').value = data.rank2.role || '';
+                document.getElementById('vip-img-2').value = data.rank2.img || '';
+                document.getElementById('vip-link-2').value = data.rank2.link || '';
+            }
+            if(data.rank3) {
+                document.getElementById('vip-name-3').value = data.rank3.name || '';
+                document.getElementById('vip-role-3').value = data.rank3.role || '';
+                document.getElementById('vip-img-3').value = data.rank3.img || '';
+                document.getElementById('vip-link-3').value = data.rank3.link || '';
+            }
+        });
+
+        window.saveVIP = (rank) => {
+            const name = document.getElementById(`vip-name-${rank}`).value;
+            const role = document.getElementById(`vip-role-${rank}`).value;
+            const img = document.getElementById(`vip-img-${rank}`).value;
+            const link = document.getElementById(`vip-link-${rank}`).value;
+
+            set(ref(db, `store_settings/leaderboard/rank${rank}`), {
+                name: name,
+                role: role,
+                img: img,
+                link: link
+            }).then(() => {
+                Swal.fire('تم الحفظ', `تم تحديث بيانات المركز ${rank} بنجاح، وستظهر فوراً في المتجر!`, 'success');
+            }).catch(error => {
+                Swal.fire('خطأ', error.message, 'error');
+            });
         };
 
+        // --- نظام المنتجات ---
         window.addProduct = () => {
             const title = document.getElementById('p-title').value;
             const price = document.getElementById('p-price').value;
