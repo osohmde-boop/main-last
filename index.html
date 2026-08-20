@@ -79,108 +79,51 @@
         .logo-glow-effect { animation: pulse-slow 3s infinite ease-in-out; }
 
         /* =========================================================
-           حركات الدخولية - النار الكرتونية واللوجو 
+           حركات الدخولية - سريعة، فخمة، ولوجو كبير 
            ========================================================= */
-        .intro-fire-scale {
-            animation: fireIgnite 0.5s ease-out forwards;
-            transform-origin: bottom center;
-        }
-        @keyframes fireIgnite {
-            0% { transform: scale(0) translateY(100px); opacity: 0; }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        /* شكل شعلة النار (قطرة مقلوبة) */
-        .flame {
-            position: absolute;
-            bottom: 0;
-            border-radius: 50% 0 50% 50%;
-            transform: rotate(-45deg);
-            animation: flicker 0.5s ease-in-out infinite alternate;
-        }
-        /* الطبقة الحمراء (الأكبر) */
-        .flame.red { 
-            width: 220px; height: 220px; 
-            background: #ef4444; 
-            box-shadow: 0 0 30px rgba(239,68,68,0.5);
-            z-index: 1; 
-            bottom: -50px;
-        }
-        /* الطبقة البرتقالية (الوسطى) */
-        .flame.orange { 
-            width: 150px; height: 150px; 
-            background: #f97316; 
-            z-index: 2; 
-            bottom: -20px; 
-            animation-delay: 0.1s;
-        }
-        /* الطبقة الصفراء (الأصغر بالداخل) */
-        .flame.yellow { 
-            width: 90px; height: 90px; 
-            background: #facc15; 
-            z-index: 3; 
-            bottom: 10px; 
-            animation-delay: 0.2s;
-        }
-
-        /* حركة التمايل للنار الكرتونية */
-        @keyframes flicker {
-            0% { transform: rotate(-45deg) scale(0.95); border-radius: 50% 0 50% 50%; }
-            100% { transform: rotate(-41deg) scale(1.05); border-radius: 45% 0 55% 45%; }
-        }
-
-        /* خروج اللوجو من النار */
         .intro-logo-pop {
             opacity: 0;
-            animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards;
+            animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             z-index: 10;
         }
         @keyframes popUp {
-            0% { opacity: 0; transform: scale(0) translateY(50px); filter: drop-shadow(0 0 0 transparent); }
-            100% { opacity: 1; transform: scale(1) translateY(0); filter: drop-shadow(0 15px 35px rgba(239, 68, 68, 0.8)); }
+            0% { opacity: 0; transform: scale(0.5) translateY(30px); filter: drop-shadow(0 0 0 transparent); }
+            /* تكبير اللوجو لـ 1.2 */
+            100% { opacity: 1; transform: scale(1.2) translateY(0); filter: drop-shadow(0 15px 35px rgba(239, 68, 68, 0.8)); }
         }
 
-        /* رفع شاشة الدخولية */
         .intro-fade-out {
             opacity: 0;
             visibility: hidden;
             transform: translateY(-100%);
-            transition: transform 0.8s cubic-bezier(0.8, 0, 0.2, 1), opacity 0.8s ease;
+            transition: transform 0.6s cubic-bezier(0.8, 0, 0.2, 1), opacity 0.6s ease;
         }
     </style>
 </head>
 <body class="flex flex-col min-h-screen relative">
 
-    <!-- شاشة الدخولية السينمائية (نار كرتونية) -->
-    <div id="yz-intro" class="fixed inset-0 z-[99999] bg-[#050507] flex items-center justify-center transition-all duration-1000 overflow-hidden origin-top">
+    <!-- شاشة الدخولية السريعة -->
+    <div id="yz-intro" class="fixed inset-0 z-[99999] bg-[#050507] flex items-center justify-center transition-all duration-700 overflow-hidden origin-top">
         <div class="relative flex items-center justify-center w-full h-full">
-            
-            <!-- النار الكرتونية المتراقصة -->
-            <div class="absolute bottom-1/2 translate-y-1/2 flex items-center justify-center intro-fire-scale">
-                <div class="flame red"></div>
-                <div class="flame orange"></div>
-                <div class="flame yellow"></div>
-            </div>
-            
-            <!-- لوجو YZ STORE -->
-            <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="YZ STORE" class="w-48 sm:w-64 h-auto relative intro-logo-pop">
-            
+            <!-- إضاءة خلفية للوجو (Glow) -->
+            <div class="absolute bg-red-600 blur-[80px] opacity-20 rounded-full animate-pulse w-64 h-64 z-0"></div>
+            <!-- لوجو YZ STORE بحجم أكبر (w-64 sm:w-80) -->
+            <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="YZ STORE" class="w-64 sm:w-80 h-auto relative intro-logo-pop">
         </div>
     </div>
 
-    <!-- التحكم بوقت الدخولية -->
+    <!-- التحكم بوقت الدخولية (سريع جداً) -->
     <script>
         window.addEventListener('load', () => {
             const intro = document.getElementById('yz-intro');
             
-            // نعطي النار واللوجو وقت (2.5 ثانية) يشتعلون وبعدها نفتح المتجر
+            // ثانية واحدة فقط (1000 ملي ثانية) ثم يفتح المتجر
             setTimeout(() => {
                 if(intro) {
                     intro.classList.add('intro-fade-out');
-                    // نحذف العنصر برمجياً عشان ما يثقل الموقع بعد دخوله
-                    setTimeout(() => intro.remove(), 1000); 
+                    setTimeout(() => intro.remove(), 700); 
                 }
-            }, 2500);
+            }, 1000);
         });
     </script>
 
