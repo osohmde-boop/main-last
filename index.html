@@ -47,6 +47,51 @@
         .intro-logo-pop { opacity: 0; animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; z-index: 10; }
         @keyframes popUp { 0% { opacity: 0; transform: scale(0.5) translateY(30px); } 100% { opacity: 1; transform: scale(1.2) translateY(0); filter: drop-shadow(0 15px 35px rgba(239, 68, 68, 0.8)); } }
         .intro-fade-out { opacity: 0; visibility: hidden; transform: translateY(-100%); transition: transform 0.6s cubic-bezier(0.8, 0, 0.2, 1), opacity 0.6s ease; }
+
+        /* ---------- Background Dragon (ambient, GPU-only, no JS) ---------- */
+        #bg-dragon-wrap {
+            position: fixed;
+            inset: 0;
+            z-index: 1; /* behind nav/content (z-10/z-50), above the plain grid (z-0) so it glows through the frosted glass panels */
+            pointer-events: none;
+            opacity: 0;
+            animation: dragon-fade-in 1.2s ease forwards 2.6s; /* appears right after the intro logo fades out */
+        }
+        @keyframes dragon-fade-in { to { opacity: 1; } }
+
+        #bg-dragon {
+            position: absolute;
+            top: 0; left: 0;
+            width: 220px;
+            height: auto;
+            offset-path: path('M -300,120 C 200,-80 500,400 900,180 C 1300,-40 1650,300 2000,140 C 1650,420 1300,560 900,480 C 500,600 150,420 -300,560 C 150,420 -300,120 -300,120');
+            offset-rotate: auto;
+            animation: dragon-fly 42s linear infinite;
+            filter: drop-shadow(0 0 18px rgba(239, 68, 68, 0.55)) drop-shadow(0 0 40px rgba(239, 68, 68, 0.25));
+            opacity: 0.5;
+            mix-blend-mode: screen;
+        }
+        @keyframes dragon-fly {
+            0%   { offset-distance: 0%;   transform: scale(0.75); }
+            50%  { offset-distance: 50%;  transform: scale(1.15); }
+            100% { offset-distance: 100%; transform: scale(0.75); }
+        }
+        #bg-dragon .wing {
+            transform-origin: 50% 50%;
+            animation: wing-flap 0.9s ease-in-out infinite;
+        }
+        #bg-dragon .wing.wing-back { animation-delay: 0.12s; }
+        @keyframes wing-flap {
+            0%, 100% { transform: scaleY(1) rotate(0deg); }
+            50%      { transform: scaleY(0.55) rotate(-8deg); }
+        }
+
+        @media (max-width: 640px) {
+            #bg-dragon { width: 130px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #bg-dragon-wrap { display: none; }
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen relative">
@@ -68,6 +113,29 @@
 
     <div class="fixed inset-0 cyber-grid pointer-events-none z-0"></div>
     <div class="fixed inset-0 hero-gradient pointer-events-none z-0"></div>
+
+    <!-- Ambient background dragon: pure SVG + CSS motion path, no JS loop, no GIF/image weight -->
+    <div id="bg-dragon-wrap" aria-hidden="true">
+        <svg id="bg-dragon" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="dragon-body-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ef4444" stop-opacity="0" />
+                    <stop offset="35%" stop-color="#ef4444" stop-opacity="0.9" />
+                    <stop offset="70%" stop-color="#f59e0b" stop-opacity="0.9" />
+                    <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
+                </linearGradient>
+            </defs>
+            <!-- back wing -->
+            <path class="wing wing-back" d="M 150,55 C 175,25 205,20 225,35 C 205,42 180,48 158,60 Z" fill="url(#dragon-body-grad)" opacity="0.55"/>
+            <!-- serpentine body/tail -->
+            <path d="M 4,70 C 30,50 55,85 85,62 C 110,44 130,64 150,58 C 170,52 185,68 200,60"
+                  fill="none" stroke="url(#dragon-body-grad)" stroke-width="6" stroke-linecap="round"/>
+            <!-- front wing -->
+            <path class="wing wing-front" d="M 140,50 C 162,18 195,10 222,26 C 198,36 172,42 148,56 Z" fill="url(#dragon-body-grad)" opacity="0.85"/>
+            <!-- head -->
+            <path d="M 195,57 C 205,50 218,50 226,57 C 219,62 208,64 199,62 Z" fill="url(#dragon-body-grad)"/>
+        </svg>
+    </div>
 
     <nav class="fixed top-0 w-full glass-v2 z-50 px-6 py-4 border-b border-white/5 flex justify-between items-center">
         <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})" dir="ltr">
