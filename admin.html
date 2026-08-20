@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <title>لوحة التحكم | YZ STORE Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Keep this page out of search engines and off-limits to casual crawling.
-         This is NOT a security control (the real gate is Firebase Rules +
-         the auth check below) -- it just avoids the page showing up in
-         Google or being linked from anywhere public. -->
     <meta name="robots" content="noindex, nofollow">
 
     <link rel="icon" type="image/png" href="https://i.ibb.co/YT1RPZdx/image.png">
@@ -32,10 +28,6 @@
 </head>
 <body class="min-h-screen">
 
-    <!-- Gate screen: shown until Firebase confirms this is the admin account.
-         This is a UX convenience only -- every read/write below is still
-         enforced independently by the Firebase Database Rules, which is the
-         actual security boundary. -->
     <div id="gate" class="min-h-screen flex items-center justify-center p-6">
         <div class="glass-v2 rounded-3xl p-8 max-w-sm w-full text-center space-y-5">
             <img src="https://i.ibb.co/YT1RPZdx/image.png" class="h-14 w-auto mx-auto">
@@ -46,7 +38,6 @@
         </div>
     </div>
 
-    <!-- Real dashboard: stays hidden until the gate above confirms admin -->
     <div id="dashboard" class="hidden max-w-6xl mx-auto px-4 sm:px-6 py-10">
         <div class="flex items-center justify-between mb-8">
             <div class="flex items-center gap-3">
@@ -66,7 +57,7 @@
                 </h2>
                 <span class="text-xs bg-red-600/20 text-red-400 px-3 py-1 rounded-full font-bold">Admin Privileges</span>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <button onclick="window.openAddProduct()" class="p-6 rounded-2xl bg-white/5 border border-dashed border-white/20 hover:border-red-500/50 hover:bg-red-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
                     <i class="fa fa-plus-circle text-3xl text-red-500"></i>
                     <span class="font-bold text-sm">إضافة منتج جديد</span>
@@ -74,6 +65,10 @@
                 <button onclick="window.editStoreDesc()" class="p-6 rounded-2xl bg-white/5 border border-dashed border-white/20 hover:border-blue-500/50 hover:bg-blue-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
                     <i class="fa fa-pencil text-3xl text-blue-400"></i>
                     <span class="font-bold text-sm">تعديل وصف المتجر</span>
+                </button>
+                <button onclick="window.openAddDiscount()" class="p-6 rounded-2xl bg-white/5 border border-dashed border-white/20 hover:border-green-500/50 hover:bg-green-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
+                    <i class="fa fa-percent text-3xl text-green-500"></i>
+                    <span class="font-bold text-sm">إضافة كود خصم</span>
                 </button>
                 <div class="p-4 rounded-2xl bg-black/50 border border-white/5">
                     <h3 class="text-xs font-bold text-gray-400 mb-3 flex justify-between">
@@ -94,6 +89,11 @@
                 <div id="legacy-orders-list" class="space-y-2 max-h-56 overflow-y-auto custom-scroll text-xs"></div>
             </div>
         </div>
+
+        <h2 class="text-lg font-black text-white mb-4 flex items-center gap-2">
+            <i class="fa fa-percent text-green-400"></i> أكواد الخصم
+        </h2>
+        <div id="discounts-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10"></div>
 
         <h2 class="text-lg font-black text-white mb-4 flex items-center gap-2">
             <i class="fa fa-box-open text-amber-400"></i> المنتجات
@@ -122,6 +122,7 @@
         const Toast = Swal.mixin({ toast: true, position: 'top-start', showConfirmButton: false, timer: 2000, background: '#181822', color: '#fff' });
 
         let allProducts = [];
+        let allDiscounts = []; // مصفوفة أكواد الخصم
 
         const escapeHtml = (str) => {
             if (str === null || str === undefined) return '';
@@ -198,6 +199,13 @@
                 renderProducts();
             });
 
+            // تحميل أكواد الخصم
+            onValue(ref(db, "discount_codes"), s => {
+                allDiscounts = [];
+                s.forEach(d => { allDiscounts.push({ ...d.val(), key: d.key }); });
+                renderDiscounts();
+            });
+
             loadAdminOrders();
             loadLegacyOrders();
         }
@@ -217,7 +225,94 @@
             }
         };
 
-        // --- الدالة الجديدة والمطورة لإضافة المنتج ---
+        // --- دوال أكواد الخصم الجديدة ---
+        window.openAddDiscount = async () => {
+            const { value: f } = await Swal.fire({
+                title: 'إضافة كود خصم جديد',
+                html: `
+                    <input id="dc" class="swal2-input" placeholder="الكود (حروف/أرقام إنجليزي، مثلاً EID20)" style="text-transform:uppercase">
+                    <input id="dp" type="number" min="0.01" max="100" step="0.01" class="swal2-input" placeholder="نسبة الخصم % (مثلاً 20)">
+                    <input id="de" type="date" class="swal2-input" placeholder="تاريخ الانتهاء (اختياري)">
+                    <input id="du" type="number" min="1" class="swal2-input" placeholder="عدد مرات الاستخدام المسموحة (اختياري)">
+                `,
+                confirmButtonColor: '#16a34a',
+                preConfirm: async () => {
+                    const code = document.getElementById('dc').value.trim().toUpperCase();
+                    const percentage = document.getElementById('dp').value;
+                    const expiresAt = document.getElementById('de').value;
+                    const usageLimit = document.getElementById('du').value;
+
+                    if (!code || !/^[A-Za-z0-9]{3,32}$/.test(code)) return Swal.showValidationMessage('كود غير صالح (حروف/أرقام إنجليزي، 3-32 حرف)');
+                    if (!percentage || isNaN(percentage) || percentage <= 0 || percentage > 100) return Swal.showValidationMessage('يرجى إدخال نسبة صحيحة بين 0.01 و100');
+
+                    Swal.showLoading();
+                    try {
+                        const res = await fetch('https://paddle-backend-self.vercel.app/api/discount', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ code, percentage, expiresAt: expiresAt || null, usageLimit: usageLimit || null })
+                        }).then(r => r.json());
+
+                        if (!res.success) return Swal.showValidationMessage('خطأ: ' + res.error);
+
+                        return { code: res.code, percentage: parseFloat(percentage), discountId: res.discountId, expiresAt: expiresAt || null, usageLimit: usageLimit || null, createdAt: Date.now() };
+                    } catch (e) {
+                        return Swal.showValidationMessage('فشل الاتصال بالسيرفر');
+                    }
+                }
+            });
+            if (f) {
+                push(ref(db, "discount_codes"), f).then(() => Toast.fire({ icon: 'success', title: 'تم إنشاء كود الخصم بنجاح 🎉' }));
+            }
+        };
+
+        window.archiveDiscount = (k, discountId) => {
+            Swal.fire({
+                title: 'إلغاء كود الخصم؟',
+                text: 'الكود رح يتوقف عن العمل فورًا على Paddle.',
+                icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، ألغِ', cancelButtonText: 'تراجع', confirmButtonColor: '#ef4444'
+            }).then(async r => {
+                if (!r.isConfirmed) return;
+                try {
+                    const res = await fetch('https://paddle-backend-self.vercel.app/api/discount-archive', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ discountId })
+                    }).then(x => x.json());
+                    if (!res.success) return Swal.fire('خطأ', res.error || 'فشل الإلغاء', 'error');
+                    remove(ref(db, "discount_codes/" + k)).then(() => Toast.fire({ icon: 'success', title: 'تم إلغاء الكود' }));
+                } catch (e) {
+                    Swal.fire('خطأ', 'فشل الاتصال بالسيرفر', 'error');
+                }
+            });
+        };
+
+        window.renderDiscounts = () => {
+            const grid = document.getElementById('discounts-list'); if (!grid) return;
+            grid.innerHTML = "";
+            if (allDiscounts.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500 font-bold">لا توجد أكواد خصم بعد.</div>`;
+                return;
+            }
+            allDiscounts.forEach(d => {
+                const expired = d.expiresAt && new Date(d.expiresAt) < new Date();
+                grid.innerHTML += `
+                <div class="glass-v2 rounded-2xl p-5 ${expired ? 'opacity-50' : ''}">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-black text-white text-lg tracking-wider">${escapeHtml(d.code)}</span>
+                        <span class="text-green-400 font-black text-xl">${escapeHtml(d.percentage)}%</span>
+                    </div>
+                    <p class="text-[11px] text-gray-400 mb-3">
+                        ${d.expiresAt ? 'ينتهي: ' + escapeHtml(d.expiresAt) : 'بدون تاريخ انتهاء'}
+                        ${d.usageLimit ? ' · حد الاستخدام: ' + escapeHtml(d.usageLimit) : ''}
+                        ${expired ? ' · <span class="text-red-400">منتهي</span>' : ''}
+                    </p>
+                    <button onclick="window.archiveDiscount('${d.key}','${d.discountId}')" class="w-full bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-2 rounded-lg text-xs font-bold transition"><i class="fa fa-ban"></i> إلغاء الكود</button>
+                </div>`;
+            });
+        };
+        // --------------------------------
+
         window.openAddProduct = async () => {
             const { value: f } = await Swal.fire({
                 title: 'إضافة منتج جديد',
