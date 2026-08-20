@@ -13,10 +13,11 @@
 
     <style>
         body { background: #070709; color: #fff; font-family: 'Cairo', sans-serif; }
-        .glass-panel { background: #121218; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 24px; }
-        input, select, textarea { background: #1a1a24; border: 1px solid #272732; color: white; padding: 10px 14px; border-radius: 8px; width: 100%; font-family: 'Cairo', sans-serif; }
+        .glass-panel { background: #121218; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        input, select, textarea { background: #1a1a24; border: 1px solid #272732; color: white; padding: 12px 16px; border-radius: 10px; width: 100%; font-family: 'Cairo', sans-serif; transition: border 0.3s; }
         input:focus, select:focus, textarea:focus { outline: none; border-color: #ef4444; }
         .swal2-popup { background: #121218 !important; color: #fff !important; border-radius: 16px !important; border: 1px solid #272732 !important; }
+        .swal2-title { font-family: 'Cairo', sans-serif !important; font-weight: 900 !important; }
     </style>
 </head>
 <body class="bg-[#070709] text-white">
@@ -28,41 +29,42 @@
             <span class="font-black text-xl text-white">لوحة الإدارة | <span class="text-red-500">YZ STORE</span></span>
         </div>
         <div class="flex gap-3">
-            <!-- زر العودة للمتجر شغال 100% -->
-            <button onclick="window.location.href='index.html'" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition flex items-center gap-2">
+            <!-- زر العودة للمتجر يعمل فوراً وبدون تعليق -->
+            <button onclick="window.location.href='index.html'" class="bg-gray-800 hover:bg-gray-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2">
                 <i class="fa fa-home"></i> العودة للمتجر
             </button>
-            <button onclick="window.logoutAdmin()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg font-bold text-sm transition flex items-center gap-2">
+            <button onclick="window.logoutAdmin()" class="bg-red-600 hover:bg-red-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition flex items-center gap-2">
                 <i class="fa fa-sign-out-alt"></i> خروج
             </button>
         </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto px-4 py-8 space-y-8">
+    <div class="max-w-7xl mx-auto px-4 py-10 space-y-8">
 
-        <!-- 1. تعديل وصف المتجر وزر لوحة الشرف (مدمجين مع بعض للترتيب) -->
-        <div class="glass-panel flex flex-col md:flex-row gap-6">
-            <div class="flex-1">
+        <!-- القسم الأول: وصف المتجر + زر لوحة الشرف (مدمجين بذكاء كما طلبت) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- تعديل الوصف -->
+            <div class="glass-panel md:col-span-2">
                 <h2 class="text-xl font-black text-white mb-4"><i class="fa fa-pen text-red-500"></i> تعديل وصف المتجر (الرئيسية)</h2>
-                <textarea id="store-desc-input" rows="3" placeholder="اكتب الوصف هنا..."></textarea>
-                <button onclick="window.saveStoreDesc()" class="mt-4 bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-lg font-bold transition">حفظ الوصف</button>
+                <textarea id="store-desc-input" rows="4" placeholder="اكتب وصف المتجر هنا..."></textarea>
+                <button onclick="window.saveStoreDesc()" class="mt-4 bg-red-600 hover:bg-red-500 text-white px-8 py-2.5 rounded-xl font-bold transition shadow-lg shadow-red-600/30">حفظ الوصف</button>
             </div>
             
-            <!-- زر لوحة الشرف الذكي الذي طلبته -->
-            <div class="w-full md:w-1/3 bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-6 flex flex-col justify-center items-center text-center">
-                <i class="fa fa-trophy text-4xl text-yellow-500 mb-3"></i>
-                <h3 class="font-black text-white mb-2">إدارة ضيوف الشرف</h3>
-                <p class="text-xs text-gray-400 mb-4">تعديل الـ Top 3 في الصفحة الرئيسية</p>
-                <button onclick="window.manageVIP()" class="w-full bg-yellow-600 hover:bg-yellow-500 text-white py-3 rounded-xl font-black transition flex items-center justify-center gap-2">
-                    <i class="fa fa-pen"></i> تعديل لوحة الشرف
+            <!-- زر إدارة لوحة الشرف الذكي (بديل المربعات الثلاثة) -->
+            <div class="glass-panel border-yellow-500/30 border flex flex-col justify-center items-center text-center bg-gradient-to-b from-[#121218] to-yellow-900/10">
+                <i class="fa fa-trophy text-5xl text-yellow-500 mb-4 drop-shadow-[0_0_15px_rgba(234,179,8,0.5)]"></i>
+                <h3 class="font-black text-white text-lg mb-1">إدارة لوحة الشرف</h3>
+                <p class="text-xs text-gray-400 mb-5">تعديل الـ Top 3 في الرئيسية</p>
+                <button onclick="window.manageVIP()" class="w-full bg-yellow-600 hover:bg-yellow-500 text-white py-3 rounded-xl font-black transition flex items-center justify-center gap-2 shadow-lg shadow-yellow-600/30">
+                    <i class="fa fa-sliders"></i> تعديل الآن
                 </button>
             </div>
         </div>
 
-        <!-- 2. إضافة منتج وأكواد الخصم -->
+        <!-- القسم الثاني: إضافة منتج جديد (اللوحة القديمة التي طلبتها) -->
         <div class="glass-panel">
-            <h2 class="text-xl font-black text-white mb-4"><i class="fa fa-plus text-green-500"></i> إضافة منتج جديد</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h2 class="text-xl font-black text-white mb-6"><i class="fa fa-plus text-green-500"></i> إضافة منتج جديد</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <input id="p-title" type="text" placeholder="اسم المنتج">
                 <input id="p-price" type="number" placeholder="السعر (بالدولار)">
                 <input id="p-image" type="text" placeholder="رابط صورة المنتج (ImgBB)">
@@ -73,14 +75,14 @@
                     <option value="packages">البكجات والاشتراكات</option>
                 </select>
             </div>
-            <button onclick="window.addProduct()" class="mt-4 bg-green-600 hover:bg-green-500 text-white px-8 py-2 rounded-lg font-bold transition">إضافة المنتج</button>
+            <button onclick="window.addProduct()" class="mt-6 bg-green-600 hover:bg-green-500 text-white px-10 py-3 rounded-xl font-black transition shadow-lg shadow-green-600/30">إضافة المنتج</button>
         </div>
 
-        <!-- 3. المنتجات الحالية -->
+        <!-- القسم الثالث: المنتجات الحالية -->
         <div class="glass-panel">
-            <h2 class="text-xl font-black text-white mb-4"><i class="fa fa-box text-blue-500"></i> المنتجات الحالية</h2>
-            <div id="admin-products-list" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- المنتجات ستظهر هنا -->
+            <h2 class="text-xl font-black text-white mb-6"><i class="fa fa-box text-blue-500"></i> المنتجات الحالية في المتجر</h2>
+            <div id="admin-products-list" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- ستظهر المنتجات هنا -->
             </div>
         </div>
 
@@ -105,7 +107,7 @@
         const auth = getAuth(app);
         const ADMIN_EMAIL = "osohmde@gmail.com";
 
-        // التحقق من الإدارة
+        // حماية الإدارة
         onAuthStateChanged(auth, user => {
             if (!user || user.email !== ADMIN_EMAIL) {
                 Swal.fire({
@@ -137,7 +139,7 @@
             });
         };
 
-        // زر إدارة لوحة الشرف الذكي
+        // النافذة الذكية لإدارة لوحة الشرف
         window.manageVIP = async () => {
             const { value: rank } = await Swal.fire({
                 title: 'إدارة لوحة الشرف 🏆',
@@ -228,15 +230,15 @@
             snapshot.forEach(child => {
                 const p = child.val();
                 list.innerHTML += `
-                <div class="bg-[#1a1a24] border border-white/5 p-4 rounded-xl flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <img src="${p.image}" class="w-12 h-12 rounded object-cover">
+                <div class="bg-[#1a1a24] border border-white/5 p-4 rounded-xl flex justify-between items-center transition hover:border-red-500/50">
+                    <div class="flex items-center gap-4">
+                        <img src="${p.image}" class="w-14 h-14 rounded-lg object-cover">
                         <div>
                             <p class="font-bold text-sm text-white">${p.title}</p>
-                            <p class="text-red-500 text-xs font-black">$${p.price}</p>
+                            <p class="text-red-500 text-xs font-black mt-1">$${p.price}</p>
                         </div>
                     </div>
-                    <button onclick="window.deleteProduct('${child.key}')" class="bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white w-8 h-8 rounded-lg flex items-center justify-center transition">
+                    <button onclick="window.deleteProduct('${child.key}')" class="bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white w-10 h-10 rounded-xl flex items-center justify-center transition">
                         <i class="fa fa-trash"></i>
                     </button>
                 </div>`;
