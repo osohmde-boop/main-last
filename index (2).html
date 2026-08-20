@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>YZ STORE | المنصة الأولى لخدمات البث والاشتراكات</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.ibb.co/YT1RPZdx/image.png">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/YT1RPZdx/image.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Paddle.js Setup -->
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+    <script>
+        Paddle.Initialize({
+            token: "live_9dac314ac3bb7e4c5a22a38360c"
+        });
+    </script>
+
+    <style>
+        :root {
+            --primary-red: #ef4444;
+            --primary-glow: rgba(239, 68, 68, 0.4);
+            --bg-dark: #070709;
+        }
+        body { 
+            background: var(--bg-dark); 
+            color: #f4f4f5; 
+            font-family: 'Cairo', sans-serif; 
+            overflow-x: hidden; 
+        }
+
+        /* Cyberpunk Grid Background */
+        .cyber-grid {
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+        }
+
+        /* Glassmorphism V2 */
+        .glass-v2 {
+            background: rgba(18, 18, 24, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at 50% -20%, rgba(239, 68, 68, 0.25) 0%, rgba(7, 7, 9, 0) 70%);
+        }
+
+        .product-card-v2 {
+            background: linear-gradient(180deg, rgba(24, 24, 32, 0.8) 0%, rgba(12, 12, 16, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 22px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .product-card-v2:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: rgba(239, 68, 68, 0.5);
+            box-shadow: 0 20px 40px -15px rgba(239, 68, 68, 0.35);
+        }
+
+        .category-tab {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #a1a1aa;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .category-tab:hover, .category-tab.active {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: #ffffff;
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+            transform: scale(1.04);
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar { 
+            transform: translateX(100%); 
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            z-index: 1000; 
+            position: fixed; 
+            top: 0; 
+            right: 0; 
+            height: 100%; 
+            width: 100%; 
+            max-width: 440px; 
+            background: #0d0d12; 
+            border-left: 1px solid rgba(255, 255, 255, 0.1); 
+            box-shadow: -25px 0 50px rgba(0,0,0,0.8); 
+        }
+        .cart-sidebar.open { transform: translateX(0); }
+
+        /* SweetAlert2 Styling */
+        .swal2-popup { border-radius: 24px !important; background: #121218 !important; border: 1px solid #272732 !important; padding: 24px !important; color: #fff !important; }
+        .swal2-title { color: #fff !important; font-family: 'Cairo', sans-serif !important; font-weight: 900 !important; }
+        .swal2-input, .swal2-select, .swal2-file, .swal2-textarea { background: #1a1a24 !important; color: #fff !important; border: 1px solid #3f3f50 !important; border-radius: 12px !important; padding: 12px !important; font-family: 'Cairo', sans-serif !important; }
+        .swal2-input:focus, .swal2-textarea:focus { border-color: var(--primary-red) !important; }
+
+        /* WhatsApp Button */
+        .whatsapp-btn-float { 
+            position: fixed; 
+            bottom: 25px; 
+            left: 25px; 
+            background: #22c55e; 
+            color: white; 
+            width: 58px; 
+            height: 58px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 30px; 
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4); 
+            z-index: 90; 
+            transition: all 0.3s ease; 
+        }
+        .whatsapp-btn-float:hover { transform: scale(1.1) rotate(12deg); background: #16a34a; }
+
+        @keyframes pulse-slow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.3)); }
+            50% { filter: drop-shadow(0 0 25px rgba(239, 68, 68, 0.7)); }
+        }
+        .logo-glow-effect { animation: pulse-slow 3s infinite ease-in-out; }
+
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #272732; border-radius: 10px; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen relative">
+    
+    <!-- Background Grid & Glow -->
+    <div class="fixed inset-0 cyber-grid pointer-events-none z-0"></div>
+    <div class="fixed inset-0 hero-gradient pointer-events-none z-0"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 w-full glass-v2 z-50 px-6 py-4 border-b border-white/5 flex justify-between items-center">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="YZ STORE" class="h-11 w-auto logo-glow-effect">
+            <span class="text-2xl font-black italic tracking-tighter uppercase text-white flex items-center gap-1.5">
+                YZ <span class="text-red-500">STORE</span>
+            </span>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <a href="https://discord.gg/3VmZzgMMBK" target="_blank" class="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#5865F2]/10 border border-[#5865F2]/20 text-[#5865F2] hover:bg-[#5865F2] hover:text-white transition duration-300 text-xs font-bold">
+                <i class="fab fa-discord"></i> ديسكورد
+            </a>
+            <button onclick="toggleCart(true)" class="relative p-3 rounded-xl bg-white/5 border border-white/10 text-gray-200 hover:text-white hover:border-red-500/50 transition">
+                <i class="fa fa-shopping-bag text-lg"></i>
+                <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black shadow-lg shadow-red-600/50">0</span>
+            </button>
+            <button id="auth-btn" onclick="handleAuth()" class="text-xs font-bold px-5 py-3 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white shadow-lg shadow-red-600/30 transition duration-300">حسابي</button>
+        </div>
+    </nav>
+
+    <!-- Floating WhatsApp Contact -->
+    <a href="https://wa.me/905377964233" target="_blank" class="whatsapp-btn-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Main Container -->
+    <main class="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-grow w-full relative z-10">
+        
+        <!-- Gaming Hero Banner -->
+        <div class="glass-v2 rounded-3xl p-8 sm:p-12 mb-12 border border-white/10 relative overflow-hidden text-center sm:text-right flex flex-col sm:flex-row justify-between items-center gap-8 shadow-2xl">
+            <div class="space-y-4 max-w-xl z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-600/10 border border-red-500/30 text-red-400 text-xs font-black">
+                    <i class="fa fa-bolt"></i> المتجر الرسمي لصناع المحتوى واللاعبين
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight">
+                    طوّر بثك وحساباتك بأعلى <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-500 to-amber-500">احترافية ⚡</span>
+                </h1>
+                <p id="store-desc-display" class="text-gray-400 text-sm sm:text-base leading-relaxed">
+                    جاري تحميل وصف المتجر...
+                </p>
+                <div class="pt-2 flex flex-wrap justify-center sm:justify-start gap-3">
+                    <a href="https://wa.me/905377964233?text=أريد طلب تصميم أو خدمة خاصة" target="_blank" class="px-8 py-3.5 rounded-xl font-black bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/40 transition flex items-center gap-2 text-xs sm:text-sm">
+                        <i class="fa fa-wand-magic-sparkles"></i> طلب تصميم خاص
+                    </a>
+                    <a href="https://www.youtube.com/@Yzstore130" target="_blank" class="px-6 py-3.5 rounded-xl font-bold bg-white/5 border border-white/10 hover:bg-white/10 text-gray-200 transition text-xs sm:text-sm flex items-center gap-2">
+                        <i class="fab fa-youtube text-red-500"></i> استعراض الأعمال
+                    </a>
+                </div>
+            </div>
+            <div class="relative z-10 flex-shrink-0">
+                <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="YZ Store Hero" class="w-48 sm:w-64 h-auto logo-glow-effect drop-shadow-2xl">
+            </div>
+        </div>
+
+        <!-- Trust Stats Badges -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
+            <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
+                <i class="fa fa-bolt text-red-500 text-xl mb-1"></i>
+                <h4 class="font-black text-white text-base sm:text-lg">تسليم فوري</h4>
+                <p class="text-[11px] text-gray-400">مباشرة بعد إتمام الدفع</p>
+            </div>
+            <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
+                <i class="fa fa-shield-check text-green-500 text-xl mb-1"></i>
+                <h4 class="font-black text-white text-base sm:text-lg">دفع آمن 100%</h4>
+                <p class="text-[11px] text-gray-400">معتمد عالمياً عبر Paddle</p>
+            </div>
+            <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
+                <i class="fa fa-crown text-amber-500 text-xl mb-1"></i>
+                <h4 class="font-black text-white text-base sm:text-lg">+500 عميل</h4>
+                <p class="text-[11px] text-gray-400">ثقة صناع المحتوى</p>
+            </div>
+            <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
+                <i class="fa fa-headset text-blue-500 text-xl mb-1"></i>
+                <h4 class="font-black text-white text-base sm:text-lg">دعم 24/7</h4>
+                <p class="text-[11px] text-gray-400">مساعدة مستمرة عبر واتساب</p>
+            </div>
+        </div>
+
+        <!-- Categories Selector -->
+        <div class="flex items-center justify-center gap-3 mb-10 overflow-x-auto pb-2 custom-scroll">
+            <button onclick="window.filterCat('all')" class="category-tab active px-7 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 whitespace-nowrap" id="cat-all">
+                <i class="fa fa-border-all"></i> جميع المنتجات
+            </button>
+            <button onclick="window.filterCat('alerts')" class="category-tab px-7 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 whitespace-nowrap" id="cat-alerts">
+                <i class="fa fa-bell"></i> الأليرتات والتصاميم
+            </button>
+            <button onclick="window.filterCat('packages')" class="category-tab px-7 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 whitespace-nowrap" id="cat-packages">
+                <i class="fa fa-box-open"></i> البكجات والاشتراكات
+            </button>
+        </div>
+
+        <!-- Admin Control Panel (Visible for Admin Only) -->
+        <div id="admin-panel" class="hidden mb-12 animate-fade-in">
+            <div class="glass-v2 p-6 rounded-3xl border border-red-500/30">
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+                    <h2 class="text-lg font-black text-white flex items-center gap-2">
+                        <i class="fa fa-shield-halved text-red-500"></i> لوحة إدارة YZ STORE
+                    </h2>
+                    <span class="text-xs bg-red-600/20 text-red-400 px-3 py-1 rounded-full font-bold">Admin Privileges</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <button onclick="window.openAddProduct()" class="p-6 rounded-2xl bg-white/5 border border-dashed border-white/20 hover:border-red-500/50 hover:bg-red-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
+                        <i class="fa fa-plus-circle text-3xl text-red-500"></i>
+                        <span class="font-bold text-sm">إضافة منتج جديد</span>
+                    </button>
+                    <button onclick="window.editStoreDesc()" class="p-6 rounded-2xl bg-white/5 border border-dashed border-white/20 hover:border-blue-500/50 hover:bg-blue-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
+                        <i class="fa fa-pencil text-3xl text-blue-400"></i>
+                        <span class="font-bold text-sm">تعديل وصف المتجر</span>
+                    </button>
+                    <div class="p-4 rounded-2xl bg-black/50 border border-white/5">
+                        <h3 class="text-xs font-bold text-gray-400 mb-3 flex justify-between">
+                            <span>📦 الطلبات المعلقة</span>
+                            <span id="pending-count" class="text-red-400 font-black">0</span>
+                        </h3>
+                        <div id="orders-list" class="space-y-2 max-h-44 overflow-y-auto custom-scroll text-xs"></div>
+                    </div>
+                </div>
+
+                <!-- One-time legacy orders migration (old flat orders/{orderId} -> legacy_orders/{orderId}) -->
+                <div class="mt-6 pt-6 border-t border-white/10">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xs font-bold text-gray-400">🗄️ أرشيف الطلبات القديمة (البنية القديمة)</h3>
+                        <button onclick="window.migrateLegacyOrders()" class="text-[11px] bg-amber-600/20 border border-amber-500/30 text-amber-400 px-3 py-1.5 rounded-lg font-bold hover:bg-amber-600 hover:text-white transition">
+                            ترحيل الطلبات القديمة الآن
+                        </button>
+                    </div>
+                    <div id="legacy-orders-list" class="space-y-2 max-h-56 overflow-y-auto custom-scroll text-xs"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Purchases Section -->
+        <div id="user-orders-section" class="hidden mb-12">
+            <h2 class="text-xl font-black text-white mb-4 flex items-center gap-2">
+                <i class="fa fa-download text-blue-400"></i> مشترياتي وملفاتي المحملة
+            </h2>
+            <div id="user-orders-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+    </main>
+
+    <!-- Footer with Paddle Compliance Links -->
+    <footer class="border-t border-white/5 py-12 bg-[#050507] text-center w-full mt-auto relative z-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-gray-400">
+            <div>
+                جميع الحقوق محفوظة © 2026 <span class="text-white font-bold">YZ STORE</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6">
+                <button onclick="window.showLegalModal('terms')" class="hover:text-white transition">Terms of Service</button>
+                <button onclick="window.showLegalModal('refund')" class="hover:text-white transition">Refund Policy</button>
+                <button onclick="window.showLegalModal('privacy')" class="hover:text-white transition">Privacy Policy</button>
+                <button onclick="window.showLegalModal('contact')" class="hover:text-white transition">Contact Us</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Drawer -->
+    <div id="cart-drawer" class="cart-sidebar p-6 sm:p-8 flex flex-col">
+        <div class="flex justify-between items-center pb-6 border-b border-white/10 mb-6">
+            <h2 class="text-xl font-black text-white flex items-center gap-2">
+                <i class="fa fa-shopping-bag text-red-500"></i> سلة التسوق
+            </h2>
+            <button onclick="toggleCart(false)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-red-600 hover:text-white transition flex items-center justify-center text-sm">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <div id="cart-items" class="flex-1 space-y-3 overflow-y-auto custom-scroll pr-1"></div>
+        <div class="mt-6 pt-6 border-t border-white/10">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-gray-400 text-sm font-bold">المجموع:</span>
+                <span id="total-price" class="text-2xl font-black text-red-500">$0.00</span>
+            </div>
+            <button onclick="window.startCheckout()" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white py-4 rounded-xl font-black shadow-lg shadow-red-600/40 transform hover:-translate-y-0.5 transition-all text-sm">
+                إتمام الطلب والدفع السريع
+            </button>
+        </div>
+    </div>
+
+    <!-- Firebase & Store Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+        import { getDatabase, ref, onValue, off, push, remove, update, set } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyCt5H1t5dqUxileT88DqkIT5WRSGx45Lps",
+            authDomain: "osman-70f42.firebaseapp.com",
+            databaseURL: "https://osman-70f42-default-rtdb.firebaseio.com",
+            projectId: "osman-70f42",
+            storageBucket: "osman-70f42.firebasestorage.app"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+        
+        const ADMIN_EMAIL = "osohmde@gmail.com";
+        const Toast = Swal.mixin({ toast: true, position: 'top-start', showConfirmButton: false, timer: 2000, background: '#181822', color: '#fff' });
+        
+        let cart = [], allProducts = [], currentCat = 'all';
+
+        // ---------- FIX #6: XSS-safe HTML escaping helper ----------
+        // NEVER interpolate user/DB-provided strings (title, email, ids, links) directly
+        // into innerHTML without passing them through this first.
+        const escapeHtml = (str) => {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        };
+        // Only allow safe http(s) URLs to be placed into href/src attributes
+        const safeUrl = (url) => {
+            try {
+                const u = new URL(url, window.location.href);
+                if (u.protocol === 'http:' || u.protocol === 'https:') return u.href;
+            } catch (e) {}
+            return '#';
+        };
+
+        // Load Store Description
+        onValue(ref(db, "store_settings/desc"), s => {
+            // FIX #6: use textContent, not innerHTML, for plain text
+            document.getElementById('store-desc-display').textContent = s.val() || "مرحباً بك في YZ STORE، المتجر الأفضل لتطوير تجربة البث المباشر وشراء الاشتراكات والخدمات الرقمية.";
+        });
+
+        window.editStoreDesc = async () => {
+            const cur = document.getElementById('store-desc-display').textContent;
+            const { value: text } = await Swal.fire({
+                title: 'تعديل وصف المتجر', input: 'textarea', inputValue: cur,
+                confirmButtonColor: '#ef4444', showCancelButton: true, cancelButtonText: 'إلغاء', confirmButtonText: 'حفظ'
+            });
+            if(text) {
+                set(ref(db, "store_settings/desc"), text).then(() => {
+                    Toast.fire({ icon: 'success', title: 'تم حفظ الوصف بنجاح' });
+                });
+            }
+        };
+
+        const PAYMENT_DATA = {
+            paddle: { 
+                title: 'الدفع الإلكتروني (Apple Pay / فيزا / مدى)', 
+                icon: 'https://cdn-icons-png.flaticon.com/512/888/888870.png',
+                isPaddle: true
+            },
+            paypal: { title: 'PayPal', icon: 'https://cdn-icons-png.flaticon.com/512/174/174861.png', value: 'yazen.makki@gmail.com', link: 'https://paypal.me/yzstore0' },
+            binance: { title: 'Binance Pay (USDT)', icon: 'https://cryptologos.cc/logos/binance-coin-bnb-logo.png', value: '86551336', name: 'YZ STORE' },
+            bank: { title: 'التحويل البنكي (تركيا والسعودية)', icon: 'https://cdn-icons-png.flaticon.com/512/2830/2830284.png', value: 'SA9230000000123456784849', name: 'يزن عادل حسن' }
+        };
+
+        // ---------- FIX #2: avoid duplicate/leaking listeners ----------
+        // Load products ONCE at top level, independent of auth state,
+        // instead of re-subscribing inside onAuthStateChanged every time.
+        onValue(ref(db, "products"), s => {
+            allProducts = [];
+            s.forEach(p => { allProducts.push({ ...p.val(), key: p.key }); });
+            renderProducts();
+        });
+
+        // Track order listeners so we can detach them cleanly on auth change
+        let ordersAdminRef = null;
+        let ordersUserRef = null;
+        let legacyOrdersRef = null;
+
+        onAuthStateChanged(auth, user => {
+            const isAdmin = user && user.email === ADMIN_EMAIL;
+            document.getElementById('admin-panel').classList.toggle('hidden', !isAdmin);
+            document.getElementById('user-orders-section').classList.toggle('hidden', !user);
+            document.getElementById('auth-btn').innerText = user ? "حسابي (خروج)" : "تسجيل الدخول";
+
+            // Detach any previous orders listeners before attaching new ones
+            if (ordersAdminRef) { off(ordersAdminRef); ordersAdminRef = null; }
+            if (ordersUserRef) { off(ordersUserRef); ordersUserRef = null; }
+            if (legacyOrdersRef) { off(legacyOrdersRef); legacyOrdersRef = null; }
+
+            if (isAdmin) { loadAdminOrders(); loadLegacyOrders(); }
+            if (user) loadUserOrders(user.uid);
+
+            // Re-render products so admin edit/delete buttons show/hide correctly
+            renderProducts();
+        });
+
+
+        window.loginWithGoogle = () => {
+            signInWithPopup(auth, googleProvider)
+                .then(() => {
+                    Swal.close();
+                    Toast.fire({ icon: 'success', title: 'تم تسجيل الدخول عبر Google' });
+                })
+                .catch(err => Swal.fire('خطأ', err.message, 'error'));
+        };
+
+        window.handleAuth = () => {
+            if(auth.currentUser) {
+                signOut(auth).then(() => {
+                    Toast.fire({ icon: 'success', title: 'تم تسجيل الخروج بنجاح' });
+                    setTimeout(() => location.reload(), 1000);
+                });
+            } else {
+                Swal.fire({
+                    title: 'تسجيل الدخول إلى حسابك',
+                    html: `
+                        <input id="e" class="swal2-input" placeholder="البريد الإلكتروني">
+                        <input id="p" type="password" class="swal2-input" placeholder="كلمة المرور">
+                        <button onclick="window.loginWithGoogle()" class="w-full mt-4 p-3.5 bg-white text-black rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition text-sm">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" class="w-4"> الدخول السريع بواسطة Google
+                        </button>
+                        <div class="mt-4 flex justify-between text-xs text-gray-400">
+                            <button onclick="window.forgotPass()" class="hover:text-red-400">نسيت كلمة المرور؟</button>
+                            <button onclick="window.openRegister()" class="text-blue-400 font-bold">إنشاء حساب جديد</button>
+                        </div>`,
+                    confirmButtonText: 'دخول',
+                    confirmButtonColor: '#ef4444',
+                    showCancelButton: true,
+                    cancelButtonText: 'إلغاء'
+                }).then(r => { 
+                    if(r.isConfirmed) {
+                        const email = document.getElementById('e').value;
+                        const pass = document.getElementById('p').value;
+                        if(!email || !pass) return Toast.fire({ icon: 'error', title: 'يرجى ملء الحقول' });
+                        signInWithEmailAndPassword(auth, email, pass)
+                            .then(() => Toast.fire({ icon: 'success', title: 'أهلاً بك مجدداً!' }))
+                            .catch(() => Swal.fire('خطأ', 'بيانات الدخول غير صحيحة', 'error'));
+                    }
+                });
+            }
+        };
+
+        window.openRegister = async () => {
+            const { value: f } = await Swal.fire({
+                title: 'إنشاء حساب جديد',
+                html: `<input id="re" class="swal2-input" placeholder="البريد الإلكتروني"><input id="rp" type="password" class="swal2-input" placeholder="كلمة المرور">`,
+                confirmButtonText: 'تسجيل',
+                confirmButtonColor: '#ef4444',
+                preConfirm: () => ({ e: document.getElementById('re').value, p: document.getElementById('rp').value })
+            });
+            if(f) {
+                if(!f.e || !f.p) return Toast.fire({ icon: 'error', title: 'يرجى ملء البيانات' });
+                createUserWithEmailAndPassword(auth, f.e, f.p)
+                    .then(() => Toast.fire({ icon: 'success', title: 'تم إنشاء الحساب بنجاح' }))
+                    .catch(e => Swal.fire('خطأ', e.message, 'error'));
+            }
+        };
+
+        window.forgotPass = async () => {
+            const { value: e } = await Swal.fire({ title: 'استعادة كلمة المرور', input: 'email', placeholder: 'بريدك الإلكتروني', confirmButtonColor: '#ef4444' });
+            if(e) {
+                sendPasswordResetEmail(auth, e)
+                    .then(() => Swal.fire('تم الإرسال', 'تفقد بريدك الإلكتروني لتعيين كلمة مرور جديدة', 'success'))
+                    .catch(() => Toast.fire({ icon: 'error', title: 'البريد غير مسجل' }));
+            }
+        };
+
+        window.getYouTubeID = (url) => { if(!url) return null; const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/); return (match && match[2].length === 11) ? match[2] : null; };
+
+        // ---------- FIX #8: paddlePriceId is now REQUIRED, no shared default ----------
+        // ---------- FIX #5: price validated as a positive number ----------
+        window.openAddProduct = async () => {
+            const { value: f } = await Swal.fire({
+                title: 'إضافة منتج جديد',
+                html: `
+                    <input id="nt" class="swal2-input" placeholder="اسم المنتج">
+                    <input id="np" type="number" min="0" step="0.01" class="swal2-input" placeholder="السعر بالدولار ($)">
+                    <input id="npid" class="swal2-input" placeholder="Paddle Price ID (إلزامي - يجب أن يطابق السعر أعلاه في لوحة Paddle)">
+                    <select id="nc" class="swal2-select"><option value="alerts">أليرتات وتصاميم</option><option value="packages">بكجات واشتراكات</option></select>
+                    <input id="ny" class="swal2-input" placeholder="رابط يوتيوب للمعاينة (اختياري)">
+                    <input id="ni" type="file" accept="image/*" class="swal2-file">
+                `,
+                confirmButtonColor: '#ef4444',
+                preConfirm: async () => {
+                    const title = document.getElementById('nt').value.trim();
+                    const priceRaw = document.getElementById('np').value;
+                    const price = parseFloat(priceRaw);
+                    const paddlePriceId = document.getElementById('npid').value.trim();
+                    const file = document.getElementById('ni').files[0];
+
+                    if(!title) return Swal.showValidationMessage('يرجى إدخال اسم المنتج');
+                    if(!priceRaw || isNaN(price) || price <= 0) return Swal.showValidationMessage('يرجى إدخال سعر صحيح أكبر من صفر');
+                    if(!paddlePriceId) return Swal.showValidationMessage('يرجى إدخال Paddle Price ID الصحيح لهذا المنتج بالتحديد (تأكد أن سعره في Paddle يطابق السعر المُدخل هنا)');
+                    if(!file) return Swal.showValidationMessage('يرجى اختيار صورة للمنتج');
+
+                    const fd = new FormData(); fd.append("image", file);
+                    try {
+                        const res = await fetch('https://api.imgbb.com/1/upload?key=11517ad350ecf73397b84302f750238e', { method: 'POST', body: fd }).then(r => r.json());
+                        if(!res || !res.data || !res.data.url) return Swal.showValidationMessage('فشل رفع الصورة، حاول مجدداً');
+                        return { 
+                            title, 
+                            price, 
+                            paddlePriceId,
+                            category: document.getElementById('nc').value, 
+                            youtube: document.getElementById('ny').value.trim(), 
+                            image: res.data.url 
+                        };
+                    } catch(e) { Swal.showValidationMessage('فشل رفع الصورة'); }
+                }
+            });
+            if(f) {
+                push(ref(db, "products"), f).then(() => Toast.fire({ icon: 'success', title: 'تمت إضافة المنتج بنجاح' }));
+            }
+        };
+
+        // ---------- RESTRUCTURED: orders are now stored as orders/{uid}/{orderId} ----------
+        // This lets Firebase Rules restrict each user to reading only their own
+        // orders (orders/{myUid}), while the admin retains full read access at
+        // the orders root. See loadAdminOrders/loadUserOrders below.
+        // ---------- FIX #6: escape order data before building admin list HTML ----------
+        const loadAdminOrders = () => {
+            ordersAdminRef = ref(db, "orders");
+            onValue(ordersAdminRef, s => {
+                const list = document.getElementById('orders-list'); list.innerHTML = "";
+                let count = 0;
+                s.forEach(userSnap => {
+                    const uid = userSnap.key;
+                    userSnap.forEach(o => {
+                        const d = o.val();
+                        if(d.status === 'pending') {
+                            count++;
+                            list.innerHTML += `<div class="p-3 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center">
+                                <div class="truncate max-w-[150px]"><p class="font-bold">${escapeHtml(d.email)}</p><p class="text-red-400 font-bold">${escapeHtml(d.total)}</p></div>
+                                <div class="flex gap-1.5"><button onclick="window.activateOrder('${uid}','${o.key}')" class="bg-green-600 px-2.5 py-1 rounded-lg text-[11px] font-bold">تفعيل</button><button onclick="window.removeOrder('${uid}','${o.key}')" class="bg-red-600 px-2.5 py-1 rounded-lg text-[11px]">حذف</button></div>
+                            </div>`;
+                        }
+                    });
+                });
+                document.getElementById('pending-count').innerText = count;
+            });
+        };
+
+        window.activateOrder = async (uid, key) => {
+            const { value: url } = await Swal.fire({ 
+                title: 'رابط التسليم / التحميل', 
+                input: 'url', 
+                placeholder: 'ضع رابط الملف (Google Drive / Mega) أو كود التفعيل',
+                showCancelButton: true, cancelButtonText: 'إلغاء', confirmButtonText: 'تفعيل الطلب', confirmButtonColor: '#16a34a'
+            });
+
+            if(url) {
+                update(ref(db, `orders/${uid}/${key}`), { status: 'active', productLink: url })
+                    .then(() => Toast.fire({ icon: 'success', title: 'تم تفعيل الطلب وإتاحته للعميل 🚀' }));
+            }
+        };
+
+        window.removeOrder = (uid, key) => { 
+            Swal.fire({
+                title: 'هل تريد حذف هذا الطلب؟',
+                icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
+            }).then(r => {
+                if (r.isConfirmed) remove(ref(db, `orders/${uid}/${key}`)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف' }));
+            });
+        };
+
+        // ---------- FIX #6: escape user order data + sanitize the delivery link ----------
+        const loadUserOrders = (uid) => {
+            ordersUserRef = ref(db, `orders/${uid}`);
+            onValue(ordersUserRef, s => {
+                const list = document.getElementById('user-orders-list'); list.innerHTML = "";
+                s.forEach(o => {
+                    const d = o.val();
+                    const active = d.status === 'active';
+                    list.innerHTML += `<div class="glass-v2 p-4 rounded-2xl flex justify-between items-center ${active ? 'border-green-500/40' : 'border-yellow-500/40'}">
+                        <div><p class="text-xs text-gray-400">طلب #${escapeHtml(o.key.substr(-4))}</p><p class="font-black text-white text-sm">${escapeHtml(d.total)}</p></div>
+                        ${active ? `<a href="${safeUrl(d.productLink)}" target="_blank" rel="noopener noreferrer" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5"><i class="fa fa-download"></i> تحميل المنتج</a>` : '<span class="text-yellow-400 text-xs font-bold bg-yellow-500/10 px-3 py-1 rounded-full">⏳ قيد المراجعة</span>'}
+                    </div>`;
+                });
+            });
+        };
+
+        // ---------- ONE-TIME MIGRATION: legacy flat orders/{orderId} -> legacy_orders/{orderId} ----------
+        // The store used to save every order directly under "orders/{orderId}"
+        // (no per-user grouping). The new schema groups orders under
+        // "orders/{uid}/{orderId}" so Firebase Rules can restrict each customer
+        // to reading only their own orders. A legacy record is identified by
+        // having an "email" field directly under it (a real uid folder never
+        // has that — it only ever contains further order-id children).
+        // This function is admin-only, safe to run more than once (it only
+        // touches nodes still sitting in the old flat shape), and never
+        // deletes data — it only moves it to "legacy_orders" for permanent
+        // archival and removes the now-migrated copy from "orders" so it
+        // stops being misread as a uid folder by loadAdminOrders().
+        window.migrateLegacyOrders = async () => {
+            if (!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL) return;
+
+            const confirm = await Swal.fire({
+                title: 'ترحيل الطلبات القديمة',
+                text: 'رح يتم نقل أي طلب مخزّن بالشكل القديم (بدون تصنيف مستخدم) إلى أرشيف منفصل. البيانات ما بتنمسح إطلاقًا. هل تريد المتابعة؟',
+                icon: 'info', showCancelButton: true, confirmButtonText: 'نعم، رحّل الآن', cancelButtonText: 'إلغاء', confirmButtonColor: '#f59e0b'
+            });
+            if (!confirm.isConfirmed) return;
+
+            try {
+                const snap = await new Promise((resolve, reject) => {
+                    onValue(ref(db, "orders"), s => resolve(s), { onlyOnce: true }, reject);
+                });
+
+                const legacyEntries = [];
+                snap.forEach(childSnap => {
+                    // A legacy order has an "email" field directly on it.
+                    // A valid uid folder never does — it only holds order-id children.
+                    if (childSnap.hasChild('email')) {
+                        legacyEntries.push({ key: childSnap.key, val: childSnap.val() });
+                    }
+                });
+
+                if (legacyEntries.length === 0) {
+                    Toast.fire({ icon: 'info', title: 'لا يوجد طلبات قديمة بحاجة ترحيل' });
+                    return;
+                }
+
+                for (const entry of legacyEntries) {
+                    await set(ref(db, `legacy_orders/${entry.key}`), entry.val);
+                    await remove(ref(db, `orders/${entry.key}`));
+                }
+
+                Toast.fire({ icon: 'success', title: `تم ترحيل ${legacyEntries.length} طلب قديم للأرشيف` });
+            } catch (e) {
+                Swal.fire('خطأ', 'حدث خطأ أثناء الترحيل: ' + e.message, 'error');
+            }
+        };
+
+        // ---------- Read-only archive view for migrated legacy orders ----------
+        const loadLegacyOrders = () => {
+            legacyOrdersRef = ref(db, "legacy_orders");
+            onValue(legacyOrdersRef, s => {
+                const list = document.getElementById('legacy-orders-list');
+                if (!list) return;
+                list.innerHTML = "";
+                if (!s.exists()) {
+                    list.innerHTML = `<p class="text-gray-500 text-center py-3">لا يوجد طلبات مؤرشفة حالياً</p>`;
+                    return;
+                }
+                s.forEach(o => {
+                    const d = o.val();
+                    list.innerHTML += `<div class="p-3 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center gap-2">
+                        <div class="truncate max-w-[220px]">
+                            <p class="font-bold">${escapeHtml(d.email || '—')}</p>
+                            <p class="text-gray-400">${escapeHtml(d.total || '—')} · ${escapeHtml(d.method || '—')} · ${escapeHtml(d.status || 'بدون حالة')}</p>
+                        </div>
+                        <button onclick="window.deleteLegacyOrder('${o.key}')" class="bg-red-600 px-2.5 py-1 rounded-lg text-[11px] flex-shrink-0">حذف نهائي</button>
+                    </div>`;
+                });
+            });
+        };
+
+        window.deleteLegacyOrder = (key) => {
+            Swal.fire({
+                title: 'حذف هذا الطلب المؤرشف نهائيًا؟',
+                text: 'هذا الإجراء لا يمكن التراجع عنه.',
+                icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
+            }).then(r => {
+                if (r.isConfirmed) remove(ref(db, `legacy_orders/${key}`)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف نهائيًا' }));
+            });
+        };
+
+        window.openVideoModal = (k) => {
+            const p = allProducts.find(x => x.key === k);
+            if(!p) return;
+            const yid = window.getYouTubeID(p.youtube);
+            Swal.fire({
+                width: window.innerWidth > 768 ? '780px' : '95%',
+                padding: '24px',
+                showConfirmButton: false,
+                html: `
+                    <div class="text-right">
+                        <div class="relative pb-[56.25%] h-0 overflow-hidden rounded-2xl mb-5 bg-black border border-white/10">
+                            ${yid ? `<iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${encodeURIComponent(yid)}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>` : `<img src="${safeUrl(p.image)}" class="w-full h-full object-cover">`}
+                        </div>
+                        <h2 class="text-2xl font-black text-white mb-2">${escapeHtml(p.title)}</h2>
+                        <div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <span class="text-3xl font-black text-red-500">$${escapeHtml(p.price)}</span>
+                            <button onclick="addToCart('${p.key}'); Swal.close()" class="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-xl font-black text-xs shadow-lg shadow-red-600/40 transition">إضافة إلى السلة</button>
+                        </div>
+                    </div>
+                `
+            });
+        };
+
+        // ---------- FIX #6: escape product title, sanitize image/youtube URLs ----------
+        window.renderProducts = () => {
+            const grid = document.getElementById('products-grid'); grid.innerHTML = "";
+            const filtered = currentCat === 'all' ? allProducts : allProducts.filter(p => p.category === currentCat);
+            
+            if(filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-500 font-bold">لا توجد منتجات في هذا القسم حالياً.</div>`;
+                return;
+            }
+
+            filtered.forEach(p => {
+                const isAdmin = auth.currentUser && auth.currentUser.email === ADMIN_EMAIL;
+                grid.innerHTML += `
+                <div class="product-card-v2 group flex flex-col justify-between overflow-hidden">
+                    <div class="relative h-52 overflow-hidden cursor-pointer" onclick="openVideoModal('${p.key}')">
+                        <img src="${safeUrl(p.image)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-3 right-3 bg-red-600/90 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full font-black flex items-center gap-1 shadow-lg">
+                            <i class="fa fa-bolt"></i> تسليم فوري
+                        </span>
+                        ${p.youtube ? `<span class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md text-white text-[11px] px-3 py-1 rounded-full font-bold flex items-center gap-1.5 border border-white/10"><i class="fa fa-play text-red-500"></i> معاينة</span>` : ''}
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <h3 class="font-black text-white text-base mb-4 leading-snug">${escapeHtml(p.title)}</h3>
+                        <div class="flex justify-between items-center pt-4 border-t border-white/5">
+                            <span class="text-2xl font-black text-red-500">$${escapeHtml(p.price)}</span>
+                            <button onclick="addToCart('${p.key}')" class="bg-white hover:bg-red-600 hover:text-white text-black px-5 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 shadow-md">
+                                <i class="fa fa-cart-plus"></i> إضافة
+                            </button>
+                        </div>
+                    </div>
+                    ${isAdmin ? `
+                    <div class="absolute top-3 left-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition">
+                        <button onclick="window.editProduct('${p.key}')" class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg"><i class="fa fa-pen text-xs"></i></button>
+                        <button onclick="window.deleteProduct('${p.key}')" class="bg-red-600 text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg"><i class="fa fa-trash text-xs"></i></button>
+                    </div>` : ''}
+                </div>`;
+            });
+        };
+
+        // ---------- FIX #7: edit now includes category + optional new image ----------
+        // ---------- FIX #8: Paddle Price ID required, no shared default ----------
+        // ---------- FIX #5: price validated ----------
+        window.editProduct = async (k) => {
+            const p = allProducts.find(x => x.key === k);
+            if(!p) return;
+            const { value: f } = await Swal.fire({
+                title: 'تعديل المنتج',
+                html: `
+                    <input id="ut" class="swal2-input" value="${escapeHtml(p.title)}" placeholder="الاسم">
+                    <input id="up" type="number" min="0" step="0.01" class="swal2-input" value="${escapeHtml(p.price)}" placeholder="السعر">
+                    <input id="upid" class="swal2-input" value="${escapeHtml(p.paddlePriceId || '')}" placeholder="Paddle Price ID (إلزامي)">
+                    <select id="uc" class="swal2-select">
+                        <option value="alerts" ${p.category === 'alerts' ? 'selected' : ''}>أليرتات وتصاميم</option>
+                        <option value="packages" ${p.category === 'packages' ? 'selected' : ''}>بكجات واشتراكات</option>
+                    </select>
+                    <input id="uy" class="swal2-input" value="${escapeHtml(p.youtube || '')}" placeholder="رابط يوتيوب">
+                    <input id="ui" type="file" accept="image/*" class="swal2-file">
+                    <p class="text-[11px] text-gray-400 mt-1 text-right">اترك حقل الصورة فارغاً للإبقاء على الصورة الحالية</p>
+                `,
+                confirmButtonColor: '#ef4444',
+                preConfirm: async () => {
+                    const title = document.getElementById('ut').value.trim();
+                    const priceRaw = document.getElementById('up').value;
+                    const price = parseFloat(priceRaw);
+                    const paddlePriceId = document.getElementById('upid').value.trim();
+                    const file = document.getElementById('ui').files[0];
+
+                    if(!title) return Swal.showValidationMessage('يرجى إدخال اسم المنتج');
+                    if(!priceRaw || isNaN(price) || price <= 0) return Swal.showValidationMessage('يرجى إدخال سعر صحيح أكبر من صفر');
+                    if(!paddlePriceId) return Swal.showValidationMessage('يرجى إدخال Paddle Price ID الصحيح (يجب أن يطابق السعر أعلاه في Paddle)');
+
+                    let image = p.image;
+                    if(file) {
+                        const fd = new FormData(); fd.append("image", file);
+                        try {
+                            const res = await fetch('https://api.imgbb.com/1/upload?key=11517ad350ecf73397b84302f750238e', { method: 'POST', body: fd }).then(r => r.json());
+                            if(!res || !res.data || !res.data.url) return Swal.showValidationMessage('فشل رفع الصورة الجديدة، حاول مجدداً');
+                            image = res.data.url;
+                        } catch(e) { return Swal.showValidationMessage('فشل رفع الصورة الجديدة'); }
+                    }
+
+                    return { 
+                        title, 
+                        price, 
+                        paddlePriceId,
+                        category: document.getElementById('uc').value,
+                        youtube: document.getElementById('uy').value.trim(),
+                        image
+                    };
+                }
+            });
+            if(f) update(ref(db, "products/"+k), f).then(() => Toast.fire({ icon: 'success', title: 'تم تحديث المنتج' }));
+        };
+
+        window.deleteProduct = (k) => { 
+            Swal.fire({
+                title: 'حذف المنتج نهائياً؟',
+                icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
+            }).then(r => {
+                if(r.isConfirmed) remove(ref(db, "products/"+k)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف' }));
+            });
+        };
+
+        window.addToCart = (k) => { 
+            const it = allProducts.find(x => x.key === k); 
+            if(!it) return;
+            const ex = cart.find(x => x.key === k);
+            if(ex) ex.qty++; else cart.push({...it, qty: 1});
+            updateCartUI(); 
+            Toast.fire({ icon: 'success', title: 'تمت الإضافة للسلة' });
+        };
+
+        // ---------- FIX #6: escape cart item titles ----------
+        const updateCartUI = () => {
+            let sub = 0;
+            document.getElementById('cart-items').innerHTML = cart.map((it, i) => { 
+                sub += it.price * it.qty; 
+                return `
+                <div class="flex justify-between items-center p-3.5 bg-white/5 rounded-2xl border border-white/5">
+                    <div class="max-w-[170px]"><p class="text-xs font-bold text-white truncate">${escapeHtml(it.title)}</p><p class="text-red-400 font-black text-sm">$${escapeHtml(it.price)}</p></div>
+                    <div class="flex items-center gap-2.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/5">
+                        <button onclick="updateQty(${i},-1)" class="text-gray-400 hover:text-red-500 font-bold px-1">-</button>
+                        <span class="text-xs font-black">${it.qty}</span>
+                        <button onclick="updateQty(${i},1)" class="text-gray-400 hover:text-green-500 font-bold px-1">+</button>
+                    </div>
+                </div>`; 
+            }).join('');
+            document.getElementById('total-price').innerText = `$${sub.toFixed(2)}`;
+            document.getElementById('cart-count').innerText = cart.reduce((a,b)=>a+b.qty,0);
+        };
+
+        window.updateQty = (i,d) => { cart[i].qty+=d; if(cart[i].qty<1) cart.splice(i,1); updateCartUI(); };
+        window.toggleCart = (s) => document.getElementById('cart-drawer').classList.toggle('open', s);
+        
+        window.filterCat = (c) => { 
+            currentCat = c; 
+            document.querySelectorAll('.category-tab').forEach(i=>i.classList.remove('active')); 
+            document.getElementById('cat-'+c).classList.add('active'); 
+            renderProducts(); 
+        };
+
+        window.startCheckout = () => {
+            if(!auth.currentUser) {
+                toggleCart(false);
+                return handleAuth();
+            }
+            if(cart.length === 0) return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' });
+            Swal.fire({
+                title: 'اختر طريقة الدفع', showConfirmButton: false,
+                html: `
+                    <div class="grid gap-3 mt-4">
+                        ${Object.entries(PAYMENT_DATA).map(([k,v])=>`
+                            <button onclick="showPayDetails('${k}')" class="p-4 rounded-2xl bg-white/5 hover:bg-white/10 flex items-center justify-between w-full transition border ${k==='paddle' ? 'border-red-500/50 bg-red-500/10' : 'border-white/5'}">
+                                <div class="flex items-center gap-3">
+                                    <img src="${v.icon}" class="w-7 h-7 object-contain"> 
+                                    <span class="font-black text-xs text-right text-white">${escapeHtml(v.title)}</span>
+                                </div>
+                                <i class="fa fa-chevron-left text-gray-500 text-xs"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                `
+            });
+        };
+
+        // ---------- FIX #4: verify every cart item has a paddlePriceId before checkout ----------
+        window.openPaddleCheckout = (itemsList) => {
+            const missing = itemsList.filter(item => !item.paddlePriceId);
+            if(missing.length > 0) {
+                return Swal.fire('تعذر إتمام الدفع', 'بعض المنتجات في السلة لا تملك معرف سعر Paddle صالح. يرجى التواصل مع الدعم.', 'error');
+            }
+            const paddleItems = itemsList.map(item => ({
+                priceId: item.paddlePriceId,
+                quantity: item.qty || 1
+            }));
+
+            Paddle.Checkout.open({
+                items: paddleItems,
+                customer: {
+                    email: auth.currentUser ? auth.currentUser.email : ""
+                },
+                settings: {
+                    displayMode: "overlay",
+                    theme: "dark",
+                    locale: "ar"
+                }
+            });
+        };
+
+        // ---------- FIX #6: escape manual-transfer payment detail values ----------
+        window.showPayDetails = (k) => {
+            const d = PAYMENT_DATA[k];
+            const total = document.getElementById('total-price').innerText;
+
+            if (d.isPaddle) {
+                Swal.close();
+                toggleCart(false);
+                window.openPaddleCheckout(cart);
+                return;
+            }
+
+            const paypalBtn = k === 'paypal' ? `<a href="${safeUrl(d.link)}" target="_blank" rel="noopener noreferrer" class="block w-full bg-blue-600 text-white p-4 rounded-2xl mb-3 font-bold text-center text-xs shadow-lg">الدفع المباشر عبر PayPal</a>` : '';
+            Swal.fire({ 
+                title: d.title, 
+                confirmButtonText: 'تأكيد التحويل وإرسال الطلب', 
+                confirmButtonColor: '#ef4444',
+                showCancelButton: true, cancelButtonText: 'إلغاء',
+                html: `
+                    ${paypalBtn}
+                    <div class="p-4 bg-white/5 border border-dashed border-white/20 rounded-2xl font-mono text-xs break-all mb-2 select-all">${escapeHtml(d.value)}</div>
+                    ${d.name ? `<div class="text-xs text-gray-400 mb-3">باسم: ${escapeHtml(d.name)}</div>` : ''}
+                    <p class="text-xs text-gray-400">بعد إتمام التحويل، اضغط على زر التأكيد وسيتم تفعيل ملفاتك مباشرة في حسابك.</p>` 
+            })
+            .then(r => { 
+                if(r.isConfirmed) {
+                    push(ref(db, `orders/${auth.currentUser.uid}`), { 
+                        uid: auth.currentUser.uid,
+                        email: auth.currentUser.email, 
+                        total: total, 
+                        method: k, 
+                        status: 'pending', 
+                        items: cart, 
+                        timestamp: Date.now()
+                    }).then(() => {
+                        window.open(`https://wa.me/905377964233?text=${encodeURIComponent('طلب جديد بقيمة ' + total + ' عبر ' + k + ' من: ' + auth.currentUser.email)}`, '_blank');
+                        cart = []; 
+                        updateCartUI(); 
+                        toggleCart(false);
+                        Swal.fire('تم استلام طلبك', 'سيتم التحقق وتجهيز ملفاتك خلال لحظات', 'success');
+                    });
+                }
+            });
+        };
+
+        // Paddle Compliance Legal Policies Modal
+        window.showLegalModal = (type) => {
+            const data = {
+                terms: {
+                    title: 'Terms of Service | شروط الخدمة',
+                    content: `
+                        <div class="text-left text-xs space-y-3 leading-relaxed text-gray-300 font-sans" dir="ltr">
+                            <p><strong>1. Services:</strong> YZ STORE provides digital streaming assets, sound alerts, overlays, and graphics.</p>
+                            <p><strong>2. Delivery:</strong> All goods are delivered electronically via instant download on your dashboard upon payment.</p>
+                            <p><strong>3. Merchant of Record:</strong> Paddle.com is the Merchant of Record for all orders and handles customer inquiries.</p>
+                        </div>
+                    `
+                },
+                refund: {
+                    title: 'Refund Policy | سياسة الاسترجاع',
+                    content: `
+                        <div class="text-left text-xs space-y-3 leading-relaxed text-gray-300 font-sans" dir="ltr">
+                            <p>Because digital files are accessible immediately upon purchase, sales are generally final once downloaded.</p>
+                            <p><strong>14-Day Guarantee:</strong> Refunds are granted within 14 days if the product is defective or undelivered.</p>
+                            <p>Contact support at <a href="mailto:zero@yzstoreonline.com" class="text-red-400 underline">zero@yzstoreonline.com</a>.</p>
+                        </div>
+                    `
+                },
+                privacy: {
+                    title: 'Privacy Policy | سياسة الخصوصية',
+                    content: `
+                        <div class="text-left text-xs space-y-3 leading-relaxed text-gray-300 font-sans" dir="ltr">
+                            <p>We respect your privacy and only collect essential information required for order fulfillment and support. Payments are processed securely via Paddle.com.</p>
+                        </div>
+                    `
+                },
+                contact: {
+                    title: 'Contact Us | اتصل بنا',
+                    content: `
+                        <div class="text-left text-xs space-y-2 leading-relaxed text-gray-300 font-sans" dir="ltr">
+                            <p><strong>Business Name:</strong> YZ STORE</p>
+                            <p><strong>Email:</strong> <a href="mailto:zero@yzstoreonline.com" class="text-red-400 underline">zero@yzstoreonline.com</a></p>
+                            <p><strong>WhatsApp:</strong> +90 537 796 42 33</p>
+                        </div>
+                    `
+                }
+            };
+
+            Swal.fire({
+                title: data[type].title,
+                html: data[type].content,
+                confirmButtonText: 'إغلاق',
+                confirmButtonColor: '#ef4444'
+            });
+        };
+    </script>
+</body>
+</html>
