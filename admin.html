@@ -2,109 +2,94 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>لوحة التحكم | YZ STORE Admin</title>
+    <title>لوحة التحكم | YZ STORE</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
 
     <link rel="icon" type="image/png" href="https://i.ibb.co/YT1RPZdx/image.png">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        :root { --primary-red: #ef4444; --bg-dark: #070709; }
-        body { background: var(--bg-dark); color: #f4f4f5; font-family: 'Cairo', sans-serif; }
-        .glass-v2 { background: rgba(18, 18, 24, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .swal2-popup { border-radius: 24px !important; background: #121218 !important; border: 1px solid #272732 !important; padding: 24px !important; color: #fff !important; }
-        .swal2-title { color: #fff !important; font-family: 'Cairo', sans-serif !important; font-weight: 900 !important; }
-        .swal2-input, .swal2-select, .swal2-file, .swal2-textarea { background: #1a1a24 !important; color: #fff !important; border: 1px solid #3f3f50 !important; border-radius: 12px !important; padding: 12px !important; font-family: 'Cairo', sans-serif !important; }
-        .swal2-input:focus, .swal2-textarea:focus { border-color: var(--primary-red) !important; }
-        .custom-scroll::-webkit-scrollbar { width: 5px; }
-        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #272732; border-radius: 10px; }
+        body { background: #070709; color: #fff; font-family: 'Cairo', sans-serif; }
+        .glass-panel { background: #121218; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 24px; }
+        input, select, textarea { background: #1a1a24; border: 1px solid #272732; color: white; padding: 10px 14px; border-radius: 8px; width: 100%; font-family: 'Cairo', sans-serif; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #ef4444; }
+        .swal2-popup { background: #121218 !important; color: #fff !important; border-radius: 16px !important; border: 1px solid #272732 !important; }
+        .swal2-title { font-family: 'Cairo', sans-serif !important; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="hidden" id="admin-body">
 
-    <div id="gate" class="min-h-screen flex items-center justify-center p-6">
-        <div class="glass-v2 rounded-3xl p-8 max-w-sm w-full text-center space-y-5">
-            <img src="https://i.ibb.co/YT1RPZdx/image.png" class="h-14 w-auto mx-auto">
-            <h1 class="text-lg font-black text-white">لوحة تحكم YZ STORE</h1>
-            <p id="gate-msg" class="text-xs text-gray-400">جارٍ التحقق من صلاحياتك...</p>
-            <button id="gate-login-btn" onclick="window.gateLogin()" class="hidden w-full bg-red-600 hover:bg-red-500 text-white py-3 rounded-xl font-black text-sm transition">تسجيل دخول المدير</button>
-            <a href="index.html" class="block text-xs text-gray-500 hover:text-gray-300">العودة للمتجر</a>
+    <!-- شريط التنقل للإدارة -->
+    <nav class="bg-[#121218] border-b border-white/5 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <img src="https://i.ibb.co/YT1RPZdx/image.png" class="h-10 w-auto">
+            <span class="font-black text-xl text-white">لوحة الإدارة | <span class="text-red-500">YZ STORE</span></span>
         </div>
-    </div>
+        <div class="flex gap-3">
+            <!-- تم إصلاح زر العودة للمتجر ليعمل بنسبة 100% -->
+            <button onclick="window.location.href='index.html'" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition"><i class="fa fa-home"></i> العودة للمتجر</button>
+            <button onclick="window.logoutAdmin()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg font-bold text-sm transition"><i class="fa fa-sign-out-alt"></i> تسجيل الخروج</button>
+        </div>
+    </nav>
 
-    <div id="dashboard" class="hidden max-w-6xl mx-auto px-4 sm:px-6 py-10">
-        <div class="flex items-center justify-between mb-8">
-            <div class="flex items-center gap-3">
-                <img src="https://i.ibb.co/YT1RPZdx/image.png" class="h-10 w-auto">
-                <h1 class="text-xl font-black text-white">لوحة تحكم YZ STORE</h1>
-            </div>
-            <div class="flex items-center gap-3">
-                <a href="index.html" class="text-xs font-bold px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-white transition">عرض المتجر</a>
-                <button onclick="window.gateLogout()" class="text-xs font-bold px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-red-400 transition">تسجيل الخروج</button>
-            </div>
+    <div class="max-w-7xl mx-auto px-4 py-8 space-y-8">
+
+        <!-- 1. إدارة وصف المتجر -->
+        <div class="glass-panel">
+            <h2 class="text-xl font-black text-white mb-4"><i class="fa fa-pen text-red-500"></i> تعديل وصف المتجر (الرئيسية)</h2>
+            <textarea id="store-desc-input" rows="3" placeholder="اكتب الوصف هنا..."></textarea>
+            <button onclick="window.saveStoreDesc()" class="mt-4 bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded-lg font-bold transition">حفظ الوصف</button>
         </div>
 
-        <div class="glass-v2 p-6 rounded-3xl border border-red-500/30 mb-8">
-            <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                <h2 class="text-lg font-black text-white flex items-center gap-2">
-                    <i class="fa fa-shield-halved text-red-500"></i> إدارة عامة
+        <!-- 2. إدارة لوحة الشرف (تم تحويلها لزر ذكي ومختصر لتوفير المساحة) -->
+        <div class="glass-panel border-yellow-500/30 border flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h2 class="text-xl font-black text-yellow-400 mb-1 flex items-center gap-2">
+                    <i class="fa fa-trophy"></i> إدارة لوحة الشرف (Top 3)
                 </h2>
-                <span class="text-xs bg-red-600/20 text-red-400 px-3 py-1 rounded-full font-bold">Admin Privileges</span>
+                <p class="text-sm text-gray-400">تحكم بأسماء وصور الستريمرز في الصفحة الرئيسية بخطوة واحدة.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <button onclick="window.openAddProduct()" class="p-6 rounded-2xl bg-white/5 border border-dashed border-white/20 hover:border-red-500/50 hover:bg-red-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
-                    <i class="fa fa-plus-circle text-3xl text-red-500"></i>
-                    <span class="font-bold text-sm">إضافة منتج جديد</span>
-                </button>
-                <button onclick="window.editStoreDesc()" class="p-6 rounded-2xl bg-white/5 border border-dashed border-white/20 hover:border-blue-500/50 hover:bg-blue-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
-                    <i class="fa fa-pencil text-3xl text-blue-400"></i>
-                    <span class="font-bold text-sm">تعديل وصف المتجر</span>
-                </button>
-                <button onclick="window.openAddDiscount()" class="p-6 rounded-2xl bg-white/5 border border-dashed border-white/20 hover:border-green-500/50 hover:bg-green-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
-                    <i class="fa fa-percent text-3xl text-green-500"></i>
-                    <span class="font-bold text-sm">إضافة كود خصم</span>
-                </button>
-                <div class="p-4 rounded-2xl bg-black/50 border border-white/5">
-                    <h3 class="text-xs font-bold text-gray-400 mb-3 flex justify-between">
-                        <span>📦 الطلبات المعلقة</span>
-                        <span id="pending-count" class="text-red-400 font-black">0</span>
-                    </h3>
-                    <div id="orders-list" class="space-y-2 max-h-44 overflow-y-auto custom-scroll text-xs"></div>
-                </div>
-            </div>
+            <button onclick="window.manageVIP()" class="bg-yellow-600 hover:bg-yellow-500 text-white px-8 py-3 rounded-xl font-black transition flex items-center gap-2 shadow-lg shadow-yellow-600/20">
+                <i class="fa fa-pen"></i> إدارة لوحة الشرف
+            </button>
+        </div>
 
-            <div class="mt-6 pt-6 border-t border-white/10">
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="text-xs font-bold text-gray-400">🗄️ أرشيف الطلبات القديمة (البنية القديمة)</h3>
-                    <button onclick="window.migrateLegacyOrders()" class="text-[11px] bg-amber-600/20 border border-amber-500/30 text-amber-400 px-3 py-1.5 rounded-lg font-bold hover:bg-amber-600 hover:text-white transition">
-                        ترحيل الطلبات القديمة الآن
-                    </button>
-                </div>
-                <div id="legacy-orders-list" class="space-y-2 max-h-56 overflow-y-auto custom-scroll text-xs"></div>
+        <!-- 3. إضافة منتج جديد -->
+        <div class="glass-panel">
+            <h2 class="text-xl font-black text-white mb-4"><i class="fa fa-plus text-green-500"></i> إضافة منتج جديد</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input id="p-title" type="text" placeholder="اسم المنتج">
+                <input id="p-price" type="number" placeholder="السعر (بالدولار)">
+                <input id="p-image" type="text" placeholder="رابط صورة المنتج (ImgBB)">
+                <input id="p-paddle" type="text" placeholder="معرف السعر من Paddle (Price ID)">
+                <input id="p-youtube" type="text" placeholder="رابط يوتيوب للمعاينة (اختياري)">
+                <select id="p-cat">
+                    <option value="alerts">الأليرتات والتصاميم</option>
+                    <option value="packages">البكجات والاشتراكات</option>
+                </select>
+            </div>
+            <button onclick="window.addProduct()" class="mt-4 bg-green-600 hover:bg-green-500 text-white px-8 py-2 rounded-lg font-bold transition">إضافة المنتج</button>
+        </div>
+
+        <!-- 4. قائمة المنتجات الحالية -->
+        <div class="glass-panel">
+            <h2 class="text-xl font-black text-white mb-4"><i class="fa fa-box text-blue-500"></i> المنتجات الحالية</h2>
+            <div id="admin-products-list" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- سيتم عرض المنتجات هنا برمجياً -->
             </div>
         </div>
 
-        <h2 class="text-lg font-black text-white mb-4 flex items-center gap-2">
-            <i class="fa fa-percent text-green-400"></i> أكواد الخصم
-        </h2>
-        <div id="discounts-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10"></div>
-
-        <h2 class="text-lg font-black text-white mb-4 flex items-center gap-2">
-            <i class="fa fa-box-open text-amber-400"></i> المنتجات
-        </h2>
-        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
 
+    <!-- Firebase Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-        import { getDatabase, ref, onValue, push, remove, update, set } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
-        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+        // تم إضافة دالة "get" لاسترجاع بيانات لوحة الشرف
+        import { getDatabase, ref, set, push, onValue, remove, get } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCt5H1t5dqUxileT88DqkIT5WRSGx45Lps",
@@ -117,460 +102,167 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth(app);
-
         const ADMIN_EMAIL = "osohmde@gmail.com";
-        const Toast = Swal.mixin({ toast: true, position: 'top-start', showConfirmButton: false, timer: 2000, background: '#181822', color: '#fff' });
 
-        let allProducts = [];
-        let allDiscounts = []; // مصفوفة أكواد الخصم
-
-        const escapeHtml = (str) => {
-            if (str === null || str === undefined) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
-        };
-        const safeUrl = (url) => {
-            try {
-                const u = new URL(url, window.location.href);
-                if (u.protocol === 'http:' || u.protocol === 'https:') return u.href;
-            } catch (e) {}
-            return '#';
-        };
-
+        // حماية صفحة الإدارة
         onAuthStateChanged(auth, user => {
-            const gate = document.getElementById('gate');
-            const gateMsg = document.getElementById('gate-msg');
-            const gateLoginBtn = document.getElementById('gate-login-btn');
-            const dashboard = document.getElementById('dashboard');
-
             if (user && user.email === ADMIN_EMAIL) {
-                gate.classList.add('hidden');
-                dashboard.classList.remove('hidden');
-                initAdminData();
+                document.getElementById('admin-body').classList.remove('hidden');
             } else {
-                dashboard.classList.add('hidden');
-                gate.classList.remove('hidden');
-                gateLoginBtn.classList.remove('hidden');
-                gateMsg.textContent = user
-                    ? 'هذا الحساب لا يملك صلاحية الوصول للوحة التحكم.'
-                    : 'يرجى تسجيل الدخول بحساب المدير للمتابعة.';
+                Swal.fire({
+                    title: 'غير مصرح!',
+                    text: 'ليس لديك صلاحية لدخول لوحة التحكم',
+                    icon: 'error',
+                    confirmButtonText: 'العودة للمتجر',
+                    allowOutsideClick: false
+                }).then(() => {
+                    window.location.href = 'index.html';
+                });
             }
         });
 
-        window.gateLogin = async () => {
-            const { value: f } = await Swal.fire({
-                title: 'تسجيل دخول المدير',
-                html: `
-                    <input id="ae" class="swal2-input" placeholder="البريد الإلكتروني">
-                    <input id="ap" type="password" class="swal2-input" placeholder="كلمة المرور">
-                `,
-                confirmButtonText: 'دخول',
-                confirmButtonColor: '#ef4444',
+        window.logoutAdmin = () => {
+            signOut(auth).then(() => {
+                window.location.href = 'index.html';
+            });
+        };
+
+        // --- نظام وصف المتجر ---
+        onValue(ref(db, "store_settings/desc"), snapshot => {
+            document.getElementById('store-desc-input').value = snapshot.val() || "";
+        });
+        window.saveStoreDesc = () => {
+            const desc = document.getElementById('store-desc-input').value;
+            set(ref(db, "store_settings/desc"), desc).then(() => {
+                Swal.fire('نجاح', 'تم تحديث وصف المتجر', 'success');
+            });
+        };
+
+        // --- نظام لوحة الشرف (VIP Leaderboard) المطور ---
+        window.manageVIP = async () => {
+            // أولاً: اختيار المركز
+            const { value: rank } = await Swal.fire({
+                title: 'إدارة لوحة الشرف 🏆',
+                text: 'اختر المركز الذي تريد تعديله:',
+                input: 'select',
+                inputOptions: {
+                    '1': 'المركز الأول 🥇',
+                    '2': 'المركز الثاني 🥈',
+                    '3': 'المركز الثالث 🥉'
+                },
+                inputPlaceholder: 'اختر المركز',
                 showCancelButton: true,
+                confirmButtonText: 'التالي &larr;',
                 cancelButtonText: 'إلغاء',
-                preConfirm: () => ({ e: document.getElementById('ae').value, p: document.getElementById('ap').value })
-            });
-            if (f) {
-                if (!f.e || !f.p) return Toast.fire({ icon: 'error', title: 'يرجى ملء الحقول' });
-                try {
-                    await signInWithEmailAndPassword(auth, f.e, f.p);
-                } catch (e) {
-                    Swal.fire('خطأ', 'بيانات الدخول غير صحيحة', 'error');
-                }
-            }
-        };
-
-        window.gateLogout = () => {
-            signOut(auth).then(() => { window.location.href = 'index.html'; });
-        };
-
-        let dataInitialized = false;
-        function initAdminData() {
-            if (dataInitialized) return;
-            dataInitialized = true;
-
-            onValue(ref(db, "products"), s => {
-                allProducts = [];
-                s.forEach(p => { allProducts.push({ ...p.val(), key: p.key }); });
-                renderProducts();
+                confirmButtonColor: '#eab308'
             });
 
-            // تحميل أكواد الخصم
-            onValue(ref(db, "discount_codes"), s => {
-                allDiscounts = [];
-                s.forEach(d => { allDiscounts.push({ ...d.val(), key: d.key }); });
-                renderDiscounts();
-            });
+            if (rank) {
+                Swal.showLoading();
+                // جلب البيانات الحالية للمركز المختار لتسهيل التعديل
+                const snapshot = await get(ref(db, `store_settings/leaderboard/rank${rank}`));
+                const data = snapshot.val() || { name: '', role: '', img: '', link: '' };
+                Swal.close();
 
-            loadAdminOrders();
-            loadLegacyOrders();
-        }
-
-        window.editStoreDesc = async () => {
-            const curSnap = await new Promise(resolve => {
-                onValue(ref(db, "store_settings/desc"), s => resolve(s.val() || ''), { onlyOnce: true });
-            });
-            const { value: text } = await Swal.fire({
-                title: 'تعديل وصف المتجر', input: 'textarea', inputValue: curSnap,
-                confirmButtonColor: '#ef4444', showCancelButton: true, cancelButtonText: 'إلغاء', confirmButtonText: 'حفظ'
-            });
-            if(text) {
-                set(ref(db, "store_settings/desc"), text).then(() => {
-                    Toast.fire({ icon: 'success', title: 'تم حفظ الوصف بنجاح' });
-                });
-            }
-        };
-
-        // --- دوال أكواد الخصم الجديدة ---
-        window.openAddDiscount = async () => {
-            const { value: f } = await Swal.fire({
-                title: 'إضافة كود خصم جديد',
-                html: `
-                    <input id="dc" class="swal2-input" placeholder="الكود (حروف/أرقام إنجليزي، مثلاً EID20)" style="text-transform:uppercase">
-                    <input id="dp" type="number" min="0.01" max="100" step="0.01" class="swal2-input" placeholder="نسبة الخصم % (مثلاً 20)">
-                    <input id="de" type="date" class="swal2-input" placeholder="تاريخ الانتهاء (اختياري)">
-                    <input id="du" type="number" min="1" class="swal2-input" placeholder="عدد مرات الاستخدام المسموحة (اختياري)">
-                `,
-                confirmButtonColor: '#16a34a',
-                preConfirm: async () => {
-                    const code = document.getElementById('dc').value.trim().toUpperCase();
-                    const percentage = document.getElementById('dp').value;
-                    const expiresAt = document.getElementById('de').value;
-                    const usageLimit = document.getElementById('du').value;
-
-                    if (!code || !/^[A-Za-z0-9]{3,32}$/.test(code)) return Swal.showValidationMessage('كود غير صالح (حروف/أرقام إنجليزي، 3-32 حرف)');
-                    if (!percentage || isNaN(percentage) || percentage <= 0 || percentage > 100) return Swal.showValidationMessage('يرجى إدخال نسبة صحيحة بين 0.01 و100');
-
-                    Swal.showLoading();
-                    try {
-                        const res = await fetch('https://paddle-backend-self.vercel.app/api/discount', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ code, percentage, expiresAt: expiresAt || null, usageLimit: usageLimit || null })
-                        }).then(r => r.json());
-
-                        if (!res.success) return Swal.showValidationMessage('خطأ: ' + res.error);
-
-                        return { code: res.code, percentage: parseFloat(percentage), discountId: res.discountId, expiresAt: expiresAt || null, usageLimit: usageLimit || null, createdAt: Date.now() };
-                    } catch (e) {
-                        return Swal.showValidationMessage('فشل الاتصال بالسيرفر');
-                    }
-                }
-            });
-            if (f) {
-                push(ref(db, "discount_codes"), f).then(() => Toast.fire({ icon: 'success', title: 'تم إنشاء كود الخصم بنجاح 🎉' }));
-            }
-        };
-
-        window.archiveDiscount = (k, discountId) => {
-            Swal.fire({
-                title: 'إلغاء كود الخصم؟',
-                text: 'الكود رح يتوقف عن العمل فورًا على Paddle.',
-                icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، ألغِ', cancelButtonText: 'تراجع', confirmButtonColor: '#ef4444'
-            }).then(async r => {
-                if (!r.isConfirmed) return;
-                try {
-                    const res = await fetch('https://paddle-backend-self.vercel.app/api/discount-archive', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ discountId })
-                    }).then(x => x.json());
-                    if (!res.success) return Swal.fire('خطأ', res.error || 'فشل الإلغاء', 'error');
-                    remove(ref(db, "discount_codes/" + k)).then(() => Toast.fire({ icon: 'success', title: 'تم إلغاء الكود' }));
-                } catch (e) {
-                    Swal.fire('خطأ', 'فشل الاتصال بالسيرفر', 'error');
-                }
-            });
-        };
-
-        window.renderDiscounts = () => {
-            const grid = document.getElementById('discounts-list'); if (!grid) return;
-            grid.innerHTML = "";
-            if (allDiscounts.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500 font-bold">لا توجد أكواد خصم بعد.</div>`;
-                return;
-            }
-            allDiscounts.forEach(d => {
-                const expired = d.expiresAt && new Date(d.expiresAt) < new Date();
-                grid.innerHTML += `
-                <div class="glass-v2 rounded-2xl p-5 ${expired ? 'opacity-50' : ''}">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="font-black text-white text-lg tracking-wider">${escapeHtml(d.code)}</span>
-                        <span class="text-green-400 font-black text-xl">${escapeHtml(d.percentage)}%</span>
-                    </div>
-                    <p class="text-[11px] text-gray-400 mb-3">
-                        ${d.expiresAt ? 'ينتهي: ' + escapeHtml(d.expiresAt) : 'بدون تاريخ انتهاء'}
-                        ${d.usageLimit ? ' · حد الاستخدام: ' + escapeHtml(d.usageLimit) : ''}
-                        ${expired ? ' · <span class="text-red-400">منتهي</span>' : ''}
-                    </p>
-                    <button onclick="window.archiveDiscount('${d.key}','${d.discountId}')" class="w-full bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-2 rounded-lg text-xs font-bold transition"><i class="fa fa-ban"></i> إلغاء الكود</button>
-                </div>`;
-            });
-        };
-        // --------------------------------
-
-        window.openAddProduct = async () => {
-            const { value: f } = await Swal.fire({
-                title: 'إضافة منتج جديد',
-                html: `
-                    <input id="nt" class="swal2-input" placeholder="اسم المنتج">
-                    <input id="np" type="number" min="0" step="0.01" class="swal2-input" placeholder="السعر بالدولار ($)">
-                    <select id="nc" class="swal2-select"><option value="alerts">أليرتات وتصاميم</option><option value="packages">بكجات واشتراكات</option></select>
-                    <input id="ny" class="swal2-input" placeholder="رابط يوتيوب للمعاينة (اختياري)">
-                    <input id="ni" type="file" accept="image/*" class="swal2-file">
-                    <p class="text-[11px] text-gray-400 mt-2 text-right">سيتم توليد وربط معرفات الدفع (Paddle) تلقائياً 🚀</p>
-                `,
-                confirmButtonColor: '#ef4444',
-                preConfirm: async () => {
-                    const title = document.getElementById('nt').value.trim();
-                    const priceRaw = document.getElementById('np').value;
-                    const price = parseFloat(priceRaw);
-                    const file = document.getElementById('ni').files[0];
-
-                    if(!title) return Swal.showValidationMessage('يرجى إدخال اسم المنتج');
-                    if(!priceRaw || isNaN(price) || price <= 0) return Swal.showValidationMessage('يرجى إدخال سعر صحيح أكبر من صفر');
-                    if(!file) return Swal.showValidationMessage('يرجى اختيار صورة للمنتج');
-
-                    Swal.showLoading(); 
-
-                    const fd = new FormData(); fd.append("image", file);
-                    try {
-                        const res = await fetch('https://api.imgbb.com/1/upload?key=11517ad350ecf73397b84302f750238e', { method: 'POST', body: fd }).then(r => r.json());
-                        if(!res || !res.data || !res.data.url) return Swal.showValidationMessage('فشل رفع الصورة، حاول مجدداً');
-                        
-                        const paddleRes = await fetch('https://paddle-backend-self.vercel.app/api/paddle', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                name: title,
-                                description: document.getElementById('nc').value, 
-                                priceInCents: Math.round(price * 100) 
-                            })
-                        });
-                        
-                        const paddleData = await paddleRes.json();
-                        
-                        if (!paddleData.success) {
-                            return Swal.showValidationMessage('خطأ من بوابة الدفع: ' + (paddleData.error || 'فشل غير معروف'));
-                        }
-
+                // ثانياً: تعديل البيانات
+                const { value: formValues } = await Swal.fire({
+                    title: `تعديل المركز ${rank}`,
+                    html: `
+                        <input id="vip-name" class="swal2-input" placeholder="اسم الستريمر" value="${data.name}" style="width: 85%; margin: 8px auto;">
+                        <input id="vip-role" class="swal2-input" placeholder="اللقب (مثل: أكبر داعم)" value="${data.role}" style="width: 85%; margin: 8px auto;">
+                        <input id="vip-img" class="swal2-input" placeholder="رابط الصورة (ImgBB)" value="${data.img}" style="width: 85%; margin: 8px auto;">
+                        <input id="vip-link" class="swal2-input" placeholder="رابط القناة (يوتيوب/تويتش)" value="${data.link}" style="width: 85%; margin: 8px auto;">
+                    `,
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'حفظ التعديلات',
+                    cancelButtonText: 'إلغاء',
+                    confirmButtonColor: '#16a34a',
+                    preConfirm: () => {
                         return {
-                            title,
-                            price,
-                            paddleProductId: paddleData.paddleProductId, 
-                            paddlePriceId: paddleData.paddlePriceId,     
-                            category: document.getElementById('nc').value,
-                            youtube: document.getElementById('ny').value.trim(),
-                            image: res.data.url
-                        };
-                    } catch(e) { 
-                        return Swal.showValidationMessage('حدث خطأ في الاتصال بالسيرفر'); 
+                            name: document.getElementById('vip-name').value,
+                            role: document.getElementById('vip-role').value,
+                            img: document.getElementById('vip-img').value,
+                            link: document.getElementById('vip-link').value
+                        }
                     }
+                });
+
+                if (formValues) {
+                    set(ref(db, `store_settings/leaderboard/rank${rank}`), formValues).then(() => {
+                        Swal.fire({
+                            title: 'تم الحفظ!',
+                            text: \`تم تحديث المركز \${rank} بنجاح\`,
+                            icon: 'success',
+                            confirmButtonColor: '#16a34a'
+                        });
+                    });
                 }
-            });
-            if(f) {
-                push(ref(db, "products"), f).then(() => Toast.fire({ icon: 'success', title: 'تمت إضافة المنتج وربطه بالدفع بنجاح' }));
             }
         };
 
-        window.editProduct = async (k) => {
-            const p = allProducts.find(x => x.key === k);
-            if(!p) return;
-            const { value: f } = await Swal.fire({
-                title: 'تعديل المنتج',
-                html: `
-                    <input id="ut" class="swal2-input" value="${escapeHtml(p.title)}" placeholder="الاسم">
-                    <input id="up" type="number" min="0" step="0.01" class="swal2-input" value="${escapeHtml(p.price)}" placeholder="السعر">
-                    <input id="upid" class="swal2-input" value="${escapeHtml(p.paddlePriceId || '')}" placeholder="Paddle Price ID (إلزامي)">
-                    <select id="uc" class="swal2-select">
-                        <option value="alerts" ${p.category === 'alerts' ? 'selected' : ''}>أليرتات وتصاميم</option>
-                        <option value="packages" ${p.category === 'packages' ? 'selected' : ''}>بكجات واشتراكات</option>
-                    </select>
-                    <input id="uy" class="swal2-input" value="${escapeHtml(p.youtube || '')}" placeholder="رابط يوتيوب">
-                    <input id="ui" type="file" accept="image/*" class="swal2-file">
-                    <p class="text-[11px] text-gray-400 mt-1 text-right">اترك حقل الصورة فارغاً للإبقاء على الصورة الحالية</p>
-                `,
-                confirmButtonColor: '#ef4444',
-                preConfirm: async () => {
-                    const title = document.getElementById('ut').value.trim();
-                    const priceRaw = document.getElementById('up').value;
-                    const price = parseFloat(priceRaw);
-                    const paddlePriceId = document.getElementById('upid').value.trim();
-                    const file = document.getElementById('ui').files[0];
+        // --- نظام المنتجات ---
+        window.addProduct = () => {
+            const title = document.getElementById('p-title').value;
+            const price = document.getElementById('p-price').value;
+            const image = document.getElementById('p-image').value;
+            const paddlePriceId = document.getElementById('p-paddle').value;
+            const youtube = document.getElementById('p-youtube').value;
+            const category = document.getElementById('p-cat').value;
 
-                    if(!title) return Swal.showValidationMessage('يرجى إدخال اسم المنتج');
-                    if(!priceRaw || isNaN(price) || price <= 0) return Swal.showValidationMessage('يرجى إدخال سعر صحيح أكبر من صفر');
-                    if(!paddlePriceId) return Swal.showValidationMessage('يرجى إدخال Paddle Price ID الصحيح (يجب أن يطابق السعر أعلاه في Paddle)');
-
-                    let image = p.image;
-                    if(file) {
-                        const fd = new FormData(); fd.append("image", file);
-                        try {
-                            const res = await fetch('https://api.imgbb.com/1/upload?key=11517ad350ecf73397b84302f750238e', { method: 'POST', body: fd }).then(r => r.json());
-                            if(!res || !res.data || !res.data.url) return Swal.showValidationMessage('فشل رفع الصورة الجديدة، حاول مجدداً');
-                            image = res.data.url;
-                        } catch(e) { return Swal.showValidationMessage('فشل رفع الصورة الجديدة'); }
-                    }
-
-                    return {
-                        title,
-                        price,
-                        paddlePriceId,
-                        category: document.getElementById('uc').value,
-                        youtube: document.getElementById('uy').value.trim(),
-                        image
-                    };
-                }
-            });
-            if(f) update(ref(db, "products/"+k), f).then(() => Toast.fire({ icon: 'success', title: 'تم تحديث المنتج' }));
-        };
-
-        window.deleteProduct = (k) => {
-            Swal.fire({
-                title: 'حذف المنتج نهائياً؟',
-                icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
-            }).then(r => {
-                if(r.isConfirmed) remove(ref(db, "products/"+k)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف' }));
-            });
-        };
-
-        window.renderProducts = () => {
-            const grid = document.getElementById('products-grid'); grid.innerHTML = "";
-            if(allProducts.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-16 text-gray-500 font-bold">لا توجد منتجات بعد.</div>`;
-                return;
+            if(!title || !price || !image || !paddlePriceId) {
+                return Swal.fire('تنبيه', 'يرجى تعبئة جميع الحقول الأساسية', 'warning');
             }
-            allProducts.forEach(p => {
-                grid.innerHTML += `
-                <div class="glass-v2 rounded-2xl overflow-hidden">
-                    <img src="${safeUrl(p.image)}" class="w-full h-36 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-black text-white text-sm mb-1 truncate">${escapeHtml(p.title)}</h3>
-                        <p class="text-red-500 font-black mb-3">$${escapeHtml(p.price)}</p>
-                        <div class="flex gap-2">
-                            <button onclick="window.editProduct('${p.key}')" class="flex-1 bg-blue-600/20 border border-blue-500/30 text-blue-400 hover:bg-blue-600 hover:text-white py-2 rounded-lg text-xs font-bold transition"><i class="fa fa-pen"></i> تعديل</button>
-                            <button onclick="window.deleteProduct('${p.key}')" class="flex-1 bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-2 rounded-lg text-xs font-bold transition"><i class="fa fa-trash"></i> حذف</button>
+
+            push(ref(db, "products"), {
+                title, price, image, paddlePriceId, youtube, category
+            }).then(() => {
+                Swal.fire('نجاح', 'تم إضافة المنتج بنجاح', 'success');
+                document.getElementById('p-title').value = '';
+                document.getElementById('p-price').value = '';
+                document.getElementById('p-image').value = '';
+                document.getElementById('p-paddle').value = '';
+                document.getElementById('p-youtube').value = '';
+            });
+        };
+
+        onValue(ref(db, "products"), snapshot => {
+            const list = document.getElementById('admin-products-list');
+            list.innerHTML = "";
+            snapshot.forEach(child => {
+                const p = child.val();
+                list.innerHTML += `
+                <div class="bg-[#1a1a24] border border-white/5 p-4 rounded-xl flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <img src="${p.image}" class="w-12 h-12 rounded object-cover">
+                        <div>
+                            <p class="font-bold text-sm text-white">${p.title}</p>
+                            <p class="text-red-500 text-xs font-black">$${p.price}</p>
                         </div>
                     </div>
+                    <button onclick="window.deleteProduct('${child.key}')" class="bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white w-8 h-8 rounded-lg flex items-center justify-center transition">
+                        <i class="fa fa-trash"></i>
+                    </button>
                 </div>`;
             });
-        };
+        });
 
-        const loadAdminOrders = () => {
-            onValue(ref(db, "orders"), s => {
-                const list = document.getElementById('orders-list'); list.innerHTML = "";
-                let count = 0;
-                s.forEach(userSnap => {
-                    const uid = userSnap.key;
-                    userSnap.forEach(o => {
-                        const d = o.val();
-                        if(d.status === 'pending') {
-                            count++;
-                            list.innerHTML += `<div class="p-3 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center">
-                                <div class="truncate max-w-[150px]"><p class="font-bold">${escapeHtml(d.email)}</p><p class="text-red-400 font-bold">${escapeHtml(d.total)}</p></div>
-                                <div class="flex gap-1.5"><button onclick="window.activateOrder('${uid}','${o.key}')" class="bg-green-600 px-2.5 py-1 rounded-lg text-[11px] font-bold">تفعيل</button><button onclick="window.removeOrder('${uid}','${o.key}')" class="bg-red-600 px-2.5 py-1 rounded-lg text-[11px]">حذف</button></div>
-                            </div>`;
-                        }
+        window.deleteProduct = (key) => {
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: "لن تتمكن من التراجع عن حذف هذا المنتج!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#272732',
+                confirmButtonText: 'نعم، احذفه!',
+                cancelButtonText: 'إلغاء'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    remove(ref(db, `products/${key}`)).then(() => {
+                        Swal.fire('تم الحذف!', 'تم مسح المنتج من المتجر.', 'success');
                     });
-                });
-                document.getElementById('pending-count').innerText = count;
-            });
-        };
-
-        window.activateOrder = async (uid, key) => {
-            const { value: url } = await Swal.fire({
-                title: 'رابط التسليم / التحميل',
-                input: 'url',
-                placeholder: 'ضع رابط الملف (Google Drive / Mega) أو كود التفعيل',
-                showCancelButton: true, cancelButtonText: 'إلغاء', confirmButtonText: 'تفعيل الطلب', confirmButtonColor: '#16a34a'
-            });
-
-            if(url) {
-                update(ref(db, `orders/${uid}/${key}`), { status: 'active', productLink: url })
-                    .then(() => Toast.fire({ icon: 'success', title: 'تم تفعيل الطلب وإتاحته للعميل 🚀' }));
-            }
-        };
-
-        window.removeOrder = (uid, key) => {
-            Swal.fire({
-                title: 'هل تريد حذف هذا الطلب؟',
-                icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
-            }).then(r => {
-                if (r.isConfirmed) remove(ref(db, `orders/${uid}/${key}`)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف' }));
-            });
-        };
-
-        window.migrateLegacyOrders = async () => {
-            if (!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL) return;
-
-            const confirmRes = await Swal.fire({
-                title: 'ترحيل الطلبات القديمة',
-                text: 'رح يتم نقل أي طلب مخزّن بالشكل القديم (بدون تصنيف مستخدم) إلى أرشيف منفصل. البيانات ما بتنمسح إطلاقًا. هل تريد المتابعة؟',
-                icon: 'info', showCancelButton: true, confirmButtonText: 'نعم، رحّل الآن', cancelButtonText: 'إلغاء', confirmButtonColor: '#f59e0b'
-            });
-            if (!confirmRes.isConfirmed) return;
-
-            try {
-                const snap = await new Promise((resolve, reject) => {
-                    onValue(ref(db, "orders"), s => resolve(s), { onlyOnce: true }, reject);
-                });
-
-                const legacyEntries = [];
-                snap.forEach(childSnap => {
-                    if (childSnap.hasChild('email')) {
-                        legacyEntries.push({ key: childSnap.key, val: childSnap.val() });
-                    }
-                });
-
-                if (legacyEntries.length === 0) {
-                    Toast.fire({ icon: 'info', title: 'لا يوجد طلبات قديمة بحاجة ترحيل' });
-                    return;
                 }
-
-                for (const entry of legacyEntries) {
-                    await set(ref(db, `legacy_orders/${entry.key}`), entry.val);
-                    await remove(ref(db, `orders/${entry.key}`));
-                }
-
-                Toast.fire({ icon: 'success', title: `تم ترحيل ${legacyEntries.length} طلب قديم للأرشيف` });
-            } catch (e) {
-                Swal.fire('خطأ', 'حدث خطأ أثناء الترحيل: ' + e.message, 'error');
-            }
-        };
-
-        const loadLegacyOrders = () => {
-            onValue(ref(db, "legacy_orders"), s => {
-                const list = document.getElementById('legacy-orders-list');
-                if (!list) return;
-                list.innerHTML = "";
-                if (!s.exists()) {
-                    list.innerHTML = `<p class="text-gray-500 text-center py-3">لا يوجد طلبات مؤرشفة حالياً</p>`;
-                    return;
-                }
-                s.forEach(o => {
-                    const d = o.val();
-                    list.innerHTML += `<div class="p-3 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center gap-2">
-                        <div class="truncate max-w-[220px]">
-                            <p class="font-bold">${escapeHtml(d.email || '—')}</p>
-                            <p class="text-gray-400">${escapeHtml(d.total || '—')} · ${escapeHtml(d.method || '—')} · ${escapeHtml(d.status || 'بدون حالة')}</p>
-                        </div>
-                        <button onclick="window.deleteLegacyOrder('${o.key}')" class="bg-red-600 px-2.5 py-1 rounded-lg text-[11px] flex-shrink-0">حذف نهائي</button>
-                    </div>`;
-                });
-            });
-        };
-
-        window.deleteLegacyOrder = (key) => {
-            Swal.fire({
-                title: 'حذف هذا الطلب المؤرشف نهائيًا؟',
-                text: 'هذا الإجراء لا يمكن التراجع عنه.',
-                icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
-            }).then(r => {
-                if (r.isConfirmed) remove(ref(db, `legacy_orders/${key}`)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف نهائيًا' }));
             });
         };
     </script>
