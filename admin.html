@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>لوحة التحكم | YZ STORE Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Keep this page out of search engines and off-limits to casual crawling.
+         This is NOT a security control (the real gate is Firebase Rules +
+         the auth check below) -- it just avoids the page showing up in
+         Google or being linked from anywhere public. -->
+    <meta name="robots" content="noindex, nofollow">
+
+    <link rel="icon" type="image/png" href="https://i.ibb.co/YT1RPZdx/image.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root { --primary-red: #ef4444; --bg-dark: #070709; }
+        body { background: var(--bg-dark); color: #f4f4f5; font-family: 'Cairo', sans-serif; }
+        .glass-v2 { background: rgba(18, 18, 24, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .swal2-popup { border-radius: 24px !important; background: #121218 !important; border: 1px solid #272732 !important; padding: 24px !important; color: #fff !important; }
+        .swal2-title { color: #fff !important; font-family: 'Cairo', sans-serif !important; font-weight: 900 !important; }
+        .swal2-input, .swal2-select, .swal2-file, .swal2-textarea { background: #1a1a24 !important; color: #fff !important; border: 1px solid #3f3f50 !important; border-radius: 12px !important; padding: 12px !important; font-family: 'Cairo', sans-serif !important; }
+        .swal2-input:focus, .swal2-textarea:focus { border-color: var(--primary-red) !important; }
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #272732; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Gate screen: shown until Firebase confirms this is the admin account.
+         This is a UX convenience only -- every read/write below is still
+         enforced independently by the Firebase Database Rules, which is the
+         actual security boundary. -->
+    <div id="gate" class="min-h-screen flex items-center justify-center p-6">
+        <div class="glass-v2 rounded-3xl p-8 max-w-sm w-full text-center space-y-5">
+            <img src="https://i.ibb.co/YT1RPZdx/image.png" class="h-14 w-auto mx-auto">
+            <h1 class="text-lg font-black text-white">لوحة تحكم YZ STORE</h1>
+            <p id="gate-msg" class="text-xs text-gray-400">جارٍ التحقق من صلاحياتك...</p>
+            <button id="gate-login-btn" onclick="window.gateLogin()" class="hidden w-full bg-red-600 hover:bg-red-500 text-white py-3 rounded-xl font-black text-sm transition">تسجيل دخول المدير</button>
+            <a href="index.html" class="block text-xs text-gray-500 hover:text-gray-300">العودة للمتجر</a>
+        </div>
+    </div>
+
+    <!-- Real dashboard: stays hidden until the gate above confirms admin -->
+    <div id="dashboard" class="hidden max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-3">
+                <img src="https://i.ibb.co/YT1RPZdx/image.png" class="h-10 w-auto">
+                <h1 class="text-xl font-black text-white">لوحة تحكم YZ STORE</h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="text-xs font-bold px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-white transition">عرض المتجر</a>
+                <button onclick="window.gateLogout()" class="text-xs font-bold px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-red-400 transition">تسجيل الخروج</button>
+            </div>
+        </div>
+
+        <div class="glass-v2 p-6 rounded-3xl border border-red-500/30 mb-8">
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+                <h2 class="text-lg font-black text-white flex items-center gap-2">
+                    <i class="fa fa-shield-halved text-red-500"></i> إدارة عامة
+                </h2>
+                <span class="text-xs bg-red-600/20 text-red-400 px-3 py-1 rounded-full font-bold">Admin Privileges</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <button onclick="window.openAddProduct()" class="p-6 rounded-2xl bg-white/5 border border-dashed border-white/20 hover:border-red-500/50 hover:bg-red-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
+                    <i class="fa fa-plus-circle text-3xl text-red-500"></i>
+                    <span class="font-bold text-sm">إضافة منتج جديد</span>
+                </button>
+                <button onclick="window.editStoreDesc()" class="p-6 rounded-2xl bg-white/5 border border-dashed border-white/20 hover:border-blue-500/50 hover:bg-blue-600/10 transition flex flex-col items-center justify-center gap-2 text-gray-200">
+                    <i class="fa fa-pencil text-3xl text-blue-400"></i>
+                    <span class="font-bold text-sm">تعديل وصف المتجر</span>
+                </button>
+                <div class="p-4 rounded-2xl bg-black/50 border border-white/5">
+                    <h3 class="text-xs font-bold text-gray-400 mb-3 flex justify-between">
+                        <span>📦 الطلبات المعلقة</span>
+                        <span id="pending-count" class="text-red-400 font-black">0</span>
+                    </h3>
+                    <div id="orders-list" class="space-y-2 max-h-44 overflow-y-auto custom-scroll text-xs"></div>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-6 border-t border-white/10">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-xs font-bold text-gray-400">🗄️ أرشيف الطلبات القديمة (البنية القديمة)</h3>
+                    <button onclick="window.migrateLegacyOrders()" class="text-[11px] bg-amber-600/20 border border-amber-500/30 text-amber-400 px-3 py-1.5 rounded-lg font-bold hover:bg-amber-600 hover:text-white transition">
+                        ترحيل الطلبات القديمة الآن
+                    </button>
+                </div>
+                <div id="legacy-orders-list" class="space-y-2 max-h-56 overflow-y-auto custom-scroll text-xs"></div>
+            </div>
+        </div>
+
+        <h2 class="text-lg font-black text-white mb-4 flex items-center gap-2">
+            <i class="fa fa-box-open text-amber-400"></i> المنتجات
+        </h2>
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+        import { getDatabase, ref, onValue, push, remove, update, set } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCt5H1t5dqUxileT88DqkIT5WRSGx45Lps",
+            authDomain: "osman-70f42.firebaseapp.com",
+            databaseURL: "https://osman-70f42-default-rtdb.firebaseio.com",
+            projectId: "osman-70f42",
+            storageBucket: "osman-70f42.firebasestorage.app"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        const ADMIN_EMAIL = "osohmde@gmail.com";
+        const Toast = Swal.mixin({ toast: true, position: 'top-start', showConfirmButton: false, timer: 2000, background: '#181822', color: '#fff' });
+
+        let allProducts = [];
+
+        const escapeHtml = (str) => {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        };
+        const safeUrl = (url) => {
+            try {
+                const u = new URL(url, window.location.href);
+                if (u.protocol === 'http:' || u.protocol === 'https:') return u.href;
+            } catch (e) {}
+            return '#';
+        };
+
+        // ---------- THE ACTUAL GATE ----------
+        // Every branch here still relies on the Firebase Database Rules as the
+        // real security boundary. This just decides what the browser renders.
+        onAuthStateChanged(auth, user => {
+            const gate = document.getElementById('gate');
+            const gateMsg = document.getElementById('gate-msg');
+            const gateLoginBtn = document.getElementById('gate-login-btn');
+            const dashboard = document.getElementById('dashboard');
+
+            if (user && user.email === ADMIN_EMAIL) {
+                gate.classList.add('hidden');
+                dashboard.classList.remove('hidden');
+                initAdminData();
+            } else {
+                dashboard.classList.add('hidden');
+                gate.classList.remove('hidden');
+                gateLoginBtn.classList.remove('hidden');
+                gateMsg.textContent = user
+                    ? 'هذا الحساب لا يملك صلاحية الوصول للوحة التحكم.'
+                    : 'يرجى تسجيل الدخول بحساب المدير للمتابعة.';
+            }
+        });
+
+        window.gateLogin = async () => {
+            const { value: f } = await Swal.fire({
+                title: 'تسجيل دخول المدير',
+                html: `
+                    <input id="ae" class="swal2-input" placeholder="البريد الإلكتروني">
+                    <input id="ap" type="password" class="swal2-input" placeholder="كلمة المرور">
+                `,
+                confirmButtonText: 'دخول',
+                confirmButtonColor: '#ef4444',
+                showCancelButton: true,
+                cancelButtonText: 'إلغاء',
+                preConfirm: () => ({ e: document.getElementById('ae').value, p: document.getElementById('ap').value })
+            });
+            if (f) {
+                if (!f.e || !f.p) return Toast.fire({ icon: 'error', title: 'يرجى ملء الحقول' });
+                try {
+                    await signInWithEmailAndPassword(auth, f.e, f.p);
+                } catch (e) {
+                    Swal.fire('خطأ', 'بيانات الدخول غير صحيحة', 'error');
+                }
+            }
+        };
+
+        window.gateLogout = () => {
+            signOut(auth).then(() => { window.location.href = 'index.html'; });
+        };
+
+        // ---------- data only loads once we know we're the admin ----------
+        let dataInitialized = false;
+        function initAdminData() {
+            if (dataInitialized) return;
+            dataInitialized = true;
+
+            onValue(ref(db, "products"), s => {
+                allProducts = [];
+                s.forEach(p => { allProducts.push({ ...p.val(), key: p.key }); });
+                renderProducts();
+            });
+
+            loadAdminOrders();
+            loadLegacyOrders();
+        }
+
+        window.editStoreDesc = async () => {
+            const curSnap = await new Promise(resolve => {
+                onValue(ref(db, "store_settings/desc"), s => resolve(s.val() || ''), { onlyOnce: true });
+            });
+            const { value: text } = await Swal.fire({
+                title: 'تعديل وصف المتجر', input: 'textarea', inputValue: curSnap,
+                confirmButtonColor: '#ef4444', showCancelButton: true, cancelButtonText: 'إلغاء', confirmButtonText: 'حفظ'
+            });
+            if(text) {
+                set(ref(db, "store_settings/desc"), text).then(() => {
+                    Toast.fire({ icon: 'success', title: 'تم حفظ الوصف بنجاح' });
+                });
+            }
+        };
+
+        window.openAddProduct = async () => {
+            const { value: f } = await Swal.fire({
+                title: 'إضافة منتج جديد',
+                html: `
+                    <input id="nt" class="swal2-input" placeholder="اسم المنتج">
+                    <input id="np" type="number" min="0" step="0.01" class="swal2-input" placeholder="السعر بالدولار ($)">
+                    <input id="npid" class="swal2-input" placeholder="Paddle Price ID (إلزامي - يجب أن يطابق السعر أعلاه في لوحة Paddle)">
+                    <select id="nc" class="swal2-select"><option value="alerts">أليرتات وتصاميم</option><option value="packages">بكجات واشتراكات</option></select>
+                    <input id="ny" class="swal2-input" placeholder="رابط يوتيوب للمعاينة (اختياري)">
+                    <input id="ni" type="file" accept="image/*" class="swal2-file">
+                `,
+                confirmButtonColor: '#ef4444',
+                preConfirm: async () => {
+                    const title = document.getElementById('nt').value.trim();
+                    const priceRaw = document.getElementById('np').value;
+                    const price = parseFloat(priceRaw);
+                    const paddlePriceId = document.getElementById('npid').value.trim();
+                    const file = document.getElementById('ni').files[0];
+
+                    if(!title) return Swal.showValidationMessage('يرجى إدخال اسم المنتج');
+                    if(!priceRaw || isNaN(price) || price <= 0) return Swal.showValidationMessage('يرجى إدخال سعر صحيح أكبر من صفر');
+                    if(!paddlePriceId) return Swal.showValidationMessage('يرجى إدخال Paddle Price ID الصحيح لهذا المنتج بالتحديد (تأكد أن سعره في Paddle يطابق السعر المُدخل هنا)');
+                    if(!file) return Swal.showValidationMessage('يرجى اختيار صورة للمنتج');
+
+                    const fd = new FormData(); fd.append("image", file);
+                    try {
+                        const res = await fetch('https://api.imgbb.com/1/upload?key=11517ad350ecf73397b84302f750238e', { method: 'POST', body: fd }).then(r => r.json());
+                        if(!res || !res.data || !res.data.url) return Swal.showValidationMessage('فشل رفع الصورة، حاول مجدداً');
+                        return {
+                            title,
+                            price,
+                            paddlePriceId,
+                            category: document.getElementById('nc').value,
+                            youtube: document.getElementById('ny').value.trim(),
+                            image: res.data.url
+                        };
+                    } catch(e) { Swal.showValidationMessage('فشل رفع الصورة'); }
+                }
+            });
+            if(f) {
+                push(ref(db, "products"), f).then(() => Toast.fire({ icon: 'success', title: 'تمت إضافة المنتج بنجاح' }));
+            }
+        };
+
+        window.editProduct = async (k) => {
+            const p = allProducts.find(x => x.key === k);
+            if(!p) return;
+            const { value: f } = await Swal.fire({
+                title: 'تعديل المنتج',
+                html: `
+                    <input id="ut" class="swal2-input" value="${escapeHtml(p.title)}" placeholder="الاسم">
+                    <input id="up" type="number" min="0" step="0.01" class="swal2-input" value="${escapeHtml(p.price)}" placeholder="السعر">
+                    <input id="upid" class="swal2-input" value="${escapeHtml(p.paddlePriceId || '')}" placeholder="Paddle Price ID (إلزامي)">
+                    <select id="uc" class="swal2-select">
+                        <option value="alerts" ${p.category === 'alerts' ? 'selected' : ''}>أليرتات وتصاميم</option>
+                        <option value="packages" ${p.category === 'packages' ? 'selected' : ''}>بكجات واشتراكات</option>
+                    </select>
+                    <input id="uy" class="swal2-input" value="${escapeHtml(p.youtube || '')}" placeholder="رابط يوتيوب">
+                    <input id="ui" type="file" accept="image/*" class="swal2-file">
+                    <p class="text-[11px] text-gray-400 mt-1 text-right">اترك حقل الصورة فارغاً للإبقاء على الصورة الحالية</p>
+                `,
+                confirmButtonColor: '#ef4444',
+                preConfirm: async () => {
+                    const title = document.getElementById('ut').value.trim();
+                    const priceRaw = document.getElementById('up').value;
+                    const price = parseFloat(priceRaw);
+                    const paddlePriceId = document.getElementById('upid').value.trim();
+                    const file = document.getElementById('ui').files[0];
+
+                    if(!title) return Swal.showValidationMessage('يرجى إدخال اسم المنتج');
+                    if(!priceRaw || isNaN(price) || price <= 0) return Swal.showValidationMessage('يرجى إدخال سعر صحيح أكبر من صفر');
+                    if(!paddlePriceId) return Swal.showValidationMessage('يرجى إدخال Paddle Price ID الصحيح (يجب أن يطابق السعر أعلاه في Paddle)');
+
+                    let image = p.image;
+                    if(file) {
+                        const fd = new FormData(); fd.append("image", file);
+                        try {
+                            const res = await fetch('https://api.imgbb.com/1/upload?key=11517ad350ecf73397b84302f750238e', { method: 'POST', body: fd }).then(r => r.json());
+                            if(!res || !res.data || !res.data.url) return Swal.showValidationMessage('فشل رفع الصورة الجديدة، حاول مجدداً');
+                            image = res.data.url;
+                        } catch(e) { return Swal.showValidationMessage('فشل رفع الصورة الجديدة'); }
+                    }
+
+                    return {
+                        title,
+                        price,
+                        paddlePriceId,
+                        category: document.getElementById('uc').value,
+                        youtube: document.getElementById('uy').value.trim(),
+                        image
+                    };
+                }
+            });
+            if(f) update(ref(db, "products/"+k), f).then(() => Toast.fire({ icon: 'success', title: 'تم تحديث المنتج' }));
+        };
+
+        window.deleteProduct = (k) => {
+            Swal.fire({
+                title: 'حذف المنتج نهائياً؟',
+                icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
+            }).then(r => {
+                if(r.isConfirmed) remove(ref(db, "products/"+k)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف' }));
+            });
+        };
+
+        window.renderProducts = () => {
+            const grid = document.getElementById('products-grid'); grid.innerHTML = "";
+            if(allProducts.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-16 text-gray-500 font-bold">لا توجد منتجات بعد.</div>`;
+                return;
+            }
+            allProducts.forEach(p => {
+                grid.innerHTML += `
+                <div class="glass-v2 rounded-2xl overflow-hidden">
+                    <img src="${safeUrl(p.image)}" class="w-full h-36 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-black text-white text-sm mb-1 truncate">${escapeHtml(p.title)}</h3>
+                        <p class="text-red-500 font-black mb-3">$${escapeHtml(p.price)}</p>
+                        <div class="flex gap-2">
+                            <button onclick="window.editProduct('${p.key}')" class="flex-1 bg-blue-600/20 border border-blue-500/30 text-blue-400 hover:bg-blue-600 hover:text-white py-2 rounded-lg text-xs font-bold transition"><i class="fa fa-pen"></i> تعديل</button>
+                            <button onclick="window.deleteProduct('${p.key}')" class="flex-1 bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white py-2 rounded-lg text-xs font-bold transition"><i class="fa fa-trash"></i> حذف</button>
+                        </div>
+                    </div>
+                </div>`;
+            });
+        };
+
+        const loadAdminOrders = () => {
+            onValue(ref(db, "orders"), s => {
+                const list = document.getElementById('orders-list'); list.innerHTML = "";
+                let count = 0;
+                s.forEach(userSnap => {
+                    const uid = userSnap.key;
+                    userSnap.forEach(o => {
+                        const d = o.val();
+                        if(d.status === 'pending') {
+                            count++;
+                            list.innerHTML += `<div class="p-3 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center">
+                                <div class="truncate max-w-[150px]"><p class="font-bold">${escapeHtml(d.email)}</p><p class="text-red-400 font-bold">${escapeHtml(d.total)}</p></div>
+                                <div class="flex gap-1.5"><button onclick="window.activateOrder('${uid}','${o.key}')" class="bg-green-600 px-2.5 py-1 rounded-lg text-[11px] font-bold">تفعيل</button><button onclick="window.removeOrder('${uid}','${o.key}')" class="bg-red-600 px-2.5 py-1 rounded-lg text-[11px]">حذف</button></div>
+                            </div>`;
+                        }
+                    });
+                });
+                document.getElementById('pending-count').innerText = count;
+            });
+        };
+
+        window.activateOrder = async (uid, key) => {
+            const { value: url } = await Swal.fire({
+                title: 'رابط التسليم / التحميل',
+                input: 'url',
+                placeholder: 'ضع رابط الملف (Google Drive / Mega) أو كود التفعيل',
+                showCancelButton: true, cancelButtonText: 'إلغاء', confirmButtonText: 'تفعيل الطلب', confirmButtonColor: '#16a34a'
+            });
+
+            if(url) {
+                update(ref(db, `orders/${uid}/${key}`), { status: 'active', productLink: url })
+                    .then(() => Toast.fire({ icon: 'success', title: 'تم تفعيل الطلب وإتاحته للعميل 🚀' }));
+            }
+        };
+
+        window.removeOrder = (uid, key) => {
+            Swal.fire({
+                title: 'هل تريد حذف هذا الطلب؟',
+                icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
+            }).then(r => {
+                if (r.isConfirmed) remove(ref(db, `orders/${uid}/${key}`)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف' }));
+            });
+        };
+
+        window.migrateLegacyOrders = async () => {
+            if (!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL) return;
+
+            const confirmRes = await Swal.fire({
+                title: 'ترحيل الطلبات القديمة',
+                text: 'رح يتم نقل أي طلب مخزّن بالشكل القديم (بدون تصنيف مستخدم) إلى أرشيف منفصل. البيانات ما بتنمسح إطلاقًا. هل تريد المتابعة؟',
+                icon: 'info', showCancelButton: true, confirmButtonText: 'نعم، رحّل الآن', cancelButtonText: 'إلغاء', confirmButtonColor: '#f59e0b'
+            });
+            if (!confirmRes.isConfirmed) return;
+
+            try {
+                const snap = await new Promise((resolve, reject) => {
+                    onValue(ref(db, "orders"), s => resolve(s), { onlyOnce: true }, reject);
+                });
+
+                const legacyEntries = [];
+                snap.forEach(childSnap => {
+                    if (childSnap.hasChild('email')) {
+                        legacyEntries.push({ key: childSnap.key, val: childSnap.val() });
+                    }
+                });
+
+                if (legacyEntries.length === 0) {
+                    Toast.fire({ icon: 'info', title: 'لا يوجد طلبات قديمة بحاجة ترحيل' });
+                    return;
+                }
+
+                for (const entry of legacyEntries) {
+                    await set(ref(db, `legacy_orders/${entry.key}`), entry.val);
+                    await remove(ref(db, `orders/${entry.key}`));
+                }
+
+                Toast.fire({ icon: 'success', title: `تم ترحيل ${legacyEntries.length} طلب قديم للأرشيف` });
+            } catch (e) {
+                Swal.fire('خطأ', 'حدث خطأ أثناء الترحيل: ' + e.message, 'error');
+            }
+        };
+
+        const loadLegacyOrders = () => {
+            onValue(ref(db, "legacy_orders"), s => {
+                const list = document.getElementById('legacy-orders-list');
+                if (!list) return;
+                list.innerHTML = "";
+                if (!s.exists()) {
+                    list.innerHTML = `<p class="text-gray-500 text-center py-3">لا يوجد طلبات مؤرشفة حالياً</p>`;
+                    return;
+                }
+                s.forEach(o => {
+                    const d = o.val();
+                    list.innerHTML += `<div class="p-3 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center gap-2">
+                        <div class="truncate max-w-[220px]">
+                            <p class="font-bold">${escapeHtml(d.email || '—')}</p>
+                            <p class="text-gray-400">${escapeHtml(d.total || '—')} · ${escapeHtml(d.method || '—')} · ${escapeHtml(d.status || 'بدون حالة')}</p>
+                        </div>
+                        <button onclick="window.deleteLegacyOrder('${o.key}')" class="bg-red-600 px-2.5 py-1 rounded-lg text-[11px] flex-shrink-0">حذف نهائي</button>
+                    </div>`;
+                });
+            });
+        };
+
+        window.deleteLegacyOrder = (key) => {
+            Swal.fire({
+                title: 'حذف هذا الطلب المؤرشف نهائيًا؟',
+                text: 'هذا الإجراء لا يمكن التراجع عنه.',
+                icon: 'warning', showCancelButton: true, confirmButtonText: 'نعم، احذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
+            }).then(r => {
+                if (r.isConfirmed) remove(ref(db, `legacy_orders/${key}`)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف نهائيًا' }));
+            });
+        };
+    </script>
+</body>
+</html>
