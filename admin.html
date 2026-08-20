@@ -140,9 +140,6 @@
             return '#';
         };
 
-        // ---------- THE ACTUAL GATE ----------
-        // Every branch here still relies on the Firebase Database Rules as the
-        // real security boundary. This just decides what the browser renders.
         onAuthStateChanged(auth, user => {
             const gate = document.getElementById('gate');
             const gateMsg = document.getElementById('gate-msg');
@@ -190,7 +187,6 @@
             signOut(auth).then(() => { window.location.href = 'index.html'; });
         };
 
-        // ---------- data only loads once we know we're the admin ----------
         let dataInitialized = false;
         function initAdminData() {
             if (dataInitialized) return;
@@ -221,47 +217,68 @@
             }
         };
 
+        // --- الدالة الجديدة والمطورة لإضافة المنتج ---
         window.openAddProduct = async () => {
             const { value: f } = await Swal.fire({
                 title: 'إضافة منتج جديد',
                 html: `
                     <input id="nt" class="swal2-input" placeholder="اسم المنتج">
                     <input id="np" type="number" min="0" step="0.01" class="swal2-input" placeholder="السعر بالدولار ($)">
-                    <input id="npid" class="swal2-input" placeholder="Paddle Price ID (إلزامي - يجب أن يطابق السعر أعلاه في لوحة Paddle)">
                     <select id="nc" class="swal2-select"><option value="alerts">أليرتات وتصاميم</option><option value="packages">بكجات واشتراكات</option></select>
                     <input id="ny" class="swal2-input" placeholder="رابط يوتيوب للمعاينة (اختياري)">
                     <input id="ni" type="file" accept="image/*" class="swal2-file">
+                    <p class="text-[11px] text-gray-400 mt-2 text-right">سيتم توليد وربط معرفات الدفع (Paddle) تلقائياً 🚀</p>
                 `,
                 confirmButtonColor: '#ef4444',
                 preConfirm: async () => {
                     const title = document.getElementById('nt').value.trim();
                     const priceRaw = document.getElementById('np').value;
                     const price = parseFloat(priceRaw);
-                    const paddlePriceId = document.getElementById('npid').value.trim();
                     const file = document.getElementById('ni').files[0];
 
                     if(!title) return Swal.showValidationMessage('يرجى إدخال اسم المنتج');
                     if(!priceRaw || isNaN(price) || price <= 0) return Swal.showValidationMessage('يرجى إدخال سعر صحيح أكبر من صفر');
-                    if(!paddlePriceId) return Swal.showValidationMessage('يرجى إدخال Paddle Price ID الصحيح لهذا المنتج بالتحديد (تأكد أن سعره في Paddle يطابق السعر المُدخل هنا)');
                     if(!file) return Swal.showValidationMessage('يرجى اختيار صورة للمنتج');
+
+                    Swal.showLoading(); 
 
                     const fd = new FormData(); fd.append("image", file);
                     try {
                         const res = await fetch('https://api.imgbb.com/1/upload?key=11517ad350ecf73397b84302f750238e', { method: 'POST', body: fd }).then(r => r.json());
                         if(!res || !res.data || !res.data.url) return Swal.showValidationMessage('فشل رفع الصورة، حاول مجدداً');
+                        
+                        const paddleRes = await fetch('https://paddle-backend-self.vercel.app/api/paddle', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                name: title,
+                                description: document.getElementById('nc').value, 
+                                priceInCents: Math.round(price * 100) 
+                            })
+                        });
+                        
+                        const paddleData = await paddleRes.json();
+                        
+                        if (!paddleData.success) {
+                            return Swal.showValidationMessage('خطأ من بوابة الدفع: ' + (paddleData.error || 'فشل غير معروف'));
+                        }
+
                         return {
                             title,
                             price,
-                            paddlePriceId,
+                            paddleProductId: paddleData.paddleProductId, 
+                            paddlePriceId: paddleData.paddlePriceId,     
                             category: document.getElementById('nc').value,
                             youtube: document.getElementById('ny').value.trim(),
                             image: res.data.url
                         };
-                    } catch(e) { Swal.showValidationMessage('فشل رفع الصورة'); }
+                    } catch(e) { 
+                        return Swal.showValidationMessage('حدث خطأ في الاتصال بالسيرفر'); 
+                    }
                 }
             });
             if(f) {
-                push(ref(db, "products"), f).then(() => Toast.fire({ icon: 'success', title: 'تمت إضافة المنتج بنجاح' }));
+                push(ref(db, "products"), f).then(() => Toast.fire({ icon: 'success', title: 'تمت إضافة المنتج وربطه بالدفع بنجاح' }));
             }
         };
 
