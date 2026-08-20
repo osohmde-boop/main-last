@@ -132,9 +132,7 @@
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #272732; border-radius: 10px; }
 
-        /* =========================================================
-           حركات الدخولية - سريعة وبسيطة
-           ========================================================= */
+        /* حركات الدخولية - سريعة وبسيطة */
         .intro-logo-pop {
             opacity: 0;
             animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
@@ -171,7 +169,7 @@
                     intro.classList.add('intro-fade-out');
                     setTimeout(() => intro.remove(), 700); 
                 }
-            }, 1000); // يفتح الموقع بعد ثانية واحدة
+            }, 1000); 
         });
     </script>
 
@@ -180,7 +178,6 @@
 
     <!-- Navigation Bar -->
     <nav class="fixed top-0 w-full glass-v2 z-50 px-6 py-4 border-b border-white/5 flex justify-between items-center">
-        <!-- تم إضافة dir="ltr" لحل مشكلة اللخبطة -->
         <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})" dir="ltr">
             <img src="https://i.ibb.co/YT1RPZdx/image.png" alt="YZ STORE" class="h-11 w-auto logo-glow-effect">
             <span class="text-2xl font-black italic tracking-tighter uppercase text-white flex items-center gap-1.5">
@@ -285,12 +282,10 @@
                     <i class="fa fa-star text-amber-400"></i> آراء شركاء النجاح
                 </h2>
                 <p class="text-gray-400 text-sm mt-2">نفخر بثقة أكثر من 3000 ستريمر وصانع محتوى في مجتمعنا ⚡</p>
-                
                 <button id="add-review-btn" onclick="window.addReview()" class="hidden mt-4 bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500 hover:text-white px-6 py-2.5 rounded-xl font-bold text-sm transition mx-auto flex items-center gap-2">
                     <i class="fa fa-pen"></i> أضف تقييمك
                 </button>
             </div>
-            
             <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
         </div>
 
@@ -304,7 +299,6 @@
             </div>
             
             <div class="flex flex-col md:flex-row justify-center items-end gap-6 max-w-4xl mx-auto mt-20 px-4">
-                <!-- المركز الثاني -->
                 <div class="glass-v2 p-6 rounded-t-3xl border-t-4 border-gray-400 w-full md:w-1/3 text-center relative order-2 md:order-1 hover:-translate-y-2 transition duration-300">
                     <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
                         <div class="w-20 h-20 rounded-full border-4 border-gray-400 bg-gray-900 overflow-hidden">
@@ -319,7 +313,6 @@
                     </div>
                 </div>
 
-                <!-- المركز الأول -->
                 <div class="glass-v2 p-8 rounded-t-3xl border-t-4 border-yellow-500 w-full md:w-1/3 text-center relative order-1 md:order-2 transform md:-translate-y-8 hover:-translate-y-10 transition duration-300 shadow-[0_0_30px_rgba(234,179,8,0.15)] z-10">
                     <div class="absolute -top-16 left-1/2 transform -translate-x-1/2">
                         <i class="fa fa-crown text-4xl text-yellow-500 absolute -top-10 left-1/2 transform -translate-x-1/2 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]"></i>
@@ -335,7 +328,6 @@
                     </div>
                 </div>
 
-                <!-- المركز الثالث -->
                 <div class="glass-v2 p-6 rounded-t-3xl border-t-4 border-amber-700 w-full md:w-1/3 text-center relative order-3 md:order-3 hover:-translate-y-2 transition duration-300">
                     <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
                         <div class="w-20 h-20 rounded-full border-4 border-amber-700 bg-gray-900 overflow-hidden">
@@ -356,9 +348,7 @@
 
     <footer class="border-t border-white/5 py-12 bg-[#050507] text-center w-full mt-auto relative z-10">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-gray-400">
-            <div>
-                جميع الحقوق محفوظة © 2026 <span class="text-white font-bold">YZ STORE</span>
-            </div>
+            <div>جميع الحقوق محفوظة © 2026 <span class="text-white font-bold">YZ STORE</span></div>
             <div class="flex flex-wrap justify-center gap-6">
                 <button onclick="window.showLegalModal('terms')" class="hover:text-white transition">Terms of Service</button>
                 <button onclick="window.showLegalModal('refund')" class="hover:text-white transition">Refund Policy</button>
@@ -380,7 +370,6 @@
         </div>
         <div id="cart-items" class="flex-1 space-y-3 overflow-y-auto custom-scroll pr-1"></div>
         
-        <!-- حقل كود الخصم -->
         <div class="mt-4 pb-4 border-b border-white/10">
             <input id="discount-input" type="text" placeholder="لديك كود خصم؟ أدخله هنا" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-green-500 outline-none transition text-center uppercase" style="text-transform:uppercase">
         </div>
@@ -403,7 +392,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
         import { getDatabase, ref, onValue, off, push } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
-        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+        // تم تغيير signInWithRedirect إلى signInWithPopup لمنع عمل ريستارت للصفحة
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCt5H1t5dqUxileT88DqkIT5WRSGx45Lps",
@@ -421,24 +411,11 @@
         const ADMIN_EMAIL = "osohmde@gmail.com";
         const Toast = Swal.mixin({ toast: true, position: 'top-start', showConfirmButton: false, timer: 2000, background: '#181822', color: '#fff' });
 
-        getRedirectResult(auth).then((result) => {
-            if (result) {
-                Toast.fire({ icon: 'success', title: 'تم تسجيل الدخول بنجاح!' });
-            }
-        }).catch((error) => {
-            Swal.fire('خطأ في تسجيل الدخول', error.message, 'error');
-        });
-
         let cart = [], allProducts = [], currentCat = 'all';
 
         const escapeHtml = (str) => {
             if (str === null || str === undefined) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         };
         const safeUrl = (url) => {
             try {
@@ -452,7 +429,6 @@
             document.getElementById('store-desc-display').textContent = s.val() || "مرحباً بك في YZ STORE، المتجر الأفضل لتطوير تجربة البث المباشر وشراء الاشتراكات والخدمات الرقمية.";
         });
 
-        // سحب بيانات لوحة الشرف
         onValue(ref(db, "store_settings/leaderboard"), s => {
             const data = s.val() || {};
             const r1 = data.rank1 || { name: 'المكان متاح', img: 'https://i.ibb.co/YT1RPZdx/image.png', role: 'VIP', link: '#' };
@@ -598,9 +574,15 @@
             if (user) loadUserOrders(user.uid);
         });
 
+        // تم التعديل هنا: الدخول عن طريق نافذة منبثقة (Popup) بدون ريستارت للصفحة
         window.loginWithGoogle = () => {
             Swal.showLoading();
-            signInWithRedirect(auth, googleProvider);
+            signInWithPopup(auth, googleProvider).then((result) => {
+                Swal.close();
+                Toast.fire({ icon: 'success', title: 'تم تسجيل الدخول بنجاح!' });
+            }).catch((error) => {
+                Swal.fire('خطأ في تسجيل الدخول', error.message, 'error');
+            });
         };
 
         window.handleAuth = () => {
