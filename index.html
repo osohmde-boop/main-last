@@ -963,6 +963,7 @@
         const googleProvider = new GoogleAuthProvider();
 
         const ADMIN_EMAIL = "osohmde@gmail.com";
+        const FALLBACK_IMAGE = "https://i.ibb.co/YT1RPZdx/image.png";
 
 
         const Toast = Swal.mixin({
@@ -1014,7 +1015,7 @@
 
             } catch (e) {}
 
-            return '#';
+            return FALLBACK_IMAGE;
         };
 
 
@@ -1039,21 +1040,21 @@
 
                 const r1 = data.rank1 || {
                     name: 'المكان متاح',
-                    img: 'https://i.ibb.co/YT1RPZdx/image.png',
+                    img: FALLBACK_IMAGE,
                     role: 'VIP',
                     link: '#'
                 };
 
                 const r2 = data.rank2 || {
                     name: 'المكان متاح',
-                    img: 'https://i.ibb.co/YT1RPZdx/image.png',
+                    img: FALLBACK_IMAGE,
                     role: 'VIP',
                     link: '#'
                 };
 
                 const r3 = data.rank3 || {
                     name: 'المكان متاح',
-                    img: 'https://i.ibb.co/YT1RPZdx/image.png',
+                    img: FALLBACK_IMAGE,
                     role: 'VIP',
                     link: '#'
                 };
@@ -1785,6 +1786,7 @@
                                 `
                                 : `
                                     <img src="${safeUrl(p.image)}"
+                                         onerror="this.src='${FALLBACK_IMAGE}'"
                                          class="absolute top-0 left-0 w-full h-full object-cover">
                                 `
                             }
@@ -1856,6 +1858,7 @@
                              onclick="openVideoModal('${p.key}')">
 
                             <img src="${safeUrl(p.image)}"
+                                 onerror="this.src='${FALLBACK_IMAGE}'"
                                  class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
 
                             <span class="absolute top-3 right-3 bg-red-600/90 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full font-black flex items-center gap-1 shadow-lg">
@@ -2213,21 +2216,6 @@
         };
 
 
-        /*
-         * =========================================================
-         * FINAL PAYMENT FLOW
-         *
-         * Browser sends ONLY:
-         * - productId
-         * - quantity
-         *
-         * Browser DOES NOT send price.
-         *
-         * Vercel /api/paddle must read the real price from Firebase
-         * and create the Paddle Transaction.
-         * =========================================================
-         */
-
         window.startCheckout = async () => {
 
             if (!auth.currentUser) {
@@ -2311,15 +2299,6 @@
                     }
                 });
 
-
-                /*
-                 * Call YOUR Vercel backend:
-                 *
-                 * /api/paddle
-                 *
-                 * Important:
-                 * The backend must read the price from Firebase.
-                 */
 
                 const response =
                     await fetch(
