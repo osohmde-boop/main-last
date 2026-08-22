@@ -130,10 +130,11 @@
         const db = getDatabase(app);
         const auth = getAuth(app);
         const ADMIN_EMAIL = "osohmde@gmail.com";
+        const FALLBACK_IMAGE = "https://i.ibb.co/YT1RPZdx/image.png";
         const Toast = Swal.mixin({ toast: true, position: 'top-start', showConfirmButton: false, timer: 2000, background: '#181822', color: '#fff' });
 
         const escapeHtml = (str) => { if (str === null || str === undefined) return ''; return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); };
-        const safeUrl = (url) => { try { const u = new URL(url, window.location.href); if (u.protocol === 'http:' || u.protocol === 'https:') return u.href; } catch (e) {} return '#'; };
+        const safeUrl = (url) => { try { const u = new URL(url, window.location.href); if (u.protocol === 'http:' || u.protocol === 'https:') return u.href; } catch (e) {} return FALLBACK_IMAGE; };
 
         let allProducts = [];
         let currentProductFilter = 'all';
@@ -204,11 +205,11 @@
             list.innerHTML = filtered.map(p => `
                 <div class="admin-card p-4 flex flex-col gap-3">
                     <div class="flex gap-3">
-                        <img src="${safeUrl(p.image)}" class="w-20 h-20 rounded-xl object-cover border border-white/10 flex-shrink-0">
+                        <img src="${safeUrl(p.image)}" onerror="this.src='${FALLBACK_IMAGE}'" class="w-20 h-20 rounded-xl object-cover border border-white/10 flex-shrink-0">
                         <div class="flex-1 min-w-0">
                             <h3 class="font-black text-white text-sm truncate">${escapeHtml(p.title)}</h3>
                             <p class="text-red-500 font-black text-lg">$${escapeHtml(p.price)}</p>
-                            <p class="text-[10px] text-gray-500">${p.category === 'alerts' ? 'أليرتات وتصاميم' : p.category === 'packages' ? 'بكجات واشتراكات' : 'غير مصنّف'}</p>
+                            <p class="text-[10px] text-gray-500">${p.category === 'alerts' ? 'أليرتات وتصاميم' : p.category === 'packages' ? 'بكجات وااشتراكات' : 'غير مصنّف'}</p>
                         </div>
                     </div>
                     <div class="flex gap-2 pt-2 border-t border-white/5">
@@ -326,7 +327,7 @@
                 showCancelButton: true,
                 cancelButtonText: 'إلغاء'
             });
-            if (reason === undefined) return; // cancelled
+            if (reason === undefined) return;
             update(ref(db, `orders/${uid}/${oid}`), { status: 'rejected', rejectReason: reason || '' })
                 .then(() => Toast.fire({ icon: 'success', title: 'تم رفض الطلب' }))
                 .catch(e => Swal.fire('خطأ', e.message, 'error'));
@@ -422,14 +423,14 @@
                 payload['rank' + n] = {
                     name: document.getElementById(`lb-${n}-name`).value.trim() || 'المكان متاح',
                     role: document.getElementById(`lb-${n}-role`).value.trim() || 'VIP',
-                    img: document.getElementById(`lb-${n}-img`).value.trim() || 'https://i.ibb.co/YT1RPZdx/image.png',
+                    img: document.getElementById(`lb-${n}-img`).value.trim() || FALLBACK_IMAGE,
                     link: document.getElementById(`lb-${n}-link`).value.trim() || '#'
                 };
             });
             set(ref(db, 'store_settings/leaderboard'), payload).then(() => Toast.fire({ icon: 'success', title: 'تم حفظ لوحة الشرف' })).catch(e => Swal.fire('خطأ', e.message, 'error'));
         };
 
-        // ---------- Discount Codes (created for real inside Paddle via the Vercel backend) ----------
+        // ---------- Discount Codes ----------
         let allDiscounts = [];
 
         function initDiscounts() {
@@ -455,7 +456,7 @@
                     ${d.usageLimit ? `<p class="text-[11px] text-gray-500"><i class="fa fa-repeat"></i> حد الاستخدام: ${escapeHtml(d.usageLimit)}</p>` : ''}
                     <p class="text-[10px] text-gray-600">Paddle ID: ${escapeHtml(d.paddleDiscountId || '—')}</p>
                     <div class="flex gap-2 pt-2 border-t border-white/5">
-                        <button onclick="window.removeDiscountFromList('${d.key}')" class="flex-1 bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white py-2 rounded-lg text-[11px] font-bold transition"><i class="fa fa-trash"></i> إزالة من القائمة (لا يلغيه من Paddle)</button>
+                        <button onclick="window.removeDiscountFromList('${d.key}')" class="flex-1 bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white py-2 rounded-lg text-[11px] font-bold transition"><i class="fa fa-trash"></i> إزالة من القائمة</button>
                     </div>
                 </div>`).join('');
         }
@@ -469,7 +470,7 @@
                         <input id="df-code" class="swal2-input m-0" placeholder="الكود (مثال: YZ10) - حروف وأرقام فقط" style="text-transform:uppercase">
                         <input id="df-percentage" type="number" step="0.01" min="0.01" max="100" class="swal2-input m-0" placeholder="نسبة الخصم % (مثال: 10)">
                         <input id="df-expires" type="date" class="swal2-input m-0" placeholder="تاريخ الانتهاء (اختياري)">
-                        <input id="df-usage" type="number" min="1" step="1" class="swal2-input m-0" placeholder="أقصى عدد استخدامات (اختياري - اتركه فاضي لعدد غير محدود)">
+                        <input id="df-usage" type="number" min="1" step="1" class="swal2-input m-0" placeholder="أقصى عدد استخدامات (اختياري)">
                     </div>`,
                 confirmButtonText: 'إنشاء الكود بـ Paddle',
                 confirmButtonColor: '#ef4444',
@@ -511,7 +512,7 @@
         window.removeDiscountFromList = (key) => {
             Swal.fire({
                 title: 'إزالة الكود من هذه القائمة؟',
-                text: 'هذا فقط بيشيله من قائمة العرض هون بلوحة التحكم — الكود بيضل شغال فعلياً بـ Paddle. لإلغائه فعلياً لازم تروح لوحة تحكم Paddle مباشرة.',
+                text: 'هذا فقط بيشيله من قائمة العرض هون بلوحة التحكم — الكود بيضل شغال فعلياً بـ Paddle.',
                 icon: 'warning', showCancelButton: true, confirmButtonText: 'إزالة من القائمة', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
             }).then(r => {
                 if (!r.isConfirmed) return;
