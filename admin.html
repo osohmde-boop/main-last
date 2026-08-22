@@ -176,7 +176,14 @@
         function initProducts() {
             onValue(ref(db, 'products'), s => {
                 allProducts = [];
-                s.forEach(p => allProducts.push({ ...p.val(), key: p.key }));
+                if (s.exists()) {
+                    s.forEach(p => {
+                        const val = p.val();
+                        if (val && typeof val === 'object' && val.title !== undefined) {
+                            allProducts.push({ ...val, key: p.key });
+                        }
+                    });
+                }
                 renderProductsAdmin();
             });
         }
@@ -209,7 +216,7 @@
                         <div class="flex-1 min-w-0">
                             <h3 class="font-black text-white text-sm truncate">${escapeHtml(p.title)}</h3>
                             <p class="text-red-500 font-black text-lg">$${escapeHtml(p.price)}</p>
-                            <p class="text-[10px] text-gray-500">${p.category === 'alerts' ? 'أليرتات وتصاميم' : p.category === 'packages' ? 'بكجات وااشتراكات' : 'غير مصنّف'}</p>
+                            <p class="text-[10px] text-gray-500">${p.category === 'alerts' ? 'أليرتات وتصاميم' : p.category === 'packages' ? 'بكجات واشتراكات' : 'غير مصنّف'}</p>
                         </div>
                     </div>
                     <div class="flex gap-2 pt-2 border-t border-white/5">
@@ -251,10 +258,22 @@
                     return { title, price, category, image, youtube };
                 }
             });
+
             if (!f) return;
-            const savePromise = existing ? update(ref(db, `products/${existing.key}`), f) : set(push(ref(db, 'products')), f);
-            savePromise.then(() => Toast.fire({ icon: 'success', title: existing ? 'تم تحديث المنتج' : 'تمت إضافة المنتج' }))
-                       .catch(e => Swal.fire('خطأ', e.message, 'error'));
+
+            if (existing) {
+                update(ref(db, `products/${existing.key}`), f)
+                    .then(() => Toast.fire({ icon: 'success', title: 'تم تحديث المنتج' }))
+                    .catch(e => Swal.fire('خطأ', e.message, 'error'));
+            } else {
+                const newProdRef = push(ref(db, 'products'));
+                set(newProdRef, f)
+                    .then(() => {
+                        Toast.fire({ icon: 'success', title: 'تمت إضافة المنتج بنجاح 🎉' });
+                        window.filterProductsAdmin('all');
+                    })
+                    .catch(e => Swal.fire('خطأ', e.message, 'error'));
+            }
         };
 
         window.deleteProduct = (key) => {
