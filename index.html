@@ -1336,12 +1336,17 @@
             const price = Number(it.price);
             if (!Number.isFinite(price) || price <= 0) return Toast.fire({ icon: 'error', title: 'سعر المنتج غير صالح' });
 
+            if (!it.variantId) {
+                return Toast.fire({ icon: 'error', title: 'هذا المنتج غير مرتبط بمعرف دفع صالح (variantId)' });
+            }
+
             const ex = cart.find(x => x.key === k);
             if (ex) {
                 ex.qty++;
             } else {
                 cart.push({
                     key: it.key,
+                    variantId: it.variantId,
                     title: it.title,
                     price: price,
                     image: it.image,
@@ -1456,8 +1461,13 @@
                 return Swal.fire('خطأ', 'يوجد منتج بسعر غير صالح في السلة.', 'error');
             }
 
+            const missingVariant = cart.filter(item => !item.variantId);
+            if (missingVariant.length > 0) {
+                return Swal.fire('خطأ', 'يوجد منتج بدون معرف دفع (variantId) صحيح في السلة.', 'error');
+            }
+
             const items = cart.map(item => ({
-                productId: String(item.key),
+                productId: String(item.variantId),
                 quantity: Number(item.qty) || 1
             }));
 
