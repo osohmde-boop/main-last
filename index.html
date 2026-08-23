@@ -13,12 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
-    <script>
-        Paddle.Initialize({
-            token: "live_9dac314ac3bb7e4c5a22a38360c"
-        });
-    </script>
+    <!-- مكتبة Lemon Squeezy الجاهزة -->
+    <script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
 
     <style>
         :root {
@@ -545,7 +541,7 @@
                 </h4>
 
                 <p class="text-[11px] text-gray-400">
-                    معتمد عالمياً عبر Paddle
+                    معتمد عبر Lemon Squeezy
                 </p>
 
             </div>
@@ -983,11 +979,7 @@
 
 
         const escapeHtml = (str) => {
-
-            if (str === null || str === undefined) {
-                return '';
-            }
-
+            if (str === null || str === undefined) return '';
             return String(str)
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
@@ -998,961 +990,356 @@
 
 
         const safeUrl = (url) => {
-
             try {
-
-                const u = new URL(
-                    url,
-                    window.location.href
-                );
-
-                if (
-                    u.protocol === 'http:' ||
-                    u.protocol === 'https:'
-                ) {
-                    return u.href;
-                }
-
+                const u = new URL(url, window.location.href);
+                if (u.protocol === 'http:' || u.protocol === 'https:') return u.href;
             } catch (e) {}
-
             return FALLBACK_IMAGE;
         };
 
 
-        onValue(
-            ref(db, "store_settings/desc"),
-            s => {
-
-                document.getElementById(
-                    'store-desc-display'
-                ).textContent =
-                    s.val() ||
-                    "مرحباً بك في YZ STORE، المتجر الأفضل لتطوير تجربة البث المباشر وشراء الاشتراكات والخدمات الرقمية.";
-            }
-        );
+        onValue(ref(db, "store_settings/desc"), s => {
+            document.getElementById('store-desc-display').textContent =
+                s.val() || "مرحباً بك في YZ STORE، المتجر الأفضل لتطوير تجربة البث المباشر وشراء الاشتراكات والخدمات الرقمية.";
+        });
 
 
-        onValue(
-            ref(db, "store_settings/leaderboard"),
-            s => {
+        onValue(ref(db, "store_settings/leaderboard"), s => {
+            const data = s.val() || {};
+            const r1 = data.rank1 || { name: 'المكان متاح', img: FALLBACK_IMAGE, role: 'VIP', link: '#' };
+            const r2 = data.rank2 || { name: 'المكان متاح', img: FALLBACK_IMAGE, role: 'VIP', link: '#' };
+            const r3 = data.rank3 || { name: 'المكان متاح', img: FALLBACK_IMAGE, role: 'VIP', link: '#' };
 
-                const data = s.val() || {};
+            document.getElementById('vip-1-name').textContent = r1.name + ' 👑';
+            document.getElementById('vip-1-role').textContent = r1.role;
+            document.getElementById('vip-1-img').src = safeUrl(r1.img);
+            document.getElementById('vip-1-link').href = safeUrl(r1.link);
 
-                const r1 = data.rank1 || {
-                    name: 'المكان متاح',
-                    img: FALLBACK_IMAGE,
-                    role: 'VIP',
-                    link: '#'
-                };
+            document.getElementById('vip-2-name').textContent = r2.name;
+            document.getElementById('vip-2-role').textContent = r2.role;
+            document.getElementById('vip-2-img').src = safeUrl(r2.img);
+            document.getElementById('vip-2-link').href = safeUrl(r2.link);
 
-                const r2 = data.rank2 || {
-                    name: 'المكان متاح',
-                    img: FALLBACK_IMAGE,
-                    role: 'VIP',
-                    link: '#'
-                };
-
-                const r3 = data.rank3 || {
-                    name: 'المكان متاح',
-                    img: FALLBACK_IMAGE,
-                    role: 'VIP',
-                    link: '#'
-                };
-
-
-                document.getElementById('vip-1-name').textContent =
-                    r1.name + ' 👑';
-
-                document.getElementById('vip-1-role').textContent =
-                    r1.role;
-
-                document.getElementById('vip-1-img').src =
-                    safeUrl(r1.img);
-
-                document.getElementById('vip-1-link').href =
-                    safeUrl(r1.link);
-
-
-                document.getElementById('vip-2-name').textContent =
-                    r2.name;
-
-                document.getElementById('vip-2-role').textContent =
-                    r2.role;
-
-                document.getElementById('vip-2-img').src =
-                    safeUrl(r2.img);
-
-                document.getElementById('vip-2-link').href =
-                    safeUrl(r2.link);
-
-
-                document.getElementById('vip-3-name').textContent =
-                    r3.name;
-
-                document.getElementById('vip-3-role').textContent =
-                    r3.role;
-
-                document.getElementById('vip-3-img').src =
-                    safeUrl(r3.img);
-
-                document.getElementById('vip-3-link').href =
-                    safeUrl(r3.link);
-            }
-        );
+            document.getElementById('vip-3-name').textContent = r3.name;
+            document.getElementById('vip-3-role').textContent = r3.role;
+            document.getElementById('vip-3-img').src = safeUrl(r3.img);
+            document.getElementById('vip-3-link').href = safeUrl(r3.link);
+        });
 
 
         const loadReviews = () => {
+            onValue(ref(db, "reviews"), s => {
+                const container = document.getElementById('reviews-container');
+                let html = '';
 
-            onValue(
-                ref(db, "reviews"),
-                s => {
-
-                    const container =
-                        document.getElementById(
-                            'reviews-container'
-                        );
-
-                    let html = '';
-
-
-                    if (!s.exists()) {
-
-                        html = `
-                            <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
-
-                                <div class="flex gap-1 text-amber-400 text-xs mb-4">
-
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-
-                                </div>
-
-                                <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">
-                                    "شغل احترافي جداً وتسليم فوري! الأليرتات أضافت طابع خرافي للبث عندي."
-                                </p>
-
-                                <div class="flex items-center gap-3 border-t border-white/5 pt-4">
-
-                                    <div class="w-10 h-10 rounded-full bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 font-black">
-                                        A
-                                    </div>
-
-                                    <div>
-
-                                        <p class="text-white font-bold text-sm">
-                                            أحمد س.
-                                        </p>
-
-                                        <p class="text-[10px] text-gray-500">
-                                            صانع محتوى
-                                        </p>
-
-                                    </div>
-
+                if (!s.exists()) {
+                    html = `
+                        <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
+                            <div class="flex gap-1 text-amber-400 text-xs mb-4">
+                                <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                            </div>
+                            <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"شغل احترافي جداً وتسليم فوري! الأليرتات أضافت طابع خرافي للبث عندي."</p>
+                            <div class="flex items-center gap-3 border-t border-white/5 pt-4">
+                                <div class="w-10 h-10 rounded-full bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 font-black">A</div>
+                                <div>
+                                    <p class="text-white font-bold text-sm">أحمد س.</p>
+                                    <p class="text-[10px] text-gray-500">صانع محتوى</p>
                                 </div>
                             </div>
-                        `;
+                        </div>`;
+                } else {
+                    const reviews = [];
+                    s.forEach(child => { reviews.push(child.val()); });
+                    reviews.reverse();
 
-                    } else {
+                    reviews.slice(0, 6).forEach(rev => {
+                        let starsHtml = '';
+                        for (let i = 0; i < 5; i++) {
+                            starsHtml += `<i class="fa fa-star ${i < rev.rating ? 'text-amber-400' : 'text-gray-600/50'}"></i>`;
+                        }
 
-                        const reviews = [];
-
-                        s.forEach(child => {
-                            reviews.push(child.val());
-                        });
-
-                        reviews.reverse();
-
-                        reviews.slice(0, 6).forEach(rev => {
-
-                            let starsHtml = '';
-
-                            for (let i = 0; i < 5; i++) {
-
-                                starsHtml += `
-                                    <i class="fa fa-star ${
-                                        i < rev.rating
-                                            ? 'text-amber-400'
-                                            : 'text-gray-600/50'
-                                    }"></i>
-                                `;
-                            }
-
-
-                            html += `
-                                <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
-
-                                    <div class="flex gap-1 text-xs mb-4">
-                                        ${starsHtml}
-                                    </div>
-
-                                    <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">
-                                        "${escapeHtml(rev.text)}"
-                                    </p>
-
-                                    <div class="flex items-center gap-3 border-t border-white/5 pt-4">
-
-                                        <div class="w-10 h-10 rounded-full bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 font-black">
-                                            ${escapeHtml(rev.initial)}
-                                        </div>
-
-                                        <div>
-
-                                            <p class="text-white font-bold text-sm">
-                                                ${escapeHtml(rev.name)}
-                                            </p>
-
-                                            <p class="text-[10px] text-green-400">
-                                                <i class="fa fa-check-circle"></i>
-                                                مشتري موثق
-                                            </p>
-
-                                        </div>
+                        html += `
+                            <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
+                                <div class="flex gap-1 text-xs mb-4">${starsHtml}</div>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-6 font-medium">"${escapeHtml(rev.text)}"</p>
+                                <div class="flex items-center gap-3 border-t border-white/5 pt-4">
+                                    <div class="w-10 h-10 rounded-full bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 font-black">${escapeHtml(rev.initial)}</div>
+                                    <div>
+                                        <p class="text-white font-bold text-sm">${escapeHtml(rev.name)}</p>
+                                        <p class="text-[10px] text-green-400"><i class="fa fa-check-circle"></i> مشتري موثق</p>
                                     </div>
                                 </div>
-                            `;
-                        });
-                    }
-
-                    container.innerHTML = html;
+                            </div>`;
+                    });
                 }
-            );
+                container.innerHTML = html;
+            });
         };
-
 
         loadReviews();
 
 
         window.addReview = async () => {
+            const { value: formValues } = await Swal.fire({
+                title: 'تقييم تجربتك معنا',
+                html: `
+                    <div class="mb-5 text-right">
+                        <label class="block text-gray-400 text-sm mb-2 font-bold">تقييمك (من 1 إلى 5)</label>
+                        <input id="rev-rating" type="number" min="1" max="5" value="5" class="swal2-input text-center text-xl font-black">
+                    </div>
+                    <div class="text-right">
+                        <label class="block text-gray-400 text-sm mb-2 font-bold">رأيك بالخدمة</label>
+                        <textarea id="rev-text" class="swal2-textarea h-24" placeholder="كيف كانت تجربتك؟"></textarea>
+                    </div>`,
+                confirmButtonText: 'نشر التقييم',
+                confirmButtonColor: '#16a34a',
+                showCancelButton: true,
+                cancelButtonText: 'إلغاء',
+                preConfirm: () => {
+                    const rating = document.getElementById('rev-rating').value;
+                    const text = document.getElementById('rev-text').value;
+                    if (!rating || rating < 1 || rating > 5) return Swal.showValidationMessage('تقييم غير صحيح');
+                    if (!text.trim()) return Swal.showValidationMessage('يرجى كتابة رأيك');
+                    return { rating: parseInt(rating), text: text.trim() };
+                }
+            });
 
-            const { value: formValues } =
-                await Swal.fire({
+            if (formValues && auth.currentUser) {
+                const userEmail = auth.currentUser.email;
+                const userName = userEmail.split('@')[0];
+                const initial = userName.charAt(0).toUpperCase();
 
-                    title: 'تقييم تجربتك معنا',
-
-                    html: `
-                        <div class="mb-5 text-right">
-
-                            <label class="block text-gray-400 text-sm mb-2 font-bold">
-                                تقييمك (من 1 إلى 5)
-                            </label>
-
-                            <input id="rev-rating"
-                                   type="number"
-                                   min="1"
-                                   max="5"
-                                   value="5"
-                                   class="swal2-input text-center text-xl font-black">
-
-                        </div>
-
-                        <div class="text-right">
-
-                            <label class="block text-gray-400 text-sm mb-2 font-bold">
-                                رأيك بالخدمة
-                            </label>
-
-                            <textarea id="rev-text"
-                                      class="swal2-textarea h-24"
-                                      placeholder="كيف كانت تجربتك؟">
-                            </textarea>
-
-                        </div>
-                    `,
-
-                    confirmButtonText: 'نشر التقييم',
-                    confirmButtonColor: '#16a34a',
-                    showCancelButton: true,
-                    cancelButtonText: 'إلغاء',
-
-                    preConfirm: () => {
-
-                        const rating =
-                            document.getElementById(
-                                'rev-rating'
-                            ).value;
-
-                        const text =
-                            document.getElementById(
-                                'rev-text'
-                            ).value;
-
-                        if (
-                            !rating ||
-                            rating < 1 ||
-                            rating > 5
-                        ) {
-                            return Swal.showValidationMessage(
-                                'تقييم غير صحيح'
-                            );
-                        }
-
-                        if (!text.trim()) {
-                            return Swal.showValidationMessage(
-                                'يرجى كتابة رأيك'
-                            );
-                        }
-
-                        return {
-                            rating: parseInt(rating),
-                            text: text.trim()
-                        };
-                    }
-                });
-
-
-            if (
-                formValues &&
-                auth.currentUser
-            ) {
-
-                const userEmail =
-                    auth.currentUser.email;
-
-                const userName =
-                    userEmail.split('@')[0];
-
-                const initial =
-                    userName.charAt(0).toUpperCase();
-
-
-                push(
-                    ref(db, "reviews"),
-                    {
-                        name: userName,
-                        initial,
-                        rating: formValues.rating,
-                        text: formValues.text,
-                        date: new Date().toISOString()
-                    }
-                )
-                .then(() => {
-
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'تم إضافته بنجاح 🎉'
-                    });
-
+                push(ref(db, "reviews"), {
+                    name: userName,
+                    initial,
+                    rating: formValues.rating,
+                    text: formValues.text,
+                    date: new Date().toISOString()
                 })
-                .catch(error => {
-
-                    Swal.fire(
-                        'خطأ',
-                        error.message,
-                        'error'
-                    );
-                });
+                .then(() => { Toast.fire({ icon: 'success', title: 'تم إضافته بنجاح 🎉' }); })
+                .catch(error => { Swal.fire('خطأ', error.message, 'error'); });
             }
         };
 
 
-        onValue(
-            ref(db, "products"),
-            s => {
-
-                allProducts = [];
-
-                s.forEach(p => {
-
-                    const data = p.val() || {};
-
-                    allProducts.push({
-                        ...data,
-                        key: p.key,
-                        price: Number(data.price) || 0
-                    });
+        onValue(ref(db, "products"), s => {
+            allProducts = [];
+            s.forEach(p => {
+                const data = p.val() || {};
+                allProducts.push({
+                    ...data,
+                    key: p.key,
+                    price: Number(data.price) || 0
                 });
+            });
+            renderProducts();
+        }, err => {
+            console.error('Failed to load products:', err);
+            document.getElementById('products-grid').innerHTML = `
+                <div class="col-span-full text-center py-20 text-gray-500 font-bold">
+                    <i class="fa fa-triangle-exclamation text-red-500 text-2xl mb-3 block"></i>
+                    تعذر تحميل المنتجات، يرجى تحديث الصفحة أو المحاولة لاحقاً.
+                </div>`;
+        });
 
-                renderProducts();
 
-            },
-            err => {
+        onAuthStateChanged(auth, user => {
+            const isAdmin = user && user.email === ADMIN_EMAIL;
+            document.getElementById('admin-link').classList.toggle('hidden', !isAdmin);
+            document.getElementById('admin-link').classList.toggle('flex', isAdmin);
+            document.getElementById('user-orders-section').classList.toggle('hidden', !user);
+            document.getElementById('auth-btn').innerText = user ? "حسابي (خروج)" : "تسجيل الدخول";
 
-                console.error(
-                    'Failed to load products:',
-                    err
-                );
-
-                const grid =
-                    document.getElementById(
-                        'products-grid'
-                    );
-
-                grid.innerHTML = `
-                    <div class="col-span-full text-center py-20 text-gray-500 font-bold">
-
-                        <i class="fa fa-triangle-exclamation text-red-500 text-2xl mb-3 block"></i>
-
-                        تعذر تحميل المنتجات، يرجى تحديث الصفحة أو المحاولة لاحقاً.
-
-                    </div>
-                `;
+            if (ordersUserRef) {
+                off(ordersUserRef);
+                ordersUserRef = null;
             }
-        );
 
-
-        onAuthStateChanged(
-            auth,
-            user => {
-
-                const isAdmin =
-                    user &&
-                    user.email === ADMIN_EMAIL;
-
-
-                document.getElementById(
-                    'admin-link'
-                ).classList.toggle(
-                    'hidden',
-                    !isAdmin
-                );
-
-                document.getElementById(
-                    'admin-link'
-                ).classList.toggle(
-                    'flex',
-                    isAdmin
-                );
-
-
-                document.getElementById(
-                    'user-orders-section'
-                ).classList.toggle(
-                    'hidden',
-                    !user
-                );
-
-
-                document.getElementById(
-                    'auth-btn'
-                ).innerText =
-                    user
-                        ? "حسابي (خروج)"
-                        : "تسجيل الدخول";
-
-
-                if (ordersUserRef) {
-
-                    off(ordersUserRef);
-
-                    ordersUserRef = null;
-                }
-
-
-                if (user) {
-
-                    loadUserOrders(user.uid);
-
-                } else {
-
-                    const reviewBtn =
-                        document.getElementById(
-                            'add-review-btn'
-                        );
-
-                    if (reviewBtn) {
-
-                        reviewBtn.classList.add(
-                            'hidden'
-                        );
-
-                        reviewBtn.classList.remove(
-                            'flex'
-                        );
-                    }
+            if (user) {
+                loadUserOrders(user.uid);
+            } else {
+                const reviewBtn = document.getElementById('add-review-btn');
+                if (reviewBtn) {
+                    reviewBtn.classList.add('hidden');
+                    reviewBtn.classList.remove('flex');
                 }
             }
-        );
+        });
 
 
         window.loginWithGoogle = () => {
-
             Swal.showLoading();
-
-            signInWithPopup(
-                auth,
-                googleProvider
-            )
+            signInWithPopup(auth, googleProvider)
             .then(() => {
-
                 Swal.close();
-
-                Toast.fire({
-                    icon: 'success',
-                    title: 'تم تسجيل الدخول بنجاح!'
-                });
-
+                Toast.fire({ icon: 'success', title: 'تم تسجيل الدخول بنجاح!' });
             })
-            .catch(error => {
-
-                Swal.fire(
-                    'خطأ في تسجيل الدخول',
-                    error.message,
-                    'error'
-                );
-            });
+            .catch(error => { Swal.fire('خطأ في تسجيل الدخول', error.message, 'error'); });
         };
 
 
         window.handleAuth = () => {
-
             if (auth.currentUser) {
-
-                signOut(auth)
-                    .then(() => {
-
-                        Toast.fire({
-                            icon: 'success',
-                            title: 'تم تسجيل الخروج بنجاح'
-                        });
-
-                        setTimeout(
-                            () => location.reload(),
-                            1000
-                        );
-                    });
-
+                signOut(auth).then(() => {
+                    Toast.fire({ icon: 'success', title: 'تم تسجيل الخروج بنجاح' });
+                    setTimeout(() => location.reload(), 1000);
+                });
                 return;
             }
 
-
             Swal.fire({
-
                 title: 'تسجيل الدخول إلى حسابك',
-
                 html: `
-                    <input id="e"
-                           class="swal2-input"
-                           placeholder="البريد الإلكتروني">
-
-                    <input id="p"
-                           type="password"
-                           class="swal2-input"
-                           placeholder="كلمة المرور">
-
-                    <button onclick="window.loginWithGoogle()"
-                            class="w-full mt-4 p-3.5 bg-white text-black rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition text-sm">
-
-                        <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png"
-                             class="w-4">
-
+                    <input id="e" class="swal2-input" placeholder="البريد الإلكتروني">
+                    <input id="p" type="password" class="swal2-input" placeholder="كلمة المرور">
+                    <button onclick="window.loginWithGoogle()" class="w-full mt-4 p-3.5 bg-white text-black rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-200 transition text-sm">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" class="w-4">
                         الدخول السريع بواسطة Google
-
                     </button>
-
                     <div class="mt-4 flex justify-between text-xs text-gray-400">
-
-                        <button onclick="window.forgotPass()"
-                                class="hover:text-red-400">
-                            نسيت كلمة المرور؟
-                        </button>
-
-                        <button onclick="window.openRegister()"
-                                class="text-blue-400 font-bold">
-                            إنشاء حساب جديد
-                        </button>
-
-                    </div>
-                `,
-
+                        <button onclick="window.forgotPass()" class="hover:text-red-400">نسيت كلمة المرور؟</button>
+                        <button onclick="window.openRegister()" class="text-blue-400 font-bold">إنشاء حساب جديد</button>
+                    </div>`,
                 confirmButtonText: 'دخول',
                 confirmButtonColor: '#ef4444',
                 showCancelButton: true,
                 cancelButtonText: 'إلغاء'
+            }).then(r => {
+                if (!r.isConfirmed) return;
+                const email = document.getElementById('e').value;
+                const pass = document.getElementById('p').value;
+                if (!email || !pass) return Toast.fire({ icon: 'error', title: 'يرجى ملء الحقول' });
 
-            })
-            .then(r => {
-
-                if (!r.isConfirmed) {
-                    return;
-                }
-
-
-                const email =
-                    document.getElementById('e').value;
-
-                const pass =
-                    document.getElementById('p').value;
-
-
-                if (!email || !pass) {
-
-                    return Toast.fire({
-                        icon: 'error',
-                        title: 'يرجى ملء الحقول'
-                    });
-                }
-
-
-                signInWithEmailAndPassword(
-                    auth,
-                    email,
-                    pass
-                )
-                .then(() => {
-
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'أهلاً بك مجدداً!'
-                    });
-
-                })
-                .catch(() => {
-
-                    Swal.fire(
-                        'خطأ',
-                        'بيانات الدخول غير صحيحة',
-                        'error'
-                    );
-                });
+                signInWithEmailAndPassword(auth, email, pass)
+                .then(() => { Toast.fire({ icon: 'success', title: 'أهلاً بك مجدداً!' }); })
+                .catch(() => { Swal.fire('خطأ', 'بيانات الدخول غير صحيحة', 'error'); });
             });
         };
 
 
         window.openRegister = async () => {
-
-            const { value: f } =
-                await Swal.fire({
-
-                    title: 'إنشاء حساب جديد',
-
-                    html: `
-                        <input id="re"
-                               class="swal2-input"
-                               placeholder="البريد الإلكتروني">
-
-                        <input id="rp"
-                               type="password"
-                               class="swal2-input"
-                               placeholder="كلمة المرور">
-                    `,
-
-                    confirmButtonText: 'تسجيل',
-                    confirmButtonColor: '#ef4444',
-
-                    preConfirm: () => ({
-                        e: document.getElementById('re').value,
-                        p: document.getElementById('rp').value
-                    })
-                });
-
-
-            if (!f) {
-                return;
-            }
-
-
-            if (!f.e || !f.p) {
-
-                return Toast.fire({
-                    icon: 'error',
-                    title: 'يرجى ملء البيانات'
-                });
-            }
-
-
-            createUserWithEmailAndPassword(
-                auth,
-                f.e,
-                f.p
-            )
-            .then(() => {
-
-                Toast.fire({
-                    icon: 'success',
-                    title: 'تم إنشاء الحساب بنجاح'
-                });
-
-            })
-            .catch(e => {
-
-                Swal.fire(
-                    'خطأ',
-                    e.message,
-                    'error'
-                );
+            const { value: f } = await Swal.fire({
+                title: 'إنشاء حساب جديد',
+                html: `
+                    <input id="re" class="swal2-input" placeholder="البريد الإلكتروني">
+                    <input id="rp" type="password" class="swal2-input" placeholder="كلمة المرور">`,
+                confirmButtonText: 'تسجيل',
+                confirmButtonColor: '#ef4444',
+                preConfirm: () => ({
+                    e: document.getElementById('re').value,
+                    p: document.getElementById('rp').value
+                })
             });
+
+            if (!f) return;
+            if (!f.e || !f.p) return Toast.fire({ icon: 'error', title: 'يرجى ملء البيانات' });
+
+            createUserWithEmailAndPassword(auth, f.e, f.p)
+            .then(() => { Toast.fire({ icon: 'success', title: 'تم إنشاء الحساب بنجاح' }); })
+            .catch(e => { Swal.fire('خطأ', e.message, 'error'); });
         };
 
 
         window.forgotPass = async () => {
-
-            const { value: e } =
-                await Swal.fire({
-
-                    title: 'استعادة كلمة المرور',
-                    input: 'email',
-                    placeholder: 'بريدك الإلكتروني',
-                    confirmButtonColor: '#ef4444'
-
-                });
-
-
-            if (!e) {
-                return;
-            }
-
-
-            sendPasswordResetEmail(
-                auth,
-                e
-            )
-            .then(() => {
-
-                Swal.fire(
-                    'تم الإرسال',
-                    'تفقد بريدك الإلكتروني لتعيين كلمة مرور جديدة',
-                    'success'
-                );
-
-            })
-            .catch(() => {
-
-                Toast.fire({
-                    icon: 'error',
-                    title: 'البريد غير مسجل'
-                });
+            const { value: e } = await Swal.fire({
+                title: 'استعادة كلمة المرور',
+                input: 'email',
+                placeholder: 'بريدك الإلكتروني',
+                confirmButtonColor: '#ef4444'
             });
+
+            if (!e) return;
+            sendPasswordResetEmail(auth, e)
+            .then(() => { Swal.fire('تم الإرسال', 'تفقد بريدك الإلكتروني لتعيين كلمة مرور جديدة', 'success'); })
+            .catch(() => { Toast.fire({ icon: 'error', title: 'البريد غير مسجل' }); });
         };
 
 
         window.getYouTubeID = (url) => {
-
-            if (!url) {
-                return null;
-            }
-
-            const match =
-                url.match(
-                    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/
-                );
-
-            return (
-                match &&
-                match[2].length === 11
-            )
-                ? match[2]
-                : null;
+            if (!url) return null;
+            const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
+            return (match && match[2].length === 11) ? match[2] : null;
         };
 
 
         window.openVideoModal = (k) => {
-
-            const p =
-                allProducts.find(
-                    x => x.key === k
-                );
-
-            if (!p) {
-                return;
-            }
-
-
-            const yid =
-                window.getYouTubeID(
-                    p.youtube
-                );
-
+            const p = allProducts.find(x => x.key === k);
+            if (!p) return;
+            const yid = window.getYouTubeID(p.youtube);
 
             Swal.fire({
-
-                width:
-                    window.innerWidth > 768
-                        ? '780px'
-                        : '95%',
-
+                width: window.innerWidth > 768 ? '780px' : '95%',
                 padding: '24px',
-
                 showConfirmButton: false,
-
                 html: `
                     <div class="text-right">
-
                         <div class="relative pb-[56.25%] h-0 overflow-hidden rounded-2xl mb-5 bg-black border border-white/10">
-
-                            ${
-                                yid
-                                ? `
-                                    <iframe
-                                        class="absolute top-0 left-0 w-full h-full"
-                                        src="https://www.youtube.com/embed/${encodeURIComponent(yid)}?autoplay=1"
-                                        frameborder="0"
-                                        allow="autoplay; encrypted-media"
-                                        allowfullscreen>
-                                    </iframe>
-                                `
-                                : `
-                                    <img src="${safeUrl(p.image)}"
-                                         onerror="this.src='${FALLBACK_IMAGE}'"
-                                         class="absolute top-0 left-0 w-full h-full object-cover">
-                                `
-                            }
-
+                            ${yid ? `
+                                <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${encodeURIComponent(yid)}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                            ` : `
+                                <img src="${safeUrl(p.image)}" onerror="this.src='${FALLBACK_IMAGE}'" class="absolute top-0 left-0 w-full h-full object-cover">
+                            `}
                         </div>
-
-                        <h2 class="text-2xl font-black text-white mb-2">
-                            ${escapeHtml(p.title)}
-                        </h2>
-
+                        <h2 class="text-2xl font-black text-white mb-2">${escapeHtml(p.title)}</h2>
                         <div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5">
-
-                            <span class="text-3xl font-black text-red-500">
-                                $${Number(p.price).toFixed(2)}
-                            </span>
-
-                            <button onclick="addToCart('${p.key}'); Swal.close()"
-                                    class="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-xl font-black text-xs shadow-lg shadow-red-600/40 transition">
-
-                                إضافة إلى السلة
-
-                            </button>
-
+                            <span class="text-3xl font-black text-red-500">$${Number(p.price).toFixed(2)}</span>
+                            <button onclick="addToCart('${p.key}'); Swal.close()" class="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-xl font-black text-xs shadow-lg shadow-red-600/40 transition">إضافة إلى السلة</button>
                         </div>
-
-                    </div>
-                `
+                    </div>`
             });
         };
 
 
         window.renderProducts = () => {
-
-            const grid =
-                document.getElementById(
-                    'products-grid'
-                );
-
+            const grid = document.getElementById('products-grid');
             grid.innerHTML = '';
 
-
-            const filtered =
-                currentCat === 'all'
-                    ? allProducts
-                    : allProducts.filter(
-                        p => p.category === currentCat
-                    );
-
+            const filtered = currentCat === 'all'
+                ? allProducts
+                : allProducts.filter(p => p.category === currentCat);
 
             if (filtered.length === 0) {
-
-                grid.innerHTML = `
-                    <div class="col-span-full text-center py-20 text-gray-500 font-bold">
-                        لا توجد منتجات في هذا القسم حالياً.
-                    </div>
-                `;
-
+                grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-500 font-bold">لا توجد منتجات في هذا القسم حالياً.</div>`;
                 return;
             }
 
-
             filtered.forEach(p => {
-
                 grid.innerHTML += `
-
                     <div class="product-card-v2 group flex flex-col justify-between overflow-hidden">
-
-                        <div class="relative h-52 overflow-hidden cursor-pointer"
-                             onclick="openVideoModal('${p.key}')">
-
-                            <img src="${safeUrl(p.image)}"
-                                 onerror="this.src='${FALLBACK_IMAGE}'"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-
+                        <div class="relative h-52 overflow-hidden cursor-pointer" onclick="openVideoModal('${p.key}')">
+                            <img src="${safeUrl(p.image)}" onerror="this.src='${FALLBACK_IMAGE}'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             <span class="absolute top-3 right-3 bg-red-600/90 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full font-black flex items-center gap-1 shadow-lg">
-
-                                <i class="fa fa-bolt"></i>
-                                تسليم فوري
-
+                                <i class="fa fa-bolt"></i> تسليم فوري
                             </span>
-
-                            ${
-                                p.youtube
-                                ? `
-                                    <span class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md text-white text-[11px] px-3 py-1 rounded-full font-bold flex items-center gap-1.5 border border-white/10">
-
-                                        <i class="fa fa-play text-red-500"></i>
-                                        معاينة
-
-                                    </span>
-                                `
-                                : ''
-                            }
-
+                            ${p.youtube ? `
+                                <span class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md text-white text-[11px] px-3 py-1 rounded-full font-bold flex items-center gap-1.5 border border-white/10">
+                                    <i class="fa fa-play text-red-500"></i> معاينة
+                                </span>` : ''}
                         </div>
-
                         <div class="p-5 flex-1 flex flex-col justify-between">
-
-                            <h3 class="font-black text-white text-base mb-4 leading-snug">
-                                ${escapeHtml(p.title)}
-                            </h3>
-
+                            <h3 class="font-black text-white text-base mb-4 leading-snug">${escapeHtml(p.title)}</h3>
                             <div class="flex justify-between items-center pt-4 border-t border-white/5">
-
-                                <span class="text-2xl font-black text-red-500">
-                                    $${Number(p.price).toFixed(2)}
-                                </span>
-
-                                <button onclick="addToCart('${p.key}')"
-                                        class="bg-white hover:bg-red-600 hover:text-white text-black px-5 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 shadow-md">
-
-                                    <i class="fa fa-cart-plus"></i>
-                                    إضافة
-
+                                <span class="text-2xl font-black text-red-500">$${Number(p.price).toFixed(2)}</span>
+                                <button onclick="addToCart('${p.key}')" class="bg-white hover:bg-red-600 hover:text-white text-black px-5 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 shadow-md">
+                                    <i class="fa fa-cart-plus"></i> إضافة
                                 </button>
-
                             </div>
                         </div>
-
-                    </div>
-                `;
+                    </div>`;
             });
         };
 
 
         window.addToCart = (k) => {
+            const it = allProducts.find(x => x.key === k);
+            if (!it) return;
+            const price = Number(it.price);
+            if (!Number.isFinite(price) || price <= 0) return Toast.fire({ icon: 'error', title: 'سعر المنتج غير صالح' });
 
-            const it =
-                allProducts.find(
-                    x => x.key === k
-                );
-
-
-            if (!it) {
-                return;
-            }
-
-
-            const price =
-                Number(it.price);
-
-
-            if (
-                !Number.isFinite(price) ||
-                price <= 0
-            ) {
-
-                return Toast.fire({
-                    icon: 'error',
-                    title: 'سعر المنتج غير صالح'
-                });
-            }
-
-
-            const ex =
-                cart.find(
-                    x => x.key === k
-                );
-
-
+            const ex = cart.find(x => x.key === k);
             if (ex) {
-
                 ex.qty++;
-
             } else {
-
                 cart.push({
                     key: it.key,
                     title: it.title,
@@ -1964,632 +1351,212 @@
                 });
             }
 
-
             updateCartUI();
-
-
-            Toast.fire({
-                icon: 'success',
-                title: 'تمت الإضافة للسلة'
-            });
+            Toast.fire({ icon: 'success', title: 'تمت الإضافة للسلة' });
         };
 
 
         const updateCartUI = () => {
-
             let sub = 0;
-
-
-            document.getElementById(
-                'cart-items'
-            ).innerHTML = cart.map(
-                (it, i) => {
-
-                    const price =
-                        Number(it.price) || 0;
-
-                    sub +=
-                        price *
-                        it.qty;
-
-
-                    return `
-                        <div class="flex justify-between items-center p-3.5 bg-white/5 rounded-2xl border border-white/5">
-
-                            <div class="max-w-[170px]">
-
-                                <p class="text-xs font-bold text-white truncate">
-                                    ${escapeHtml(it.title)}
-                                </p>
-
-                                <p class="text-red-400 font-black text-sm">
-                                    $${price.toFixed(2)}
-                                </p>
-
-                            </div>
-
-                            <div class="flex items-center gap-2.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/5">
-
-                                <button onclick="updateQty(${i},-1)"
-                                        class="text-gray-400 hover:text-red-500 font-bold px-1">
-                                    -
-                                </button>
-
-                                <span class="text-xs font-black">
-                                    ${it.qty}
-                                </span>
-
-                                <button onclick="updateQty(${i},1)"
-                                        class="text-gray-400 hover:text-green-500 font-bold px-1">
-                                    +
-                                </button>
-
-                            </div>
+            document.getElementById('cart-items').innerHTML = cart.map((it, i) => {
+                const price = Number(it.price) || 0;
+                sub += price * it.qty;
+                return `
+                    <div class="flex justify-between items-center p-3.5 bg-white/5 rounded-2xl border border-white/5">
+                        <div class="max-w-[170px]">
+                            <p class="text-xs font-bold text-white truncate">${escapeHtml(it.title)}</p>
+                            <p class="text-red-400 font-black text-sm">$${price.toFixed(2)}</p>
                         </div>
-                    `;
-                }
-            ).join('');
+                        <div class="flex items-center gap-2.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/5">
+                            <button onclick="updateQty(${i},-1)" class="text-gray-400 hover:text-red-500 font-bold px-1">-</button>
+                            <span class="text-xs font-black">${it.qty}</span>
+                            <button onclick="updateQty(${i},1)" class="text-gray-400 hover:text-green-500 font-bold px-1">+</button>
+                        </div>
+                    </div>`;
+            }).join('');
 
-
-            document.getElementById(
-                'total-price'
-            ).innerText =
-                `$${sub.toFixed(2)}`;
-
-
-            document.getElementById(
-                'cart-count'
-            ).innerText =
-                cart.reduce(
-                    (a, b) =>
-                        a + b.qty,
-                    0
-                );
+            document.getElementById('total-price').innerText = `$${sub.toFixed(2)}`;
+            document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.qty, 0);
         };
 
 
         window.updateQty = (i, d) => {
-
-            if (!cart[i]) {
-                return;
-            }
-
-
+            if (!cart[i]) return;
             cart[i].qty += d;
-
-
-            if (cart[i].qty < 1) {
-                cart.splice(i, 1);
-            }
-
-
+            if (cart[i].qty < 1) cart.splice(i, 1);
             updateCartUI();
         };
 
 
         window.toggleCart = (s) => {
-
-            document
-                .getElementById('cart-drawer')
-                .classList.toggle(
-                    'open',
-                    s
-                );
+            document.getElementById('cart-drawer').classList.toggle('open', s);
         };
 
 
         window.filterCat = (c) => {
-
             currentCat = c;
-
-
-            document
-                .querySelectorAll(
-                    '.category-tab'
-                )
-                .forEach(i =>
-                    i.classList.remove(
-                        'active'
-                    )
-                );
-
-
-            document
-                .getElementById(
-                    'cat-' + c
-                )
-                .classList.add(
-                    'active'
-                );
-
-
+            document.querySelectorAll('.category-tab').forEach(i => i.classList.remove('active'));
+            document.getElementById('cat-' + c).classList.add('active');
             renderProducts();
         };
 
 
         const loadUserOrders = (uid) => {
+            ordersUserRef = ref(db, `orders/${uid}`);
+            onValue(ordersUserRef, s => {
+                const list = document.getElementById('user-orders-list');
+                list.innerHTML = '';
+                let hasActiveOrder = false;
 
-            ordersUserRef =
-                ref(
-                    db,
-                    `orders/${uid}`
-                );
+                s.forEach(o => {
+                    const d = o.val() || {};
+                    const active = d.status === 'active';
+                    if (active) hasActiveOrder = true;
 
-
-            onValue(
-                ordersUserRef,
-                s => {
-
-                    const list =
-                        document.getElementById(
-                            'user-orders-list'
-                        );
-
-                    list.innerHTML = '';
-
-                    let hasActiveOrder = false;
-
-
-                    s.forEach(o => {
-
-                        const d =
-                            o.val() || {};
-
-                        const active =
-                            d.status === 'active';
-
-
-                        if (active) {
-                            hasActiveOrder = true;
-                        }
-
-
-                        list.innerHTML += `
-
-                            <div class="glass-v2 p-4 rounded-2xl flex justify-between items-center ${
-                                active
-                                ? 'border-green-500/40'
-                                : 'border-yellow-500/40'
-                            }">
-
-                                <div>
-
-                                    <p class="text-xs text-gray-400">
-                                        طلب #${escapeHtml(
-                                            o.key.substr(-4)
-                                        )}
-                                    </p>
-
-                                    <p class="font-black text-white text-sm">
-                                        ${escapeHtml(
-                                            d.total || ''
-                                        )}
-                                    </p>
-
-                                </div>
-
-                                ${
-                                    active
-                                    ? `
-                                        <a href="${safeUrl(d.productLink)}"
-                                           target="_blank"
-                                           rel="noopener noreferrer"
-                                           class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
-
-                                            <i class="fa fa-download"></i>
-                                            تحميل المنتج
-
-                                        </a>
-                                    `
-                                    : `
-                                        <span class="text-yellow-400 text-xs font-bold bg-yellow-500/10 px-3 py-1 rounded-full">
-                                            ⏳ قيد المراجعة
-                                        </span>
-                                    `
-                                }
-
+                    list.innerHTML += `
+                        <div class="glass-v2 p-4 rounded-2xl flex justify-between items-center ${active ? 'border-green-500/40' : 'border-yellow-500/40'}">
+                            <div>
+                                <p class="text-xs text-gray-400">طلب #${escapeHtml(o.key.substr(-4))}</p>
+                                <p class="font-black text-white text-sm">${escapeHtml(d.total || '')}</p>
                             </div>
-                        `;
-                    });
+                            ${active ? `
+                                <a href="${safeUrl(d.productLink)}" target="_blank" rel="noopener noreferrer" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                                    <i class="fa fa-download"></i> تحميل المنتج
+                                </a>` : `
+                                <span class="text-yellow-400 text-xs font-bold bg-yellow-500/10 px-3 py-1 rounded-full">⏳ قيد المراجعة</span>
+                            `}
+                        </div>`;
+                });
 
-
-                    const reviewBtn =
-                        document.getElementById(
-                            'add-review-btn'
-                        );
-
-
-                    if (reviewBtn) {
-
-                        reviewBtn.classList.toggle(
-                            'hidden',
-                            !hasActiveOrder
-                        );
-
-                        reviewBtn.classList.toggle(
-                            'flex',
-                            hasActiveOrder
-                        );
-                    }
+                const reviewBtn = document.getElementById('add-review-btn');
+                if (reviewBtn) {
+                    reviewBtn.classList.toggle('hidden', !hasActiveOrder);
+                    reviewBtn.classList.toggle('flex', hasActiveOrder);
                 }
-            );
+            });
         };
 
-
+        // الربط الجوهري بـ Lemon Squeezy
         window.startCheckout = async () => {
-
             if (!auth.currentUser) {
-
                 toggleCart(false);
-
                 return handleAuth();
             }
 
-
             if (cart.length === 0) {
-
-                return Toast.fire({
-                    icon: 'info',
-                    title: 'سلة المشتريات فارغة'
-                });
+                return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' });
             }
 
-
-            const invalidItems =
-                cart.filter(item => {
-
-                    const price =
-                        Number(item.price);
-
-                    return (
-                        !Number.isFinite(price) ||
-                        price <= 0
-                    );
-                });
-
+            const invalidItems = cart.filter(item => {
+                const price = Number(item.price);
+                return (!Number.isFinite(price) || price <= 0);
+            });
 
             if (invalidItems.length > 0) {
-
-                return Swal.fire(
-                    'خطأ',
-                    'يوجد منتج بسعر غير صالح في السلة.',
-                    'error'
-                );
+                return Swal.fire('خطأ', 'يوجد منتج بسعر غير صالح في السلة.', 'error');
             }
 
+            const items = cart.map(item => ({
+                productId: String(item.key),
+                quantity: Number(item.qty) || 1
+            }));
 
-            const items =
-                cart.map(item => ({
-                    productId: String(item.key),
-                    quantity: Number(item.qty) || 1
-                }));
-
-
-            const discountCode =
-                document
-                    .getElementById(
-                        'discount-input'
-                    )
-                    .value
-                    .trim()
-                    .toUpperCase();
-
+            const discountCode = document.getElementById('discount-input').value.trim().toUpperCase();
 
             try {
-
                 toggleCart(false);
 
-
                 Swal.fire({
-
-                    title:
-                        'جاري تجهيز الدفع...',
-
-                    text:
-                        'يتم تجهيز السعر الحالي للمنتجات.',
-
-                    allowOutsideClick:
-                        false,
-
-                    allowEscapeKey:
-                        false,
-
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
+                    title: 'جاري تجهيز الدفع...',
+                    text: 'يتم تجهيز عملية الدفع عبر Lemon Squeezy.',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: () => { Swal.showLoading(); }
                 });
 
-
-                const response =
-                    await fetch(
-                        '/api/paddle',
-                        {
-                            method: 'POST',
-
-                            headers: {
-                                'Content-Type':
-                                    'application/json'
-                            },
-
-                            body: JSON.stringify({
-
-                                items,
-
-                                customerEmail:
-                                    auth.currentUser.email,
-
-                                discountCode:
-                                    discountCode || null
-                            })
-                        }
-                    );
-
+                const response = await fetch('/api/lemonsqueezy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        items,
+                        customerEmail: auth.currentUser.email,
+                        discountCode: discountCode || null
+                    })
+                });
 
                 let data = null;
-
                 try {
-
-                    data =
-                        await response.json();
-
+                    data = await response.json();
                 } catch (jsonError) {
-
-                    throw new Error(
-                        'تعذر قراءة استجابة خادم الدفع.'
-                    );
+                    throw new Error('تعذر قراءة استجابة خادم الدفع.');
                 }
-
 
                 if (!response.ok) {
-
-                    throw new Error(
-                        data?.error ||
-                        data?.message ||
-                        'فشل إنشاء عملية الدفع.'
-                    );
+                    throw new Error(data?.error || data?.message || 'فشل إنشاء عملية الدفع.');
                 }
 
+                const checkoutUrl = data?.checkoutUrl;
 
-                const transactionId =
-                    data?.transactionId ||
-                    data?.data?.id;
-
-
-                if (!transactionId) {
-
-                    console.error(
-                        'Invalid Paddle backend response:',
-                        data
-                    );
-
-                    throw new Error(
-                        'لم يرجع خادم الدفع Transaction ID صالح.'
-                    );
+                if (!checkoutUrl) {
+                    throw new Error('لم يرجع خادم الدفع رابط Lemon Squeezy صالح.');
                 }
-
 
                 Swal.close();
 
-
-                window.openPaddleCheckout(
-                    transactionId
-                );
-
+                // فتح النافذة المنبثقة Overlay عبر مكتبة Lemon.js
+                LemonSqueezy.Url.Open(checkoutUrl);
 
             } catch (error) {
-
-                console.error(
-                    'Checkout error:',
-                    error
-                );
-
-
+                console.error('Checkout error:', error);
                 Swal.close();
-
-
                 Swal.fire({
-
-                    title:
-                        'تعذر بدء الدفع',
-
-                    text:
-                        error?.message ||
-                        'حدث خطأ أثناء تجهيز عملية الدفع.',
-
-                    icon:
-                        'error',
-
-                    confirmButtonText:
-                        'إغلاق',
-
-                    confirmButtonColor:
-                        '#ef4444'
+                    title: 'تعذر بدء الدفع',
+                    text: error?.message || 'حدث خطأ أثناء تجهيز عملية الدفع.',
+                    icon: 'error',
+                    confirmButtonText: 'إغلاق',
+                    confirmButtonColor: '#ef4444'
                 });
             }
         };
 
 
-        window.openPaddleCheckout = (
-            transactionId
-        ) => {
-
-            if (!transactionId) {
-
-                return Swal.fire(
-                    'خطأ',
-                    'Transaction ID غير موجود.',
-                    'error'
-                );
-            }
-
-
-            try {
-
-                Paddle.Checkout.open({
-
-                    transactionId:
-
-                        transactionId,
-
-                    customer: {
-
-                        email:
-                            auth.currentUser
-                                ? auth.currentUser.email
-                                : ""
-                    },
-
-                    settings: {
-
-                        displayMode:
-                            "overlay",
-
-                        theme:
-                            "dark",
-
-                        locale:
-                            "ar"
-                    }
-                });
-
-            } catch (error) {
-
-                console.error(
-                    'Paddle checkout error:',
-                    error
-                );
-
-                Swal.fire(
-                    'خطأ',
-                    'تعذر فتح نافذة الدفع.',
-                    'error'
-                );
-            }
-        };
-
-
-        window.showLegalModal = (
-            type
-        ) => {
-
+        window.showLegalModal = (type) => {
             const data = {
-
                 terms: {
-
-                    title:
-                        'Terms of Service | شروط الخدمة',
-
+                    title: 'Terms of Service | شروط الخدمة',
                     content: `
-                        <p>
-                            <strong>1. Services:</strong>
-                            YZ STORE provides digital streaming assets, sound alerts, overlays, and graphics.
-                        </p>
-
-                        <p>
-                            <strong>2. Delivery:</strong>
-                            All goods are delivered electronically via instant download on your dashboard upon payment.
-                        </p>
-
-                        <p>
-                            <strong>3. Payments:</strong>
-                            All orders are paid electronically through Paddle.com.
-                        </p>
-
-                        <p>
-                            <strong>4. Merchant of Record:</strong>
-                            Paddle.com is the Merchant of Record for all orders and handles customer inquiries.
-                        </p>
-                    `
+                        <p><strong>1. Services:</strong> YZ STORE provides digital streaming assets, sound alerts, overlays, and graphics.</p>
+                        <p><strong>2. Delivery:</strong> All goods are delivered electronically via instant download on your dashboard upon payment.</p>
+                        <p><strong>3. Payments:</strong> All orders are paid electronically through Lemon Squeezy.</p>
+                        <p><strong>4. Merchant of Record:</strong> Lemon Squeezy is the Merchant of Record for all orders and handles customer inquiries.</p>`
                 },
-
                 refund: {
-
-                    title:
-                        'Refund Policy | سياسة الاسترجاع',
-
+                    title: 'Refund Policy | سياسة الاسترجاع',
                     content: `
-                        <p>
-                            Because digital files are accessible immediately upon purchase,
-                            sales are generally final once downloaded.
-                        </p>
-
-                        <p>
-                            <strong>14-Day Guarantee:</strong>
-                            Refunds are granted within 14 days if the product is defective or undelivered.
-                        </p>
-
-                        <p>
-                            Contact support at
-                            <a href="mailto:zero@yzstoreonline.com"
-                               class="text-red-400 underline">
-                                zero@yzstoreonline.com
-                            </a>.
-                        </p>
-                    `
+                        <p>Because digital files are accessible immediately upon purchase, sales are generally final once downloaded.</p>
+                        <p><strong>14-Day Guarantee:</strong> Refunds are granted within 14 days if the product is defective or undelivered.</p>
+                        <p>Contact support at <a href="mailto:zero@yzstoreonline.com" class="text-red-400 underline">zero@yzstoreonline.com</a>.</p>`
                 },
-
                 privacy: {
-
-                    title:
-                        'Privacy Policy | سياسة الخصوصية',
-
+                    title: 'Privacy Policy | سياسة الخصوصية',
                     content: `
-                        <p>
-                            We respect your privacy and only collect essential information required
-                            for order fulfillment and support.
-                        </p>
-
-                        <p>
-                            Payments are processed securely via Paddle.com.
-                        </p>
-                    `
+                        <p>We respect your privacy and only collect essential information required for order fulfillment and support.</p>
+                        <p>Payments are processed securely via Lemon Squeezy.</p>`
                 },
-
                 contact: {
-
-                    title:
-                        'Contact Us | اتصل بنا',
-
+                    title: 'Contact Us | اتصل بنا',
                     content: `
-                        <p>
-                            <strong>Business Name:</strong>
-                            YZ STORE
-                        </p>
-
-                        <p>
-                            <strong>Email:</strong>
-                            <a href="mailto:zero@yzstoreonline.com"
-                               class="text-red-400 underline">
-                                zero@yzstoreonline.com
-                            </a>
-                        </p>
-
-                        <p>
-                            <strong>WhatsApp:</strong>
-                            +90 537 796 42 33
-                        </p>
-                    `
+                        <p><strong>Business Name:</strong> YZ STORE</p>
+                        <p><strong>Email:</strong> <a href="mailto:zero@yzstoreonline.com" class="text-red-400 underline">zero@yzstoreonline.com</a></p>
+                        <p><strong>WhatsApp:</strong> +90 537 796 42 33</p>`
                 }
             };
 
-
             Swal.fire({
-
-                title:
-                    data[type].title,
-
-                html: `
-                    <div class="text-left text-xs space-y-3 leading-relaxed text-gray-300 font-sans"
-                         dir="ltr">
-                        ${data[type].content}
-                    </div>
-                `,
-
-                confirmButtonText:
-                    'إغلاق',
-
-                confirmButtonColor:
-                    '#ef4444'
+                title: data[type].title,
+                html: `<div class="text-left text-xs space-y-3 leading-relaxed text-gray-300 font-sans" dir="ltr">${data[type].content}</div>`,
+                confirmButtonText: 'إغلاق',
+                confirmButtonColor: '#ef4444'
             });
         };
 
