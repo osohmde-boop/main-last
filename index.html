@@ -1436,7 +1436,7 @@
             });
         };
 
-        // الربط الجوهري بـ Lemon Squeezy
+        // الربط الجوهري بـ Lemon Squeezy (تم التعديل بوضع رابط Vercel المباشر)
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1474,7 +1474,7 @@
                     didOpen: () => { Swal.showLoading(); }
                 });
 
-                const response = await fetch('/api/lemonsqueezy', {
+                const response = await fetch('https://paddle-backend-self.vercel.app/api/lemonsqueezy', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
