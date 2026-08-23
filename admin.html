@@ -212,6 +212,10 @@
                             <h3 class="font-black text-white text-sm truncate">${escapeHtml(p.title)}</h3>
                             <p class="text-red-500 font-black text-lg">$${escapeHtml(p.price)}</p>
                             <p class="text-[10px] text-gray-500">${p.category === 'alerts' ? 'أليرتات وتصاميم' : p.category === 'packages' ? 'بكجات وااشتراكات' : 'غير مصنّف'}</p>
+                            <p class="text-[10px] ${p.variantId ? 'text-green-500' : 'text-red-400'} font-bold">
+                                <i class="fa ${p.variantId ? 'fa-check-circle' : 'fa-triangle-exclamation'}"></i>
+                                ${p.variantId ? 'Variant ID: ' + escapeHtml(p.variantId) : 'بدون Variant ID — لن يعمل الدفع!'}
+                            </p>
                         </div>
                     </div>
                     <div class="flex gap-2 pt-2 border-t border-white/5">
@@ -234,6 +238,8 @@
                             <option value="alerts" ${existing && existing.category === 'alerts' ? 'selected' : ''}>الأليرتات والتصاميم</option>
                             <option value="packages" ${existing && existing.category === 'packages' ? 'selected' : ''}>البكجات والاشتراكات</option>
                         </select>
+                        <input id="pf-variant" class="swal2-input m-0" placeholder="Variant ID من Lemon Squeezy (مثال: 2047899)" value="${existing ? escapeHtml(existing.variantId || '') : ''}">
+                        <p class="text-[10px] text-amber-400 text-right px-1 -mt-2">انسخ هذا الرقم من لوحة Lemon Squeezy → Products → افتح المنتج → Variant ID</p>
                         <input id="pf-image" class="swal2-input m-0" placeholder="رابط صورة المنتج" value="${existing ? escapeHtml(existing.image || '') : ''}">
                         <input id="pf-youtube" class="swal2-input m-0" placeholder="رابط فيديو يوتيوب (اختياري)" value="${existing ? escapeHtml(existing.youtube || '') : ''}">
                     </div>`,
@@ -245,12 +251,15 @@
                     const title = document.getElementById('pf-title').value.trim();
                     const price = parseFloat(document.getElementById('pf-price').value);
                     const category = document.getElementById('pf-category').value;
+                    const variantId = document.getElementById('pf-variant').value.trim();
                     const image = document.getElementById('pf-image').value.trim();
                     const youtube = document.getElementById('pf-youtube').value.trim();
                     if (!title) return Swal.showValidationMessage('يرجى إدخال اسم المنتج');
                     if (isNaN(price) || price <= 0) return Swal.showValidationMessage('يرجى إدخال سعر صحيح أكبر من صفر');
+                    if (!variantId) return Swal.showValidationMessage('يرجى إدخال Variant ID من Lemon Squeezy — بدونه لن يعمل الدفع');
+                    if (!/^\d+$/.test(variantId)) return Swal.showValidationMessage('Variant ID يجب أن يكون أرقام فقط');
                     if (!image) return Swal.showValidationMessage('يرجى إدخال رابط الصورة');
-                    return { title, price, category, image, youtube };
+                    return { title, price, category, variantId, image, youtube };
                 }
             });
 
