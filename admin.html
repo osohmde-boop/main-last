@@ -34,7 +34,6 @@
 
     <div class="fixed inset-0 cyber-grid pointer-events-none z-0"></div>
 
-    <!-- Gate: shown until we confirm the user is the admin -->
     <div id="gate" class="fixed inset-0 z-[999] bg-[#070709] flex items-center justify-center text-center px-6">
         <div>
             <i class="fa fa-shield-halved text-4xl text-amber-500 mb-4 animate-pulse"></i>
@@ -112,7 +111,7 @@
             <div class="flex justify-between items-center mb-5">
                 <div>
                     <h2 class="text-lg font-black text-white">أكواد الخصم</h2>
-                    <p class="text-[11px] text-gray-500 mt-1">الأكواد هون بتنشأ فعلياً داخل Paddle عبر السيرفر، وبتشتغل مباشرة بصندوق الخصم بسلة الشراء.</p>
+                    <p class="text-[11px] text-gray-500 mt-1">الأكواد تنشأ فعلياً داخل Lemon Squeezy عبر السيرفر، وتعمل مباشرة في سلة الشراء.</p>
                 </div>
                 <button onclick="window.openDiscountForm()" class="bg-red-600 hover:bg-red-500 text-white px-5 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-2 flex-shrink-0"><i class="fa fa-plus"></i> إنشاء كود خصم</button>
             </div>
@@ -138,9 +137,7 @@
 
         let allProducts = [];
         let currentProductFilter = 'all';
-        const VERCEL_API_BASE = 'https://paddle-backend-self.vercel.app/api';
 
-        // ---------- Auth gate ----------
         onAuthStateChanged(auth, user => {
             if (!user || user.email !== ADMIN_EMAIL) {
                 Swal.fire({
@@ -165,14 +162,12 @@
 
         window.adminLogout = () => { signOut(auth).then(() => { window.location.href = 'index.html'; }); };
 
-        // ---------- Tabs ----------
         window.switchTab = (tab) => {
             document.querySelectorAll('.tab-section').forEach(s => s.classList.add('hidden'));
             document.getElementById('tab-' + tab).classList.remove('hidden');
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
         };
 
-        // ---------- Products ----------
         function initProducts() {
             onValue(ref(db, 'products'), s => {
                 allProducts = [];
@@ -216,7 +211,7 @@
                         <div class="flex-1 min-w-0">
                             <h3 class="font-black text-white text-sm truncate">${escapeHtml(p.title)}</h3>
                             <p class="text-red-500 font-black text-lg">$${escapeHtml(p.price)}</p>
-                            <p class="text-[10px] text-gray-500">${p.category === 'alerts' ? 'أليرتات وتصاميم' : p.category === 'packages' ? 'بكجات واشتراكات' : 'غير مصنّف'}</p>
+                            <p class="text-[10px] text-gray-500">${p.category === 'alerts' ? 'أليرتات وتصاميم' : p.category === 'packages' ? 'بكجات وااشتراكات' : 'غير مصنّف'}</p>
                         </div>
                     </div>
                     <div class="flex gap-2 pt-2 border-t border-white/5">
@@ -281,7 +276,6 @@
                 .then(r => { if (r.isConfirmed) remove(ref(db, `products/${key}`)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف' })); });
         };
 
-        // ---------- Orders ----------
         function initOrders() {
             onValue(ref(db, 'orders'), s => {
                 const list = document.getElementById('orders-admin-list');
@@ -315,7 +309,7 @@
                 });
                 list.innerHTML = html || `<div class="text-center py-16 text-gray-500 font-bold">لا توجد طلبات بعد.</div>`;
             }, err => {
-                document.getElementById('orders-admin-list').innerHTML = `<div class="text-center py-16 text-red-400 font-bold">تعذر تحميل الطلبات (تحقق من صلاحيات القراءة بقواعد Firebase).</div>`;
+                document.getElementById('orders-admin-list').innerHTML = `<div class="text-center py-16 text-red-400 font-bold">تعذر تحميل الطلبات.</div>`;
             });
         }
 
@@ -380,7 +374,6 @@
                 .then(r => { if (r.isConfirmed) remove(ref(db, `orders/${uid}/${oid}`)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف' })); });
         };
 
-        // ---------- Reviews ----------
         function initReviews() {
             onValue(ref(db, 'reviews'), s => {
                 const list = document.getElementById('reviews-admin-list');
@@ -405,7 +398,6 @@
                 .then(r => { if (r.isConfirmed) remove(ref(db, `reviews/${key}`)).then(() => Toast.fire({ icon: 'success', title: 'تم الحذف' })); });
         };
 
-        // ---------- Settings ----------
         function initSettings() {
             get(ref(db, 'store_settings/desc')).then(s => { document.getElementById('settings-desc').value = s.val() || ''; });
 
@@ -449,7 +441,6 @@
             set(ref(db, 'store_settings/leaderboard'), payload).then(() => Toast.fire({ icon: 'success', title: 'تم حفظ لوحة الشرف' })).catch(e => Swal.fire('خطأ', e.message, 'error'));
         };
 
-        // ---------- Discount Codes ----------
         let allDiscounts = [];
 
         function initDiscounts() {
@@ -468,12 +459,12 @@
                 <div class="admin-card p-4 flex flex-col gap-2">
                     <div class="flex justify-between items-start">
                         <span class="font-black text-white text-lg tracking-wider">${escapeHtml(d.code)}</span>
-                        <span class="status-pill bg-green-500/15 text-green-400">فعّال بـ Paddle</span>
+                        <span class="status-pill bg-green-500/15 text-green-400">فعّال بـ Lemon Squeezy</span>
                     </div>
                     <p class="text-red-500 font-black text-sm">${escapeHtml(d.percentage)}% خصم</p>
                     ${d.expiresAt ? `<p class="text-[11px] text-gray-500"><i class="fa fa-clock"></i> ينتهي: ${escapeHtml(d.expiresAt)}</p>` : ''}
                     ${d.usageLimit ? `<p class="text-[11px] text-gray-500"><i class="fa fa-repeat"></i> حد الاستخدام: ${escapeHtml(d.usageLimit)}</p>` : ''}
-                    <p class="text-[10px] text-gray-600">Paddle ID: ${escapeHtml(d.paddleDiscountId || '—')}</p>
+                    <p class="text-[10px] text-gray-600">Lemon ID: ${escapeHtml(d.lemonDiscountId || '—')}</p>
                     <div class="flex gap-2 pt-2 border-t border-white/5">
                         <button onclick="window.removeDiscountFromList('${d.key}')" class="flex-1 bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white py-2 rounded-lg text-[11px] font-bold transition"><i class="fa fa-trash"></i> إزالة من القائمة</button>
                     </div>
@@ -491,7 +482,7 @@
                         <input id="df-expires" type="date" class="swal2-input m-0" placeholder="تاريخ الانتهاء (اختياري)">
                         <input id="df-usage" type="number" min="1" step="1" class="swal2-input m-0" placeholder="أقصى عدد استخدامات (اختياري)">
                     </div>`,
-                confirmButtonText: 'إنشاء الكود بـ Paddle',
+                confirmButtonText: 'إنشاء الكود بـ Lemon Squeezy',
                 confirmButtonColor: '#ef4444',
                 showCancelButton: true,
                 cancelButtonText: 'إلغاء',
@@ -506,7 +497,7 @@
 
                     Swal.showLoading();
                     try {
-                        const res = await fetch(`${VERCEL_API_BASE}/discount`, {
+                        const res = await fetch(`/api/discount`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
@@ -517,21 +508,21 @@
                             })
                         });
                         const data = await res.json();
-                        if (!data.success) return Swal.showValidationMessage('خطأ من Paddle: ' + (data.error || 'فشل غير معروف'));
-                        return { code, percentage, expiresAt: expiresAt || null, usageLimit: usageLimit || null, paddleDiscountId: data.discountId };
+                        if (!res.ok) return Swal.showValidationMessage('خطأ من Lemon Squeezy: ' + (data.error || 'فشل غير معروف'));
+                        return { code, percentage, expiresAt: expiresAt || null, usageLimit: usageLimit || null, lemonDiscountId: data.discountId };
                     } catch (e) {
-                        return Swal.showValidationMessage('تعذر الاتصال بسيرفر الدفع. تأكد أن رابط Vercel شغال وفيه ملف api/discount.js.');
+                        return Swal.showValidationMessage('تعذر الاتصال بالسيرفر.');
                     }
                 }
             });
             if (!f) return;
-            push(ref(db, 'store_settings/discountCodes'), f).then(() => Toast.fire({ icon: 'success', title: 'تم إنشاء الكود وربطه بـ Paddle 🎉' }));
+            push(ref(db, 'store_settings/discountCodes'), f).then(() => Toast.fire({ icon: 'success', title: 'تم إنشاء الكود بـ Lemon Squeezy 🎉' }));
         };
 
         window.removeDiscountFromList = (key) => {
             Swal.fire({
                 title: 'إزالة الكود من هذه القائمة؟',
-                text: 'هذا فقط بيشيله من قائمة العرض هون بلوحة التحكم — الكود بيضل شغال فعلياً بـ Paddle.',
+                text: 'هذا ينقله فقط من لوحة التحكم، والكود سيبقى فعّالاً بـ Lemon Squeezy.',
                 icon: 'warning', showCancelButton: true, confirmButtonText: 'إزالة من القائمة', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
             }).then(r => {
                 if (!r.isConfirmed) return;
