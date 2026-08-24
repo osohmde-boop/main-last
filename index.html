@@ -1105,7 +1105,6 @@
             });
         };
 
-        // الانتقال المباشر لمتجرك الثابت على Shopier متخطياً صفحات المنتجات المزعجة
         window.startCheckout = () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1125,7 +1124,6 @@
                 showConfirmButton: false,
                 didOpen: () => { Swal.showLoading(); }
             }).then(() => {
-                // الانتقال المباشر إلى صفحة الدفع الثابتة الخاصة بك على Shopier
                 window.location.href = 'https://www.shopier.com/s/shipping/yzstore0';
             });
         };
