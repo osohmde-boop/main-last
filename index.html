@@ -1105,8 +1105,8 @@
             });
         };
 
-        // دالة الدفع الجديدة المحدثة بنظام PAT وسيرفر Vercel المباشر
-        window.startCheckout = async () => {
+        // الانتقال المباشر لمتجرك الثابت على Shopier متخطياً صفحات المنتجات المزعجة
+        window.startCheckout = () => {
             if (!auth.currentUser) {
                 toggleCart(false);
                 return handleAuth();
@@ -1116,61 +1116,18 @@
                 return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' });
             }
 
-            // حساب مجموع السلة الإجمالي
-            const totalAmount = cart.reduce((sum, item) => sum + (Number(item.price) * item.qty), 0);
-            
-            if (!Number.isFinite(totalAmount) || totalAmount <= 0) {
-                return Swal.fire('خطأ', 'مجموع السلة غير صالح.', 'error');
-            }
+            toggleCart(false);
 
-            const orderId = 'YZ-' + Math.floor(Math.random() * 1000000);
-
-            try {
-                toggleCart(false);
-
-                Swal.fire({
-                    title: 'جاري تحويلك للدفع...',
-                    text: 'يتم تجهيز رابط الدفع المجمع الآمن.',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    didOpen: () => { Swal.showLoading(); }
-                });
-
-                // استبدل هذا الرابط برابط مشروعك الفعلي على Vercel
-                const response = await fetch('https://paddle-backend-self.vercel.app/api/shopier', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        totalAmount: totalAmount,
-                        orderId: orderId
-                    })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data?.error || data?.message || 'فشل إنشاء عملية الدفع.');
-                }
-
-                Swal.close();
-
-                if (data.url) {
-                    window.location.href = data.url; // الانتقال الفوري لصفحة الدفع في Shopier
-                } else {
-                    throw new Error('استجابة غير صالحة من خادم الدفع.');
-                }
-
-            } catch (error) {
-                console.error('Checkout error:', error);
-                Swal.close();
-                Swal.fire({
-                    title: 'تعذر بدء الدفع',
-                    text: error?.message || 'حدث خطأ أثناء تجهيز عملية الدفع.',
-                    icon: 'error',
-                    confirmButtonText: 'إغلاق',
-                    confirmButtonColor: '#ef4444'
-                });
-            }
+            Swal.fire({
+                title: 'جاري تحويلك لبوابة الدفع...',
+                text: 'يرجى إتمام عملية الدفع عبر متجرنا الرسمي.',
+                timer: 1500,
+                showConfirmButton: false,
+                didOpen: () => { Swal.showLoading(); }
+            }).then(() => {
+                // الانتقال المباشر إلى صفحة الدفع الثابتة الخاصة بك على Shopier
+                window.location.href = 'https://www.shopier.com/s/shipping/yzstore0';
+            });
         };
 
         window.showLegalModal = (type) => {
