@@ -653,8 +653,8 @@
         const ADMIN_EMAIL = "osohmde@gmail.com";
         const FALLBACK_IMAGE = "https://i.ibb.co/YT1RPZdx/image.png";
         
-        // الرابط القديم الأصلي لشوبير الذي كان يعمل لديك تماماً
-        const SHOPIER_DIRECT_LINK = "https://www.shopier.com/s/shipping/yzstore0"; 
+        // تم استخدام رابط الدفع المباشر لمتجرك في شوبير الذي يتخطى صفحات التوجيه الزائدة
+        const SHOPIER_DIRECT_LINK = "https://www.shopier.com/ShowProduct/api/index.php?platform=yzstore0"; 
 
         const Toast = Swal.mixin({
             toast: true,
@@ -1108,7 +1108,7 @@
             });
         };
 
-        // الانتقال المباشر للدفع مع حفظ الطلب في قاعدة البيانات في الخلفية
+        // التوجه المباشر لرابط شوبير المباشر مع حفظ الطلب في قاعدة البيانات بالخلفية
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
