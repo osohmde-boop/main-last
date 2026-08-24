@@ -617,9 +617,15 @@
         </div>
 
         <div class="mt-4 pt-2">
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-gray-400 text-sm font-bold">المجموع:</span>
-                <span id="total-price" class="text-2xl font-black text-red-500">$0.00</span>
+            <div class="flex flex-col gap-1 mb-6 bg-white/5 p-4 rounded-2xl border border-white/5">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400 text-sm font-bold">المجموع (دولار):</span>
+                    <span id="total-price" class="text-xl font-black text-red-500">$0.00</span>
+                </div>
+                <div class="flex justify-between items-center pt-2 border-t border-white/5">
+                    <span class="text-gray-400 text-xs font-bold">المقابل بالليرة التركية (سعر الصرف اللحظي):</span>
+                    <span id="total-try-price" class="text-sm font-black text-green-400">0.00 TRY</span>
+                </div>
             </div>
 
             <button onclick="window.startCheckout()" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white py-4 rounded-xl font-black shadow-lg shadow-red-600/40 transform hover:-translate-y-0.5 transition-all text-sm">
@@ -653,8 +659,26 @@
         const ADMIN_EMAIL = "osohmde@gmail.com";
         const FALLBACK_IMAGE = "https://i.ibb.co/YT1RPZdx/image.png";
         
-        // رابط الدفع المباشر لشوبير (يعمل بنسبة 100% بدون أي أخطاء)
+        // رابط شوبير المباشر الآمن والمستقر
         const SHOPIER_DIRECT_LINK = "https://www.shopier.com/s/shipping/yzstore0"; 
+
+        // متغير لحفظ سعر الصرف اللحظي لليرة التركية
+        let currentExchangeRate = 36; // قيمة احتياطية أولية
+
+        // جلب سعر الصرف اللحظي من الإنترنت فور تحميل الصفحة
+        async function fetchLiveExchangeRate() {
+            try {
+                const res = await fetch('https://open.er-api.com/v6/latest/USD');
+                const data = await res.json();
+                if (data && data.rates && data.rates.TRY) {
+                    currentExchangeRate = data.rates.TRY;
+                    updateCartUI(); // تحديث الأسعار بالليرة فور جلب السعر
+                }
+            } catch (e) {
+                console.error("تعذر جلب سعر الصرف اللحظي، يتم استخدام القيمة الافتراضية", e);
+            }
+        }
+        fetchLiveExchangeRate();
 
         const Toast = Swal.mixin({
             toast: true,
@@ -1037,11 +1061,12 @@
             document.getElementById('cart-items').innerHTML = cart.map((it, i) => {
                 const price = Number(it.price) || 0;
                 sub += price * it.qty;
+                const itemTryPrice = (price * it.qty * currentExchangeRate).toFixed(2);
                 return `
                     <div class="flex justify-between items-center p-3.5 bg-white/5 rounded-2xl border border-white/5">
                         <div class="max-w-[170px]">
                             <p class="text-xs font-bold text-white truncate">${escapeHtml(it.title)}</p>
-                            <p class="text-red-400 font-black text-sm">$${price.toFixed(2)}</p>
+                            <p class="text-red-400 font-black text-sm">$${price.toFixed(2)} <span class="text-[10px] text-gray-400">(${itemTryPrice} TRY)</span></p>
                         </div>
                         <div class="flex items-center gap-2.5 bg-black/60 px-3 py-1.5 rounded-xl border border-white/5">
                             <button onclick="updateQty(${i},-1)" class="text-gray-400 hover:text-red-500 font-bold px-1">-</button>
@@ -1051,7 +1076,9 @@
                     </div>`;
             }).join('');
 
+            const totalTry = (sub * currentExchangeRate).toFixed(2);
             document.getElementById('total-price').innerText = `$${sub.toFixed(2)}`;
+            document.getElementById('total-try-price').innerText = `${totalTry} TRY`;
             document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.qty, 0);
         };
 
@@ -1128,11 +1155,13 @@
             Toast.fire({ icon: 'success', title: 'جاري تحويلك لبوابة الدفع...' });
 
             const uid = auth.currentUser.uid;
+            const totalTryAmount = (totalAmount * currentExchangeRate).toFixed(2);
+            
             const orderData = {
                 userId: uid,
                 customerEmail: auth.currentUser.email,
                 items: cart,
-                total: `$${totalAmount.toFixed(2)}`,
+                total: `$${totalAmount.toFixed(2)} (${totalTryAmount} TRY)`,
                 status: 'pending',
                 createdAt: new Date().toISOString()
             };
