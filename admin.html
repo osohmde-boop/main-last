@@ -111,7 +111,7 @@
             <div class="flex justify-between items-center mb-5">
                 <div>
                     <h2 class="text-lg font-black text-white">أكواد الخصم</h2>
-                    <p class="text-[11px] text-gray-500 mt-1">الأكواد تنشأ فعلياً داخل Lemon Squeezy عبر السيرفر، وتعمل مباشرة في سلة الشراء.</p>
+                    <p class="text-[11px] text-gray-500 mt-1">تُطبق الأكواد تلقائياً عبر سيرفر الدفع الخاص بك قبل توجيه العميل لـ Shopier.</p>
                 </div>
                 <button onclick="window.openDiscountForm()" class="bg-red-600 hover:bg-red-500 text-white px-5 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-2 flex-shrink-0"><i class="fa fa-plus"></i> إنشاء كود خصم</button>
             </div>
@@ -212,10 +212,7 @@
                             <h3 class="font-black text-white text-sm truncate">${escapeHtml(p.title)}</h3>
                             <p class="text-red-500 font-black text-lg">$${escapeHtml(p.price)}</p>
                             <p class="text-[10px] text-gray-500">${p.category === 'alerts' ? 'أليرتات وتصاميم' : p.category === 'packages' ? 'بكجات وااشتراكات' : 'غير مصنّف'}</p>
-                            <p class="text-[10px] ${p.variantId ? 'text-green-500' : 'text-red-400'} font-bold">
-                                <i class="fa ${p.variantId ? 'fa-check-circle' : 'fa-triangle-exclamation'}"></i>
-                                ${p.variantId ? 'Variant ID: ' + escapeHtml(p.variantId) : 'بدون Variant ID — لن يعمل الدفع!'}
-                            </p>
+                            <p class="text-[10px] text-green-500 font-bold"><i class="fa fa-check-circle"></i> جاهز للبيع (Shopier)</p>
                         </div>
                     </div>
                     <div class="flex gap-2 pt-2 border-t border-white/5">
@@ -238,8 +235,7 @@
                             <option value="alerts" ${existing && existing.category === 'alerts' ? 'selected' : ''}>الأليرتات والتصاميم</option>
                             <option value="packages" ${existing && existing.category === 'packages' ? 'selected' : ''}>البكجات والاشتراكات</option>
                         </select>
-                        <input id="pf-variant" class="swal2-input m-0" placeholder="Variant ID من Lemon Squeezy (مثال: 2047899)" value="${existing ? escapeHtml(existing.variantId || '') : ''}">
-                        <p class="text-[10px] text-amber-400 text-right px-1 -mt-2">انسخ هذا الرقم من لوحة Lemon Squeezy → Products → افتح المنتج → Variant ID</p>
+                        <!-- تم إزالة Variant ID لأن Shopier لا يحتاجه -->
                         <input id="pf-image" class="swal2-input m-0" placeholder="رابط صورة المنتج" value="${existing ? escapeHtml(existing.image || '') : ''}">
                         <input id="pf-youtube" class="swal2-input m-0" placeholder="رابط فيديو يوتيوب (اختياري)" value="${existing ? escapeHtml(existing.youtube || '') : ''}">
                     </div>`,
@@ -251,15 +247,13 @@
                     const title = document.getElementById('pf-title').value.trim();
                     const price = parseFloat(document.getElementById('pf-price').value);
                     const category = document.getElementById('pf-category').value;
-                    const variantId = document.getElementById('pf-variant').value.trim();
                     const image = document.getElementById('pf-image').value.trim();
                     const youtube = document.getElementById('pf-youtube').value.trim();
                     if (!title) return Swal.showValidationMessage('يرجى إدخال اسم المنتج');
                     if (isNaN(price) || price <= 0) return Swal.showValidationMessage('يرجى إدخال سعر صحيح أكبر من صفر');
-                    if (!variantId) return Swal.showValidationMessage('يرجى إدخال Variant ID من Lemon Squeezy — بدونه لن يعمل الدفع');
-                    if (!/^\d+$/.test(variantId)) return Swal.showValidationMessage('Variant ID يجب أن يكون أرقام فقط');
                     if (!image) return Swal.showValidationMessage('يرجى إدخال رابط الصورة');
-                    return { title, price, category, variantId, image, youtube };
+                    // إضافة variantId افتراضي حتى لا يتعطل الكود في index.html أثناء الإضافة للسلة
+                    return { title, price, category, variantId: "shopier-item", image, youtube };
                 }
             });
 
@@ -468,14 +462,13 @@
                 <div class="admin-card p-4 flex flex-col gap-2">
                     <div class="flex justify-between items-start">
                         <span class="font-black text-white text-lg tracking-wider">${escapeHtml(d.code)}</span>
-                        <span class="status-pill bg-green-500/15 text-green-400">فعّال بـ Lemon Squeezy</span>
+                        <span class="status-pill bg-green-500/15 text-green-400">فعّال</span>
                     </div>
                     <p class="text-red-500 font-black text-sm">${escapeHtml(d.percentage)}% خصم</p>
                     ${d.expiresAt ? `<p class="text-[11px] text-gray-500"><i class="fa fa-clock"></i> ينتهي: ${escapeHtml(d.expiresAt)}</p>` : ''}
                     ${d.usageLimit ? `<p class="text-[11px] text-gray-500"><i class="fa fa-repeat"></i> حد الاستخدام: ${escapeHtml(d.usageLimit)}</p>` : ''}
-                    <p class="text-[10px] text-gray-600">Lemon ID: ${escapeHtml(d.lemonDiscountId || '—')}</p>
                     <div class="flex gap-2 pt-2 border-t border-white/5">
-                        <button onclick="window.removeDiscountFromList('${d.key}')" class="flex-1 bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white py-2 rounded-lg text-[11px] font-bold transition"><i class="fa fa-trash"></i> إزالة من القائمة</button>
+                        <button onclick="window.removeDiscountFromList('${d.key}')" class="flex-1 bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white py-2 rounded-lg text-[11px] font-bold transition"><i class="fa fa-trash"></i> حذف الكود</button>
                     </div>
                 </div>`).join('');
         }
@@ -491,11 +484,11 @@
                         <input id="df-expires" type="date" class="swal2-input m-0" placeholder="تاريخ الانتهاء (اختياري)">
                         <input id="df-usage" type="number" min="1" step="1" class="swal2-input m-0" placeholder="أقصى عدد استخدامات (اختياري)">
                     </div>`,
-                confirmButtonText: 'إنشاء الكود بـ Lemon Squeezy',
+                confirmButtonText: 'حفظ الكود',
                 confirmButtonColor: '#ef4444',
                 showCancelButton: true,
                 cancelButtonText: 'إلغاء',
-                preConfirm: async () => {
+                preConfirm: () => {
                     const code = document.getElementById('df-code').value.trim().toUpperCase();
                     const percentage = parseFloat(document.getElementById('df-percentage').value);
                     const expiresAt = document.getElementById('df-expires').value;
@@ -504,38 +497,22 @@
                     if (!code || !/^[A-Z0-9]{2,32}$/.test(code)) return Swal.showValidationMessage('الكود يجب أن يحتوي حروف وأرقام إنجليزية فقط (2-32 خانة)');
                     if (isNaN(percentage) || percentage <= 0 || percentage > 100) return Swal.showValidationMessage('النسبة المئوية لازم تكون رقم بين 0.01 و 100');
 
-                    Swal.showLoading();
-                    try {
-                        const res = await fetch(`/api/discount`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                code,
-                                percentage,
-                                expiresAt: expiresAt || null,
-                                usageLimit: usageLimit ? parseInt(usageLimit, 10) : null
-                            })
-                        });
-                        const data = await res.json();
-                        if (!res.ok) return Swal.showValidationMessage('خطأ من Lemon Squeezy: ' + (data.error || 'فشل غير معروف'));
-                        return { code, percentage, expiresAt: expiresAt || null, usageLimit: usageLimit || null, lemonDiscountId: data.discountId };
-                    } catch (e) {
-                        return Swal.showValidationMessage('تعذر الاتصال بالسيرفر.');
-                    }
+                    return { code, percentage, expiresAt: expiresAt || null, usageLimit: usageLimit ? parseInt(usageLimit, 10) : null };
                 }
             });
+
             if (!f) return;
-            push(ref(db, 'store_settings/discountCodes'), f).then(() => Toast.fire({ icon: 'success', title: 'تم إنشاء الكود بـ Lemon Squeezy 🎉' }));
+            push(ref(db, 'store_settings/discountCodes'), f).then(() => Toast.fire({ icon: 'success', title: 'تم إنشاء كود الخصم بنجاح 🎉' }));
         };
 
         window.removeDiscountFromList = (key) => {
             Swal.fire({
-                title: 'إزالة الكود من هذه القائمة؟',
-                text: 'هذا ينقله فقط من لوحة التحكم، والكود سيبقى فعّالاً بـ Lemon Squeezy.',
-                icon: 'warning', showCancelButton: true, confirmButtonText: 'إزالة من القائمة', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
+                title: 'حذف الكود نهائياً؟',
+                text: 'لن يتمكن العملاء من استخدام هذا الكود بعد الآن.',
+                icon: 'warning', showCancelButton: true, confirmButtonText: 'حذف', cancelButtonText: 'إلغاء', confirmButtonColor: '#ef4444'
             }).then(r => {
                 if (!r.isConfirmed) return;
-                remove(ref(db, `store_settings/discountCodes/${key}`)).then(() => Toast.fire({ icon: 'success', title: 'تم الإزالة من القائمة' }));
+                remove(ref(db, `store_settings/discountCodes/${key}`)).then(() => Toast.fire({ icon: 'success', title: 'تم حذف الكود' }));
             });
         };
     </script>
