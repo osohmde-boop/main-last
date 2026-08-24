@@ -13,9 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- مكتبة Lemon Squeezy الجاهزة -->
-    <script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
-
     <style>
         :root {
             --primary-red: #ef4444;
@@ -541,7 +538,7 @@
                 </h4>
 
                 <p class="text-[11px] text-gray-400">
-                    معتمد عبر Lemon Squeezy
+                    معتمد عبر Shopier
                 </p>
 
             </div>
@@ -565,7 +562,7 @@
                 <i class="fa fa-headset text-blue-500 text-xl mb-1"></i>
 
                 <h4 class="font-black text-white text-base sm:text-lg">
-                    دعم 24/7
+                    دجم 24/7
                 </h4>
 
                 <p class="text-[11px] text-gray-400">
@@ -1441,7 +1438,7 @@
             });
         };
 
-        // الربط الجوهري بـ Lemon Squeezy (تم التعديل بوضع رابط Vercel المباشر)
+        // دالة الدفع الجديدة المرتبطة بـ Shopier بدلاً من Lemon Squeezy
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1461,13 +1458,10 @@
                 return Swal.fire('خطأ', 'يوجد منتج بسعر غير صالح في السلة.', 'error');
             }
 
-            const missingVariant = cart.filter(item => !item.variantId);
-            if (missingVariant.length > 0) {
-                return Swal.fire('خطأ', 'يوجد منتج بدون معرف دفع (variantId) صحيح في السلة.', 'error');
-            }
-
             const items = cart.map(item => ({
                 productId: String(item.key),
+                title: item.title,
+                price: Number(item.price),
                 quantity: Number(item.qty) || 1
             }));
 
@@ -1477,44 +1471,45 @@
                 toggleCart(false);
 
                 Swal.fire({
-                    title: 'جاري تجهيز الدفع...',
-                    text: 'يتم تجهيز عملية الدفع عبر Lemon Squeezy.',
+                    title: 'جاري تحويلك للدفع...',
+                    text: 'يتم تجهيز بوابة الدفع الآمنة (Shopier).',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     didOpen: () => { Swal.showLoading(); }
                 });
 
-                const response = await fetch('https://paddle-backend-self.vercel.app/api/lemonsqueezy', {
+                // تأكد من تعديل هذا الرابط لاحقاً ليتوافق مع نقطة Vercel الخاصة بـ Shopier
+                const response = await fetch('https://paddle-backend-self.vercel.app/api/shopier', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         items,
                         customerEmail: auth.currentUser.email,
+                        customerName: auth.currentUser.email.split('@')[0], 
+                        customerPhone: "05000000000",
                         discountCode: discountCode || null
                     })
                 });
 
-                let data = null;
-                try {
-                    data = await response.json();
-                } catch (jsonError) {
-                    throw new Error('تعذر قراءة استجابة خادم الدفع.');
-                }
+                const data = await response.json();
 
                 if (!response.ok) {
                     throw new Error(data?.error || data?.message || 'فشل إنشاء عملية الدفع.');
                 }
 
-                const checkoutUrl = data?.checkoutUrl;
-
-                if (!checkoutUrl) {
-                    throw new Error('لم يرجع خادم الدفع رابط Lemon Squeezy صالح.');
-                }
-
                 Swal.close();
 
-                // فتح النافذة المنبثقة Overlay عبر مكتبة Lemon.js
-                LemonSqueezy.Url.Open(checkoutUrl);
+                if (data.checkoutUrl) {
+                    window.location.href = data.checkoutUrl;
+                } else if (data.htmlContent) {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = data.htmlContent;
+                    document.body.appendChild(tempDiv);
+                    const form = tempDiv.querySelector('form');
+                    if(form) form.submit();
+                } else {
+                    throw new Error('استجابة غير صالحة من خادم الدفع.');
+                }
 
             } catch (error) {
                 console.error('Checkout error:', error);
@@ -1537,8 +1532,8 @@
                     content: `
                         <p><strong>1. Services:</strong> YZ STORE provides digital streaming assets, sound alerts, overlays, and graphics.</p>
                         <p><strong>2. Delivery:</strong> All goods are delivered electronically via instant download on your dashboard upon payment.</p>
-                        <p><strong>3. Payments:</strong> All orders are paid electronically through Lemon Squeezy.</p>
-                        <p><strong>4. Merchant of Record:</strong> Lemon Squeezy is the Merchant of Record for all orders and handles customer inquiries.</p>`
+                        <p><strong>3. Payments:</strong> All orders are paid electronically through Shopier.</p>
+                        <p><strong>4. Merchant of Record:</strong> Shopier is the Merchant of Record for all orders and handles customer inquiries.</p>`
                 },
                 refund: {
                     title: 'Refund Policy | سياسة الاسترجاع',
@@ -1551,7 +1546,7 @@
                     title: 'Privacy Policy | سياسة الخصوصية',
                     content: `
                         <p>We respect your privacy and only collect essential information required for order fulfillment and support.</p>
-                        <p>Payments are processed securely via Lemon Squeezy.</p>`
+                        <p>Payments are processed securely via Shopier.</p>`
                 },
                 contact: {
                     title: 'Contact Us | اتصل بنا',
