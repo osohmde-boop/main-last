@@ -161,7 +161,6 @@
             0%, 100% {
                 filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.3));
             }
-
             50% {
                 filter: drop-shadow(0 0 25px rgba(239, 68, 68, 0.7));
             }
@@ -195,7 +194,6 @@
                 opacity: 0;
                 transform: scale(0.5) translateY(30px);
             }
-
             100% {
                 opacity: 1;
                 transform: scale(1.2) translateY(0);
@@ -250,12 +248,10 @@
                 offset-distance: 0%;
                 transform: scale(0.75);
             }
-
             50% {
                 offset-distance: 50%;
                 transform: scale(1.15);
             }
-
             100% {
                 offset-distance: 100%;
                 transform: scale(0.75);
@@ -275,7 +271,6 @@
             0%, 100% {
                 transform: scaleY(1) rotate(0deg);
             }
-
             50% {
                 transform: scaleY(0.55) rotate(-8deg);
             }
@@ -301,7 +296,6 @@
          class="fixed inset-0 z-[99999] bg-[#050507] flex items-center justify-center transition-all duration-700 overflow-hidden origin-top">
         <div class="relative flex items-center justify-center w-full h-full">
             <div class="absolute bg-red-600 blur-[80px] opacity-20 rounded-full animate-pulse w-64 h-64 z-0"></div>
-
             <img src="https://i.ibb.co/YT1RPZdx/image.png"
                  alt="YZ STORE"
                  class="w-64 sm:w-80 h-auto relative intro-logo-pop">
@@ -311,24 +305,17 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const intro = document.getElementById('yz-intro');
-
             setTimeout(() => {
                 if (intro) {
                     intro.classList.add('intro-fade-out');
-
-                    setTimeout(() => {
-                        intro.remove();
-                    }, 700);
+                    setTimeout(() => { intro.remove(); }, 700);
                 }
             }, 800);
         });
 
         setTimeout(() => {
             const intro = document.getElementById('yz-intro');
-
-            if (intro) {
-                intro.remove();
-            }
+            if (intro) { intro.remove(); }
         }, 2500);
     </script>
 
@@ -339,63 +326,43 @@
         <svg id="bg-dragon"
              viewBox="0 0 240 120"
              xmlns="http://www.w3.org/2000/svg">
-
             <defs>
                 <linearGradient id="dragon-body-grad"
                                 x1="0%"
                                 y1="0%"
                                 x2="100%"
                                 y2="0%">
-
-                    <stop offset="0%"
-                          stop-color="#ef4444"
-                          stop-opacity="0"/>
-
-                    <stop offset="35%"
-                          stop-color="#ef4444"
-                          stop-opacity="0.9"/>
-
-                    <stop offset="70%"
-                          stop-color="#f59e0b"
-                          stop-opacity="0.9"/>
-
-                    <stop offset="100%"
-                          stop-color="#f59e0b"
-                          stop-opacity="0"/>
+                    <stop offset="0%" stop-color="#ef4444" stop-opacity="0"/>
+                    <stop offset="35%" stop-color="#ef4444" stop-opacity="0.9"/>
+                    <stop offset="70%" stop-color="#f59e0b" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
                 </linearGradient>
             </defs>
-
             <path class="wing wing-back"
                   d="M 150,55 C 175,25 205,20 225,35 C 205,42 180,48 158,60 Z"
                   fill="url(#dragon-body-grad)"
                   opacity="0.55"/>
-
             <path d="M 4,70 C 30,50 55,85 85,62 C 110,44 130,64 150,58 C 170,52 185,68 200,60"
                   fill="none"
                   stroke="url(#dragon-body-grad)"
                   stroke-width="6"
                   stroke-linecap="round"/>
-
             <path class="wing wing-front"
                   d="M 140,50 C 162,18 195,10 222,26 C 198,36 172,42 148,56 Z"
                   fill="url(#dragon-body-grad)"
                   opacity="0.85"/>
-
             <path d="M 195,57 C 205,50 218,50 226,57 C 219,62 208,64 199,62 Z"
                   fill="url(#dragon-body-grad)"/>
         </svg>
     </div>
 
     <nav class="fixed top-0 w-full glass-v2 z-50 px-6 py-4 border-b border-white/5 flex justify-between items-center">
-
         <div class="flex items-center gap-3 cursor-pointer"
              onclick="window.scrollTo({top:0, behavior:'smooth'})"
              dir="ltr">
-
             <img src="https://i.ibb.co/YT1RPZdx/image.png"
                  alt="YZ STORE"
                  class="h-11 w-auto logo-glow-effect">
-
             <span class="text-2xl font-black italic tracking-tighter uppercase text-white flex items-center gap-1.5">
                 YZ
                 <span class="text-red-500">STORE</span>
@@ -403,12 +370,10 @@
         </div>
 
         <div class="flex items-center gap-3">
-
             <a href="https://discord.gg/3VmZzgMMBK"
                target="_blank"
                rel="noopener noreferrer"
                class="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#5865F2]/10 border border-[#5865F2]/20 text-[#5865F2] hover:bg-[#5865F2] hover:text-white transition duration-300 text-xs font-bold">
-
                 <i class="fab fa-discord"></i>
                 ديسكورد
             </a>
@@ -416,16 +381,13 @@
             <a id="admin-link"
                href="admin.html"
                class="hidden items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-white transition duration-300 text-xs font-bold">
-
                 <i class="fa fa-shield-halved"></i>
                 لوحة التحكم
             </a>
 
             <button onclick="toggleCart(true)"
                     class="relative p-3 rounded-xl bg-white/5 border border-white/10 text-gray-200 hover:text-white hover:border-red-500/50 transition">
-
                 <i class="fa fa-shopping-bag text-lg"></i>
-
                 <span id="cart-count"
                       class="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black shadow-lg shadow-red-600/50">
                     0
@@ -437,7 +399,6 @@
                     class="text-xs font-bold px-5 py-3 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white shadow-lg shadow-red-600/30 transition duration-300">
                 حسابي
             </button>
-
         </div>
     </nav>
 
@@ -445,501 +406,236 @@
        target="_blank"
        rel="noopener noreferrer"
        class="whatsapp-btn-float">
-
         <i class="fab fa-whatsapp"></i>
     </a>
 
     <main class="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-grow w-full relative z-10">
-
         <div class="glass-v2 rounded-3xl p-8 sm:p-12 mb-12 border border-white/10 relative overflow-hidden text-center sm:text-right flex flex-col sm:flex-row justify-between items-center gap-8 shadow-2xl">
-
             <div class="space-y-4 max-w-xl z-10">
-
                 <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-600/10 border border-red-500/30 text-red-400 text-xs font-black">
-
                     <i class="fa fa-bolt"></i>
                     المتجر الرسمي لصناع المحتوى واللاعبين
-
                 </div>
 
                 <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight">
-
                     طوّر بثك وحساباتك بأعلى
-
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-500 to-amber-500">
                         احترافية ⚡
                     </span>
-
                 </h1>
 
                 <p id="store-desc-display"
                    class="text-gray-400 text-sm sm:text-base leading-relaxed">
-
                     جاري تحميل وصف المتجر...
-
                 </p>
 
                 <div class="pt-2 flex flex-wrap justify-center sm:justify-start gap-3">
-
                     <a href="https://wa.me/905377964233?text=أريد طلب تصميم أو خدمة خاصة"
                        target="_blank"
                        rel="noopener noreferrer"
                        class="px-8 py-3.5 rounded-xl font-black bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/40 transition flex items-center gap-2 text-xs sm:text-sm">
-
                         <i class="fa fa-wand-magic-sparkles"></i>
                         طلب تصميم خاص
-
                     </a>
 
                     <a href="https://www.youtube.com/@Yzstore130"
                        target="_blank"
                        rel="noopener noreferrer"
                        class="px-6 py-3.5 rounded-xl font-bold bg-white/5 border border-white/10 hover:bg-white/10 text-gray-200 transition text-xs sm:text-sm flex items-center gap-2">
-
                         <i class="fab fa-youtube text-red-500"></i>
                         استعراض الأعمال
-
                     </a>
-
                 </div>
             </div>
 
             <div class="relative z-10 flex-shrink-0">
-
                 <img src="https://i.ibb.co/YT1RPZdx/image.png"
                      alt="YZ Store"
                      class="w-48 sm:w-64 h-auto logo-glow-effect drop-shadow-2xl">
-
             </div>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
-
             <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
-
                 <i class="fa fa-bolt text-red-500 text-xl mb-1"></i>
-
-                <h4 class="font-black text-white text-base sm:text-lg">
-                    تسليم فوري
-                </h4>
-
-                <p class="text-[11px] text-gray-400">
-                    مباشرة بعد إتمام الدفع
-                </p>
-
+                <h4 class="font-black text-white text-base sm:text-lg">تسليم فوري</h4>
+                <p class="text-[11px] text-gray-400">مباشرة بعد إتمام الدفع</p>
             </div>
-
             <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
-
                 <i class="fa fa-shield-check text-green-500 text-xl mb-1"></i>
-
-                <h4 class="font-black text-white text-base sm:text-lg">
-                    دفع آمن 100%
-                </h4>
-
-                <p class="text-[11px] text-gray-400">
-                    معتمد عبر Shopier
-                </p>
-
+                <h4 class="font-black text-white text-base sm:text-lg">دفع آمن 100%</h4>
+                <p class="text-[11px] text-gray-400">معتمد عبر Shopier</p>
             </div>
-
             <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
-
                 <i class="fa fa-crown text-amber-500 text-xl mb-1"></i>
-
-                <h4 class="font-black text-white text-base sm:text-lg">
-                    +3000 عميل
-                </h4>
-
-                <p class="text-[11px] text-gray-400">
-                    ثقة صناع المحتوى
-                </p>
-
+                <h4 class="font-black text-white text-base sm:text-lg">+3000 عميل</h4>
+                <p class="text-[11px] text-gray-400">ثقة صناع المحتوى</p>
             </div>
-
             <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
-
                 <i class="fa fa-headset text-blue-500 text-xl mb-1"></i>
-
-                <h4 class="font-black text-white text-base sm:text-lg">
-                    دجم 24/7
-                </h4>
-
-                <p class="text-[11px] text-gray-400">
-                    مساعدة مستمرة عبر واتساب
-                </p>
-
+                <h4 class="font-black text-white text-base sm:text-lg">دعم 24/7</h4>
+                <p class="text-[11px] text-gray-400">مساعدة مستمرة عبر واتساب</p>
             </div>
-
         </div>
 
         <div class="flex items-center justify-center gap-3 mb-10 overflow-x-auto pb-2 custom-scroll">
-
             <button onclick="window.filterCat('all')"
                     class="category-tab active px-7 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 whitespace-nowrap"
                     id="cat-all">
-
                 <i class="fa fa-border-all"></i>
                 جميع المنتجات
-
             </button>
-
             <button onclick="window.filterCat('alerts')"
                     class="category-tab px-7 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 whitespace-nowrap"
                     id="cat-alerts">
-
                 <i class="fa fa-bell"></i>
                 الأليرتات والتصاميم
-
             </button>
-
             <button onclick="window.filterCat('packages')"
                     class="category-tab px-7 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 whitespace-nowrap"
                     id="cat-packages">
-
                 <i class="fa fa-box-open"></i>
                 البكجات والاشتراكات
-
             </button>
-
         </div>
 
-        <div id="user-orders-section"
-             class="hidden mb-12">
-
+        <div id="user-orders-section" class="hidden mb-12">
             <h2 class="text-xl font-black text-white mb-4 flex items-center gap-2">
-
                 <i class="fa fa-download text-blue-400"></i>
                 مشترياتي وملفاتي المحملة
-
             </h2>
-
-            <div id="user-orders-list"
-                 class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            </div>
-
+            <div id="user-orders-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
 
-        <div id="products-grid"
-             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
-        </div>
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></div>
 
         <div class="mt-20 mb-10">
-
             <div class="text-center mb-10">
-
                 <h2 class="text-2xl sm:text-3xl font-black text-white inline-flex items-center gap-3">
-
                     <i class="fa fa-star text-amber-400"></i>
                     آراء شركاء النجاح
-
                 </h2>
-
-                <p class="text-gray-400 text-sm mt-2">
-                    نفخر بثقة أكثر من 3000 ستريمر وصانع محتوى في مجتمعنا ⚡
-                </p>
-
+                <p class="text-gray-400 text-sm mt-2">نفخر بثقة أكثر من 3000 ستريمر وصانع محتوى في مجتمعنا ⚡</p>
                 <button id="add-review-btn"
                         onclick="window.addReview()"
                         class="hidden mt-4 bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500 hover:text-white px-6 py-2.5 rounded-xl font-bold text-sm transition mx-auto flex items-center gap-2">
-
                     <i class="fa fa-pen"></i>
                     أضف تقييمك
-
                 </button>
             </div>
-
-            <div id="reviews-container"
-                 class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            </div>
-
+            <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
         </div>
 
         <div class="mt-20 mb-10">
-
             <div class="text-center mb-10">
-
                 <h2 class="text-2xl sm:text-3xl font-black text-white inline-flex items-center gap-3">
-
                     <i class="fa fa-trophy text-yellow-400"></i>
                     لوحة شرف YZ STORE
-
                 </h2>
-
-                <p class="text-gray-400 text-sm mt-2">
-                    أبرز صناع المحتوى الذين يثقون بأعمالنا 🏆
-                </p>
-
+                <p class="text-gray-400 text-sm mt-2">أبرز صناع المحتوى الذين يثقون بأعمالنا 🏆</p>
             </div>
 
             <div class="flex flex-col md:flex-row justify-center items-end gap-6 max-w-4xl mx-auto mt-20 px-4">
-
                 <div class="glass-v2 p-6 rounded-t-3xl border-t-4 border-gray-400 w-full md:w-1/3 text-center relative order-2 md:order-1 hover:-translate-y-2 transition duration-300">
-
                     <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
-
                         <div class="w-20 h-20 rounded-full border-4 border-gray-400 bg-gray-900 overflow-hidden">
-
-                            <img id="vip-2-img"
-                                 src="https://i.ibb.co/YT1RPZdx/image.png"
-                                 class="w-full h-full object-cover">
-
+                            <img id="vip-2-img" src="https://i.ibb.co/YT1RPZdx/image.png" class="w-full h-full object-cover">
                         </div>
-
-                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-gray-400 text-black font-black px-3 py-0.5 rounded-full text-xs">
-                            #2
-                        </div>
-
+                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-gray-400 text-black font-black px-3 py-0.5 rounded-full text-xs">#2</div>
                     </div>
-
                     <div class="mt-10">
-
-                        <h3 id="vip-2-name"
-                            class="font-black text-white text-lg">
-                            جاري التحميل...
-                        </h3>
-
-                        <p id="vip-2-role"
-                           class="text-xs text-gray-400 mb-3">
-                            -
-                        </p>
-
-                        <a id="vip-2-link"
-                           href="#"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="text-gray-300 hover:text-red-500 transition text-sm flex items-center justify-center gap-1.5">
-
-                            <i class="fab fa-youtube"></i>
-                            زيارة القناة
-
+                        <h3 id="vip-2-name" class="font-black text-white text-lg">جاري التحميل...</h3>
+                        <p id="vip-2-role" class="text-xs text-gray-400 mb-3">-</p>
+                        <a id="vip-2-link" href="#" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-red-500 transition text-sm flex items-center justify-center gap-1.5">
+                            <i class="fab fa-youtube"></i> زيارة القناة
                         </a>
-
                     </div>
                 </div>
 
                 <div class="glass-v2 p-8 rounded-t-3xl border-t-4 border-yellow-500 w-full md:w-1/3 text-center relative order-1 md:order-2 transform md:-translate-y-8 hover:-translate-y-10 transition duration-300 shadow-[0_0_30px_rgba(234,179,8,0.15)] z-10">
-
                     <div class="absolute -top-16 left-1/2 transform -translate-x-1/2">
-
                         <i class="fa fa-crown text-4xl text-yellow-500 absolute -top-10 left-1/2 transform -translate-x-1/2 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]"></i>
-
                         <div class="w-24 h-24 rounded-full border-4 border-yellow-500 bg-gray-900 overflow-hidden">
-
-                            <img id="vip-1-img"
-                                 src="https://i.ibb.co/YT1RPZdx/image.png"
-                                 class="w-full h-full object-cover">
-
+                            <img id="vip-1-img" src="https://i.ibb.co/YT1RPZdx/image.png" class="w-full h-full object-cover">
                         </div>
-
-                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-black font-black px-4 py-0.5 rounded-full text-sm">
-                            #1
-                        </div>
-
+                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-black font-black px-4 py-0.5 rounded-full text-sm">#1</div>
                     </div>
-
                     <div class="mt-12">
-
-                        <h3 id="vip-1-name"
-                            class="font-black text-white text-xl">
-                            جاري التحميل...
-                        </h3>
-
-                        <p id="vip-1-role"
-                           class="text-xs text-yellow-500/80 mb-4 font-bold">
-                            -
-                        </p>
-
-                        <a id="vip-1-link"
-                           href="#"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="inline-block bg-yellow-500/20 border border-yellow-500/50 text-yellow-500 hover:bg-yellow-500 hover:text-black px-5 py-2.5 rounded-xl text-xs font-black transition">
-
-                            <i class="fab fa-youtube"></i>
-                            زيارة القناة
-
+                        <h3 id="vip-1-name" class="font-black text-white text-xl">جاري التحميل...</h3>
+                        <p id="vip-1-role" class="text-xs text-yellow-500/80 mb-4 font-bold">-</p>
+                        <a id="vip-1-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-block bg-yellow-500/20 border border-yellow-500/50 text-yellow-500 hover:bg-yellow-500 hover:text-black px-5 py-2.5 rounded-xl text-xs font-black transition">
+                            <i class="fab fa-youtube"></i> زيارة القناة
                         </a>
-
                     </div>
                 </div>
 
                 <div class="glass-v2 p-6 rounded-t-3xl border-t-4 border-amber-700 w-full md:w-1/3 text-center relative order-3 md:order-3 hover:-translate-y-2 transition duration-300">
-
                     <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
-
                         <div class="w-20 h-20 rounded-full border-4 border-amber-700 bg-gray-900 overflow-hidden">
-
-                            <img id="vip-3-img"
-                                 src="https://i.ibb.co/YT1RPZdx/image.png"
-                                 class="w-full h-full object-cover">
-
+                            <img id="vip-3-img" src="https://i.ibb.co/YT1RPZdx/image.png" class="w-full h-full object-cover">
                         </div>
-
-                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-amber-700 text-white font-black px-3 py-0.5 rounded-full text-xs">
-                            #3
-                        </div>
-
+                        <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-amber-700 text-white font-black px-3 py-0.5 rounded-full text-xs">#3</div>
                     </div>
-
                     <div class="mt-10">
-
-                        <h3 id="vip-3-name"
-                            class="font-black text-white text-lg">
-                            جاري التحميل...
-                        </h3>
-
-                        <p id="vip-3-role"
-                           class="text-xs text-gray-400 mb-3">
-                            -
-                        </p>
-
-                        <a id="vip-3-link"
-                           href="#"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="text-gray-300 hover:text-red-500 transition text-sm flex items-center justify-center gap-1.5">
-
-                            <i class="fab fa-youtube"></i>
-                            زيارة القناة
-
+                        <h3 id="vip-3-name" class="font-black text-white text-lg">جاري التحميل...</h3>
+                        <p id="vip-3-role" class="text-xs text-gray-400 mb-3">-</p>
+                        <a id="vip-3-link" href="#" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-red-500 transition text-sm flex items-center justify-center gap-1.5">
+                            <i class="fab fa-youtube"></i> زيارة القناة
                         </a>
-
                     </div>
                 </div>
-
             </div>
         </div>
     </main>
 
     <footer class="border-t border-white/5 py-12 bg-[#050507] text-center w-full mt-auto relative z-10">
-
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-gray-400">
-
-            <div>
-                جميع الحقوق محفوظة © 2026
-                <span class="text-white font-bold">YZ STORE</span>
-            </div>
-
+            <div>جميع الحقوق محفوظة © 2026 <span class="text-white font-bold">YZ STORE</span></div>
             <div class="flex flex-wrap justify-center gap-6">
-
-                <button onclick="window.showLegalModal('terms')"
-                        class="hover:text-white transition">
-                    Terms of Service
-                </button>
-
-                <button onclick="window.showLegalModal('refund')"
-                        class="hover:text-white transition">
-                    Refund Policy
-                </button>
-
-                <button onclick="window.showLegalModal('privacy')"
-                        class="hover:text-white transition">
-                    Privacy Policy
-                </button>
-
-                <button onclick="window.showLegalModal('contact')"
-                        class="hover:text-white transition">
-                    Contact Us
-                </button>
-
+                <button onclick="window.showLegalModal('terms')" class="hover:text-white transition">Terms of Service</button>
+                <button onclick="window.showLegalModal('refund')" class="hover:text-white transition">Refund Policy</button>
+                <button onclick="window.showLegalModal('privacy')" class="hover:text-white transition">Privacy Policy</button>
+                <button onclick="window.showLegalModal('contact')" class="hover:text-white transition">Contact Us</button>
             </div>
         </div>
     </footer>
 
-    <div id="cart-drawer"
-         class="cart-sidebar p-6 sm:p-8 flex flex-col">
-
+    <div id="cart-drawer" class="cart-sidebar p-6 sm:p-8 flex flex-col">
         <div class="flex justify-between items-center pb-6 border-b border-white/10 mb-6">
-
             <h2 class="text-xl font-black text-white flex items-center gap-2">
-
-                <i class="fa fa-shopping-bag text-red-500"></i>
-                سلة التسوق
-
+                <i class="fa fa-shopping-bag text-red-500"></i> سلة التسوق
             </h2>
-
-            <button onclick="toggleCart(false)"
-                    class="w-8 h-8 rounded-full bg-white/5 hover:bg-red-600 hover:text-white transition flex items-center justify-center text-sm">
-
+            <button onclick="toggleCart(false)" class="w-8 h-8 rounded-full bg-white/5 hover:bg-red-600 hover:text-white transition flex items-center justify-center text-sm">
                 <i class="fa fa-times"></i>
-
             </button>
         </div>
 
-        <div id="cart-items"
-             class="flex-1 space-y-3 overflow-y-auto custom-scroll pr-1">
-        </div>
+        <div id="cart-items" class="flex-1 space-y-3 overflow-y-auto custom-scroll pr-1"></div>
 
         <div class="mt-4 pb-4 border-b border-white/10">
-
-            <input id="discount-input"
-                   type="text"
-                   placeholder="لديك كود خصم؟ أدخله هنا"
-                   class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-green-500 outline-none transition text-center uppercase">
-
+            <input id="discount-input" type="text" placeholder="لديك كود خصم؟ أدخله هنا" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-green-500 outline-none transition text-center uppercase">
         </div>
 
         <div class="mt-4 pt-2">
-
             <div class="flex justify-between items-center mb-6">
-
-                <span class="text-gray-400 text-sm font-bold">
-                    المجموع:
-                </span>
-
-                <span id="total-price"
-                      class="text-2xl font-black text-red-500">
-                    $0.00
-                </span>
-
+                <span class="text-gray-400 text-sm font-bold">المجموع:</span>
+                <span id="total-price" class="text-2xl font-black text-red-500">$0.00</span>
             </div>
 
-            <button onclick="window.startCheckout()"
-                    class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white py-4 rounded-xl font-black shadow-lg shadow-red-600/40 transform hover:-translate-y-0.5 transition-all text-sm">
-
-                <i class="fa fa-bolt ml-1"></i>
-                إتمام الطلب والدفع الإلكتروني
-
+            <button onclick="window.startCheckout()" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white py-4 rounded-xl font-black shadow-lg shadow-red-600/40 transform hover:-translate-y-0.5 transition-all text-sm">
+                <i class="fa fa-bolt ml-1"></i> إتمام الطلب والدفع الإلكتروني
             </button>
 
-            <a href="https://wa.me/905377964233?text=أريد الاستفسار عن طرق دفع أخرى"
-               target="_blank"
-               rel="noopener noreferrer"
-               class="mt-3 w-full flex items-center justify-center gap-2 text-gray-400 hover:text-green-400 py-2 text-xs font-bold transition">
-
-                <i class="fab fa-whatsapp text-green-500"></i>
-                طرق دفع أخرى؟ تواصل معنا
-
+            <a href="https://wa.me/905377964233?text=أريد الاستفسار عن طرق دفع أخرى" target="_blank" rel="noopener noreferrer" class="mt-3 w-full flex items-center justify-center gap-2 text-gray-400 hover:text-green-400 py-2 text-xs font-bold transition">
+                <i class="fab fa-whatsapp text-green-500"></i> طرق دفع أخرى؟ تواصل معنا
             </a>
         </div>
     </div>
 
     <script type="module">
-
-        import {
-            initializeApp
-        } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-
-        import {
-            getDatabase,
-            ref,
-            onValue,
-            off,
-            push
-        } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
-
-        import {
-            getAuth,
-            onAuthStateChanged,
-            signInWithEmailAndPassword,
-            signOut,
-            createUserWithEmailAndPassword,
-            sendPasswordResetEmail,
-            GoogleAuthProvider,
-            signInWithPopup
-        } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
-
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+        import { getDatabase, ref, onValue, off, push } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCt5H1t5dqUxileT88DqkIT5WRSGx45Lps",
@@ -949,7 +645,6 @@
             storageBucket: "osman-70f42.firebasestorage.app"
         };
 
-
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth(app);
@@ -957,7 +652,6 @@
 
         const ADMIN_EMAIL = "osohmde@gmail.com";
         const FALLBACK_IMAGE = "https://i.ibb.co/YT1RPZdx/image.png";
-
 
         const Toast = Swal.mixin({
             toast: true,
@@ -968,12 +662,10 @@
             color: '#fff'
         });
 
-
         let cart = [];
         let allProducts = [];
         let currentCat = 'all';
         let ordersUserRef = null;
-
 
         const escapeHtml = (str) => {
             if (str === null || str === undefined) return '';
@@ -985,7 +677,6 @@
                 .replace(/'/g, '&#39;');
         };
 
-
         const safeUrl = (url) => {
             try {
                 const u = new URL(url, window.location.href);
@@ -994,12 +685,10 @@
             return FALLBACK_IMAGE;
         };
 
-
         onValue(ref(db, "store_settings/desc"), s => {
             document.getElementById('store-desc-display').textContent =
                 s.val() || "مرحباً بك في YZ STORE، المتجر الأفضل لتطوير تجربة البث المباشر وشراء الاشتراكات والخدمات الرقمية.";
         });
-
 
         onValue(ref(db, "store_settings/leaderboard"), s => {
             const data = s.val() || {};
@@ -1022,7 +711,6 @@
             document.getElementById('vip-3-img').src = safeUrl(r3.img);
             document.getElementById('vip-3-link').href = safeUrl(r3.link);
         });
-
 
         const loadReviews = () => {
             onValue(ref(db, "reviews"), s => {
@@ -1075,7 +763,6 @@
 
         loadReviews();
 
-
         window.addReview = async () => {
             const { value: formValues } = await Swal.fire({
                 title: 'تقييم تجربتك معنا',
@@ -1118,7 +805,6 @@
             }
         };
 
-
         onValue(ref(db, "products"), s => {
             allProducts = [];
             s.forEach(p => {
@@ -1138,7 +824,6 @@
                     تعذر تحميل المنتجات، يرجى تحديث الصفحة أو المحاولة لاحقاً.
                 </div>`;
         });
-
 
         onAuthStateChanged(auth, user => {
             const isAdmin = user && user.email === ADMIN_EMAIL;
@@ -1163,7 +848,6 @@
             }
         });
 
-
         window.loginWithGoogle = () => {
             Swal.showLoading();
             signInWithPopup(auth, googleProvider)
@@ -1173,7 +857,6 @@
             })
             .catch(error => { Swal.fire('خطأ في تسجيل الدخول', error.message, 'error'); });
         };
-
 
         window.handleAuth = () => {
             if (auth.currentUser) {
@@ -1213,7 +896,6 @@
             });
         };
 
-
         window.openRegister = async () => {
             const { value: f } = await Swal.fire({
                 title: 'إنشاء حساب جديد',
@@ -1236,7 +918,6 @@
             .catch(e => { Swal.fire('خطأ', e.message, 'error'); });
         };
 
-
         window.forgotPass = async () => {
             const { value: e } = await Swal.fire({
                 title: 'استعادة كلمة المرور',
@@ -1251,13 +932,11 @@
             .catch(() => { Toast.fire({ icon: 'error', title: 'البريد غير مسجل' }); });
         };
 
-
         window.getYouTubeID = (url) => {
             if (!url) return null;
             const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
             return (match && match[2].length === 11) ? match[2] : null;
         };
-
 
         window.openVideoModal = (k) => {
             const p = allProducts.find(x => x.key === k);
@@ -1286,7 +965,6 @@
             });
         };
 
-
         window.renderProducts = () => {
             const grid = document.getElementById('products-grid');
             grid.innerHTML = '';
@@ -1305,7 +983,7 @@
                     <div class="product-card-v2 group flex flex-col justify-between overflow-hidden">
                         <div class="relative h-52 overflow-hidden cursor-pointer" onclick="openVideoModal('${p.key}')">
                             <img src="${safeUrl(p.image)}" onerror="this.src='${FALLBACK_IMAGE}'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                            <span class="absolute top-3 right-3 bg-red-600/90 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full font-black flex items-center gap-1 shadow-lg">
+                            <span class="absolute top-3 right-3 bg-red-600/95 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full font-black flex items-center gap-1 shadow-lg">
                                 <i class="fa fa-bolt"></i> تسليم فوري
                             </span>
                             ${p.youtube ? `
@@ -1326,16 +1004,11 @@
             });
         };
 
-
         window.addToCart = (k) => {
             const it = allProducts.find(x => x.key === k);
             if (!it) return;
             const price = Number(it.price);
             if (!Number.isFinite(price) || price <= 0) return Toast.fire({ icon: 'error', title: 'سعر المنتج غير صالح' });
-
-            if (!it.variantId) {
-                return Toast.fire({ icon: 'error', title: 'هذا المنتج غير مرتبط بمعرف دفع صالح (variantId)' });
-            }
 
             const ex = cart.find(x => x.key === k);
             if (ex) {
@@ -1343,7 +1016,6 @@
             } else {
                 cart.push({
                     key: it.key,
-                    variantId: it.variantId,
                     title: it.title,
                     price: price,
                     image: it.image,
@@ -1356,7 +1028,6 @@
             updateCartUI();
             Toast.fire({ icon: 'success', title: 'تمت الإضافة للسلة' });
         };
-
 
         const updateCartUI = () => {
             let sub = 0;
@@ -1381,7 +1052,6 @@
             document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.qty, 0);
         };
 
-
         window.updateQty = (i, d) => {
             if (!cart[i]) return;
             cart[i].qty += d;
@@ -1389,11 +1059,9 @@
             updateCartUI();
         };
 
-
         window.toggleCart = (s) => {
             document.getElementById('cart-drawer').classList.toggle('open', s);
         };
-
 
         window.filterCat = (c) => {
             currentCat = c;
@@ -1401,7 +1069,6 @@
             document.getElementById('cat-' + c).classList.add('active');
             renderProducts();
         };
-
 
         const loadUserOrders = (uid) => {
             ordersUserRef = ref(db, `orders/${uid}`);
@@ -1438,7 +1105,7 @@
             });
         };
 
-        // دالة الدفع الجديدة المرتبطة بـ Shopier بدلاً من Lemon Squeezy
+        // دالة الدفع الجديدة المحدثة بنظام PAT وسيرفر Vercel المباشر
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1449,45 +1116,33 @@
                 return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' });
             }
 
-            const invalidItems = cart.filter(item => {
-                const price = Number(item.price);
-                return (!Number.isFinite(price) || price <= 0);
-            });
-
-            if (invalidItems.length > 0) {
-                return Swal.fire('خطأ', 'يوجد منتج بسعر غير صالح في السلة.', 'error');
+            // حساب مجموع السلة الإجمالي
+            const totalAmount = cart.reduce((sum, item) => sum + (Number(item.price) * item.qty), 0);
+            
+            if (!Number.isFinite(totalAmount) || totalAmount <= 0) {
+                return Swal.fire('خطأ', 'مجموع السلة غير صالح.', 'error');
             }
 
-            const items = cart.map(item => ({
-                productId: String(item.key),
-                title: item.title,
-                price: Number(item.price),
-                quantity: Number(item.qty) || 1
-            }));
-
-            const discountCode = document.getElementById('discount-input').value.trim().toUpperCase();
+            const orderId = 'YZ-' + Math.floor(Math.random() * 1000000);
 
             try {
                 toggleCart(false);
 
                 Swal.fire({
                     title: 'جاري تحويلك للدفع...',
-                    text: 'يتم تجهيز بوابة الدفع الآمنة (Shopier).',
+                    text: 'يتم تجهيز رابط الدفع المجمع الآمن.',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     didOpen: () => { Swal.showLoading(); }
                 });
 
-                // تأكد من تعديل هذا الرابط لاحقاً ليتوافق مع نقطة Vercel الخاصة بـ Shopier
+                // استبدل هذا الرابط برابط مشروعك الفعلي على Vercel
                 const response = await fetch('https://paddle-backend-self.vercel.app/api/shopier', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        items,
-                        customerEmail: auth.currentUser.email,
-                        customerName: auth.currentUser.email.split('@')[0], 
-                        customerPhone: "05000000000",
-                        discountCode: discountCode || null
+                        totalAmount: totalAmount,
+                        orderId: orderId
                     })
                 });
 
@@ -1499,14 +1154,8 @@
 
                 Swal.close();
 
-                if (data.checkoutUrl) {
-                    window.location.href = data.checkoutUrl;
-                } else if (data.htmlContent) {
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = data.htmlContent;
-                    document.body.appendChild(tempDiv);
-                    const form = tempDiv.querySelector('form');
-                    if(form) form.submit();
+                if (data.url) {
+                    window.location.href = data.url; // الانتقال الفوري لصفحة الدفع في Shopier
                 } else {
                     throw new Error('استجابة غير صالحة من خادم الدفع.');
                 }
@@ -1523,7 +1172,6 @@
                 });
             }
         };
-
 
         window.showLegalModal = (type) => {
             const data = {
@@ -1564,8 +1212,6 @@
                 confirmButtonColor: '#ef4444'
             });
         };
-
     </script>
-
 </body>
 </html>
