@@ -653,7 +653,7 @@
         const ADMIN_EMAIL = "osohmde@gmail.com";
         const FALLBACK_IMAGE = "https://i.ibb.co/YT1RPZdx/image.png";
         
-        // رابط الدفع المباشر الصحيح الذي يعمل بدون خطأ 404
+        // الرابط القديم الأصلي لشوبير الذي كان يعمل لديك تماماً
         const SHOPIER_DIRECT_LINK = "https://www.shopier.com/s/shipping/yzstore0"; 
 
         const Toast = Swal.mixin({
@@ -1108,7 +1108,7 @@
             });
         };
 
-        // التوجه المباشر للدفع في شوبير مع حفظ الطلب في قاعدة البيانات بالخلفية
+        // الانتقال المباشر للدفع مع حفظ الطلب في قاعدة البيانات في الخلفية
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1139,7 +1139,7 @@
             };
 
             try {
-                // حفظ الطلب في قاعدة البيانات في الخلفية ليظهر بلوحة التحكم
+                // حفظ الطلب في الخلفية في قاعدة البيانات ليظهر في لوحة التحكم
                 await push(ref(db, `orders/${uid}`), orderData);
                 
                 // تفريغ السلة
