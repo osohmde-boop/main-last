@@ -1105,7 +1105,8 @@
             });
         };
 
-        window.startCheckout = () => {
+        // واجهة إتمام الطلب وتخزينه في قاعدة البيانات تلقائياً قبل التحويل لشوبير
+        window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
                 return handleAuth();
@@ -1115,17 +1116,82 @@
                 return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' });
             }
 
+            const totalAmount = cart.reduce((sum, item) => sum + (Number(item.price) * item.qty), 0);
+            if (!Number.isFinite(totalAmount) || totalAmount <= 0) {
+                return Swal.fire('خطأ', 'مجموع السلة غير صالح.', 'error');
+            }
+
             toggleCart(false);
 
-            Swal.fire({
-                title: 'جاري تحويلك لبوابة الدفع...',
-                text: 'يرجى إتمام عملية الدفع عبر متجرنا الرسمي.',
-                timer: 1500,
-                showConfirmButton: false,
-                didOpen: () => { Swal.showLoading(); }
-            }).then(() => {
-                window.location.href = 'https://www.shopier.com/s/shipping/yzstore0';
+            const { value: formValues } = await Swal.fire({
+                title: 'إتمام الطلب والدفع ⚡',
+                html: `
+                    <div class="text-right space-y-4" dir="rtl">
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/5 mb-4">
+                            <div class="flex justify-between items-center text-sm mb-1">
+                                <span class="text-gray-400">إجمالي السلة:</span>
+                                <span class="text-red-500 font-black text-lg">$${totalAmount.toFixed(2)}</span>
+                            </div>
+                            <p class="text-[11px] text-gray-400">سيتم تسجيل طلبك وتوجيهك لبوابة الدفع بأمان.</p>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-xs mb-1 font-bold">الاسم الكامل</label>
+                            <input id="checkout-name" class="swal2-input !m-0 !w-full" placeholder="أدخل اسمك الكريم">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 text-xs mb-1 font-bold">رقم الهاتف</label>
+                            <input id="checkout-phone" type="tel" class="swal2-input !m-0 !w-full" placeholder="مثال: 5051234567">
+                        </div>
+                    </div>
+                `,
+                confirmButtonText: 'تأكيد الطلب والمتابعة للدفع 🔒',
+                confirmButtonColor: '#ef4444',
+                showCancelButton: true,
+                cancelButtonText: 'إلغاء',
+                preConfirm: () => {
+                    const name = document.getElementById('checkout-name').value.trim();
+                    const phone = document.getElementById('checkout-phone').value.trim();
+                    if (!name) return Swal.showValidationMessage('يرجى إدخال الاسم الكامل');
+                    if (!phone) return Swal.showValidationMessage('يرجى إدخال رقم الهاتف');
+                    return { name, phone };
+                }
             });
+
+            if (!formValues) return;
+
+            Swal.fire({
+                title: 'جاري تسجيل طلبك...',
+                text: 'يرجى الانتظار ليتم تحويلك لبوابة الدفع.',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading(); }
+            });
+
+            const uid = auth.currentUser.uid;
+            const orderData = {
+                userId: uid,
+                customerName: formValues.name,
+                customerPhone: formValues.phone,
+                customerEmail: auth.currentUser.email,
+                items: cart,
+                total: `$${totalAmount.toFixed(2)}`,
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                // حفظ الطلب في قاعدة البيانات ليظهر في لوحة التحكم فوراً
+                await push(ref(db, `orders/${uid}`), orderData);
+                
+                // تفريغ السلة بعد الطلب
+                cart = [];
+                updateCartUI();
+
+                setTimeout(() => {
+                    window.location.href = 'https://www.shopier.com/s/shipping/yzstore0';
+                }, 1000);
+            } catch (error) {
+                Swal.fire('خطأ', 'حدث خطأ أثناء حفظ الطلب: ' + error.message, 'error');
+            }
         };
 
         window.showLegalModal = (type) => {
