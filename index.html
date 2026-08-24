@@ -652,6 +652,9 @@
 
         const ADMIN_EMAIL = "osohmde@gmail.com";
         const FALLBACK_IMAGE = "https://i.ibb.co/YT1RPZdx/image.png";
+        
+        // رابط الدفع المباشر الخاص بك في شوبير (استبدله برابط الدفع المباشر للمنتج إذا كان لديك رابط محدد)
+        const SHOPIER_DIRECT_LINK = "https://www.shopier.com/ShowProduct/api/index.php?platform=yzstore0"; 
 
         const Toast = Swal.mixin({
             toast: true,
@@ -1105,7 +1108,7 @@
             });
         };
 
-        // الانتقال المباشر لشوبير مع الحفظ التلقائي في قاعدة البيانات بالخلفية
+        // التوجه المباشر للدفع في شوبير مع حفظ الطلب في قاعدة البيانات في الخلفية
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1123,13 +1126,7 @@
 
             toggleCart(false);
 
-            Swal.fire({
-                title: 'جاري تحويلك لبوابة الدفع...',
-                text: 'يرجى إتمام عملية الدفع عبر متجرنا الرسمي.',
-                timer: 1200,
-                showConfirmButton: false,
-                didOpen: () => { Swal.showLoading(); }
-            });
+            Toast.fire({ icon: 'success', title: 'جاري تحويلك لبوابة الدفع...' });
 
             const uid = auth.currentUser.uid;
             const orderData = {
@@ -1142,7 +1139,7 @@
             };
 
             try {
-                // حفظ الطلب في قاعدة البيانات تلقائياً في الخلفية بدون نوافذ مزعجة
+                // حفظ الطلب في قاعدة البيانات في الخلفية ليظهر بلوحة التحكم
                 await push(ref(db, `orders/${uid}`), orderData);
                 
                 // تفريغ السلة
@@ -1150,10 +1147,10 @@
                 updateCartUI();
 
                 setTimeout(() => {
-                    window.location.href = 'https://www.shopier.com/s/shipping/yzstore0';
-                }, 1000);
+                    window.location.href = SHOPIER_DIRECT_LINK;
+                }, 600);
             } catch (error) {
-                window.location.href = 'https://www.shopier.com/s/shipping/yzstore0';
+                window.location.href = SHOPIER_DIRECT_LINK;
             }
         };
 
