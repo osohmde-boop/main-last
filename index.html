@@ -1139,7 +1139,7 @@
 
                 const paymentData = await paymentRes.json();
 
-                if (!paymentRes.ok || !paymentData.url) {
+                if (!paymentRes.ok || !paymentData.checkoutHtml) {
                     Swal.close();
                     return Swal.fire('تعذر إتمام الطلب', paymentData.error || 'حدث خطأ غير متوقع، حاول لاحقاً.', 'error');
                 }
@@ -1160,7 +1160,11 @@
                 updateCartUI();
                 Swal.close();
 
-                window.location.href = paymentData.url;
+                // نستبدل محتوى الصفحة بنموذج الدفع المباشر — يوصل الزبون
+                // فوراً لصفحة الدفع بدون المرور بصفحة منتج على Shopier
+                document.open();
+                document.write(paymentData.checkoutHtml);
+                document.close();
 
             } catch (error) {
                 Swal.close();
