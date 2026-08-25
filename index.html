@@ -659,9 +659,6 @@
         const ADMIN_EMAIL = "osohmde@gmail.com";
         const FALLBACK_IMAGE = "https://i.ibb.co/YT1RPZdx/image.png";
         
-        // رابط شوبير المباشر والمستقر تماماً
-        const SHOPIER_DIRECT_LINK = "https://www.shopier.com/s/shipping/yzstore0";
-        
         let currentExchangeRate = 36;
 
         async function fetchLiveExchangeRate() {
@@ -1133,7 +1130,7 @@
             });
         };
 
-        // التوجه المباشر لرابط شوبير مع حفظ الطلب في قاعدة البيانات في الخلفية وبدون أي أخطاء سيرفر
+        // الاتصال بالسيرفر لتوليد رابط المنتج المباشر بالسعر المحول وإخفاء أي إضافات
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1150,9 +1147,10 @@
             }
 
             toggleCart(false);
-            Toast.fire({ icon: 'success', title: 'جاري تحويلك لبوابة الدفع...' });
+            Toast.fire({ icon: 'success', title: 'جاري إنشاء صفحة الشراء الخاصة بالمنتج...' });
 
             const uid = auth.currentUser.uid;
+            const orderId = Math.floor(10000 + Math.random() * 90000);
             const totalTryAmount = (totalAmount * currentExchangeRate).toFixed(2);
 
             const orderData = {
@@ -1165,18 +1163,26 @@
             };
 
             try {
-                // حفظ الطلب في قاعدة البيانات في الخلفية
                 await push(ref(db, `orders/${uid}`), orderData);
-                
-                // تفريغ السلة والانتقال المباشر لبوابة الدفع
-                cart = [];
-                updateCartUI();
 
-                setTimeout(() => {
-                    window.location.href = SHOPIER_DIRECT_LINK;
-                }, 600);
+                const response = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ totalAmount, orderId })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.url) {
+                    cart = [];
+                    updateCartUI();
+                    window.location.href = data.url;
+                } else {
+                    throw new Error(data.error || 'فشل توليد رابط الشراء');
+                }
             } catch (error) {
-                window.location.href = SHOPIER_DIRECT_LINK;
+                console.error(error);
+                Swal.fire('خطأ', 'حدث خطأ أثناء التواصل مع بوابة الدفع، يرجى المحاولة لاحقاً.', 'error');
             }
         };
 
