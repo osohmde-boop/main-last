@@ -1105,7 +1105,8 @@
             });
         };
 
-        // إتمام الطلب، حفظ السلة، والتوجه المباشر لصفحة شوبير الخاصة بمتجرك
+        // إتمام الطلب: نستدعي سيرفرنا (/api/create-payment) الذي يتحقق من
+        // الأسعار مباشرة من Firebase ثم يولّد رابط دفع Shopier فعلي لهذا الطلب بالذات
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1116,35 +1117,54 @@
                 return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' });
             }
 
-            const totalAmount = cart.reduce((sum, item) => sum + (Number(item.price) * item.qty), 0);
-            if (!Number.isFinite(totalAmount) || totalAmount <= 0) {
-                return Swal.fire('خطأ', 'مجموع السلة غير صالح.', 'error');
-            }
+            // نرسل فقط productId + qty — السعر الحقيقي يُحسب بالسيرفر من Firebase
+            const itemsPayload = cart.map(it => ({ productId: it.key, quantity: it.qty }));
+            const discountCode = document.getElementById('discount-input')?.value?.trim() || null;
 
             toggleCart(false);
-            Toast.fire({ icon: 'success', title: 'جاري تحويلك لبوابة الدفع...' });
+            Swal.fire({
+                title: 'جاري تجهيز عملية الدفع...',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
 
             const uid = auth.currentUser.uid;
-            const orderData = {
-                userId: uid,
-                customerEmail: auth.currentUser.email,
-                items: cart,
-                total: `$${totalAmount.toFixed(2)}`,
-                status: 'pending',
-                createdAt: new Date().toISOString()
-            };
 
             try {
+                const paymentRes = await fetch('/api/create-payment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items: itemsPayload, discountCode })
+                });
+
+                const paymentData = await paymentRes.json();
+
+                if (!paymentRes.ok || !paymentData.url) {
+                    Swal.close();
+                    return Swal.fire('تعذر إتمام الطلب', paymentData.error || 'حدث خطأ غير متوقع، حاول لاحقاً.', 'error');
+                }
+
+                const orderData = {
+                    userId: uid,
+                    customerEmail: auth.currentUser.email,
+                    items: cart,
+                    total: paymentData.total,
+                    shopierOrderId: paymentData.orderId,
+                    status: 'pending',
+                    createdAt: new Date().toISOString()
+                };
+
                 await push(ref(db, `orders/${uid}`), orderData);
-                
+
                 cart = [];
                 updateCartUI();
+                Swal.close();
 
-                setTimeout(() => {
-                    window.location.href = "https://www.shopier.com/yzstore0";
-                }, 500);
+                window.location.href = paymentData.url;
+
             } catch (error) {
-                window.location.href = "https://www.shopier.com/yzstore0";
+                Swal.close();
+                Swal.fire('خطأ', 'تعذر الاتصال بسيرفر الدفع. حاول مرة أخرى.', 'error');
             }
         };
 
