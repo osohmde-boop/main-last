@@ -663,14 +663,14 @@
 
         async function fetchLiveExchangeRate() {
             try {
-                const res = await fetch('https://sa.investing.com/currencies/usd-try');
-                // يتم الاعتماد على السعر التلقائي أو جلب التحديث اللحظي
+                const res = await fetch('https://open.er-api.com/v6/latest/USD');
                 const data = await res.json();
-                if (data && data.rate) {
-                    currentExchangeRate = data.rate;
+                if (data && data.rates && data.rates.TRY) {
+                    currentExchangeRate = data.rates.TRY;
+                    updateCartUI();
                 }
             } catch (e) {
-                // استخدام السعر الافتراضي المحدث بسلاسة
+                console.error("Exchange rate fetch error:", e);
             }
         }
         fetchLiveExchangeRate();
@@ -1130,7 +1130,7 @@
             });
         };
 
-        // تجميع السلة بالكامل وتحويل الزبون لرابط الدفع المباشر مع المبلغ بالليرة التركية
+        // إتمام الطلب وحفظ تفاصيل السلة ومجموعها بالليرة التركية لتوثيقها في قاعدة البيانات ثم الانتقال للمتجر
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1147,11 +1147,18 @@
             }
 
             toggleCart(false);
-            Toast.fire({ icon: 'success', title: 'جاري تحويلك لبوابة الدفع...' });
-
-            const uid = auth.currentUser.uid;
+            
             const totalTryAmount = (totalAmount * currentExchangeRate).toFixed(2);
 
+            // إظهار تنبيه للمستخدم بالمبلغ الإجمالي الدقيق بالليرة التركية حسب سعر الصرف الحالي قبل الانتقال
+            await Swal.fire({
+                title: 'إجمالي الطلب بالليرة التركية',
+                html: `<p class="text-gray-300 text-sm">مجموع طلبك هو <span class="text-green-400 font-black text-lg">${totalTryAmount} TRY</span> ($${totalAmount.toFixed(2)})</p><p class="text-xs text-gray-400 mt-2">سيتم توجيهك لصفحة الدفع الآن لإتمام العملية.</p>`,
+                confirmButtonText: 'متابعة الدفع',
+                confirmButtonColor: '#16a34a'
+            });
+
+            const uid = auth.currentUser.uid;
             const orderData = {
                 userId: uid,
                 customerEmail: auth.currentUser.email,
@@ -1167,12 +1174,11 @@
                 cart = [];
                 updateCartUI();
 
-                // رابط شوبير المباشر مع تمرير المبلغ الإجمالي بالليرة التركية تلقائياً
                 setTimeout(() => {
-                    window.location.href = `https://www.shopier.com/ShowProduct/productid=0&price=${totalTryAmount}&currency=TRY`;
-                }, 600);
+                    window.location.href = "https://www.shopier.com/yzstore0";
+                }, 400);
             } catch (error) {
-                window.location.href = `https://www.shopier.com/ShowProduct/productid=0&price=${totalTryAmount}&currency=TRY`;
+                window.location.href = "https://www.shopier.com/yzstore0";
             }
         };
 
