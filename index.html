@@ -1131,7 +1131,7 @@
             const uid = auth.currentUser.uid;
 
             try {
-                const paymentRes = await fetch('/api/create-payment', {
+                const paymentRes = await fetch('https://paddle-backend-self.vercel.app/api/shopier', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ items: itemsPayload, discountCode })
