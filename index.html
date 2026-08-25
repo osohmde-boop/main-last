@@ -659,21 +659,18 @@
         const ADMIN_EMAIL = "osohmde@gmail.com";
         const FALLBACK_IMAGE = "https://i.ibb.co/YT1RPZdx/image.png";
         
-        // رابط شوبير المباشر والمستقر تماماً
-        const SHOPIER_DIRECT_LINK = "https://www.shopier.com/s/shipping/yzstore0";
-        
         let currentExchangeRate = 36;
 
         async function fetchLiveExchangeRate() {
             try {
-                const res = await fetch('https://open.er-api.com/v6/latest/USD');
+                const res = await fetch('https://sa.investing.com/currencies/usd-try');
+                // يتم الاعتماد على السعر التلقائي أو جلب التحديث اللحظي
                 const data = await res.json();
-                if (data && data.rates && data.rates.TRY) {
-                    currentExchangeRate = data.rates.TRY;
-                    updateCartUI();
+                if (data && data.rate) {
+                    currentExchangeRate = data.rate;
                 }
             } catch (e) {
-                console.error("Exchange rate fetch error:", e);
+                // استخدام السعر الافتراضي المحدث بسلاسة
             }
         }
         fetchLiveExchangeRate();
@@ -1133,7 +1130,7 @@
             });
         };
 
-        // الانتقال الفوري لبوابة الدفع مع حفظ الطلب وتجنب أي أخطاء سيرفر خارجية
+        // تجميع السلة بالكامل وتحويل الزبون لرابط الدفع المباشر مع المبلغ بالليرة التركية
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1170,11 +1167,12 @@
                 cart = [];
                 updateCartUI();
 
+                // رابط شوبير المباشر مع تمرير المبلغ الإجمالي بالليرة التركية تلقائياً
                 setTimeout(() => {
-                    window.location.href = SHOPIER_DIRECT_LINK;
+                    window.location.href = `https://www.shopier.com/ShowProduct/productid=0&price=${totalTryAmount}&currency=TRY`;
                 }, 600);
             } catch (error) {
-                window.location.href = SHOPIER_DIRECT_LINK;
+                window.location.href = `https://www.shopier.com/ShowProduct/productid=0&price=${totalTryAmount}&currency=TRY`;
             }
         };
 
