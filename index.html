@@ -663,14 +663,18 @@
 
         async function fetchLiveExchangeRate() {
             try {
-                const res = await fetch('https://open.er-api.com/v6/latest/USD');
-                const data = await res.json();
-                if (data && data.rates && data.rates.TRY) {
-                    currentExchangeRate = data.rates.TRY;
-                    updateCartUI();
+                const res = await fetch('https://sa.investing.com/currencies/usd-try');
+                const text = await res.text();
+                const match = text.match(/"last_price"[^>]*>([\d,.]+)</);
+                if (match && match[1]) {
+                    const parsed = parseFloat(match[1].replace(',', ''));
+                    if (!isNaN(parsed) && parsed > 0) {
+                        currentExchangeRate = parsed;
+                        updateCartUI();
+                    }
                 }
             } catch (e) {
-                console.error("Exchange rate fetch error:", e);
+                // الاعتماد على السعر الافتراضي عند عدم توفر الاتصال المباشر
             }
         }
         fetchLiveExchangeRate();
@@ -1130,7 +1134,7 @@
             });
         };
 
-        // إتمام الطلب وحفظ تفاصيل السلة ومجموعها بالليرة التركية لتوثيقها في قاعدة البيانات ثم الانتقال للمتجر
+        // إتمام الطلب وحفظ البيانات في الفايربيز والانتقال المباشر للمتجر بدون أي نوافذ مزعجة
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1147,18 +1151,11 @@
             }
 
             toggleCart(false);
-            
-            const totalTryAmount = (totalAmount * currentExchangeRate).toFixed(2);
-
-            // إظهار تنبيه للمستخدم بالمبلغ الإجمالي الدقيق بالليرة التركية حسب سعر الصرف الحالي قبل الانتقال
-            await Swal.fire({
-                title: 'إجمالي الطلب بالليرة التركية',
-                html: `<p class="text-gray-300 text-sm">مجموع طلبك هو <span class="text-green-400 font-black text-lg">${totalTryAmount} TRY</span> ($${totalAmount.toFixed(2)})</p><p class="text-xs text-gray-400 mt-2">سيتم توجيهك لصفحة الدفع الآن لإتمام العملية.</p>`,
-                confirmButtonText: 'متابعة الدفع',
-                confirmButtonColor: '#16a34a'
-            });
+            Toast.fire({ icon: 'success', title: 'جاري تحويلك لبوابة الدفع...' });
 
             const uid = auth.currentUser.uid;
+            const totalTryAmount = (totalAmount * currentExchangeRate).toFixed(2);
+
             const orderData = {
                 userId: uid,
                 customerEmail: auth.currentUser.email,
@@ -1176,7 +1173,7 @@
 
                 setTimeout(() => {
                     window.location.href = "https://www.shopier.com/yzstore0";
-                }, 400);
+                }, 500);
             } catch (error) {
                 window.location.href = "https://www.shopier.com/yzstore0";
             }
