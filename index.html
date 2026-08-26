@@ -1105,8 +1105,7 @@
             });
         };
 
-        // إتمام الطلب: نستدعي سيرفرنا (/api/create-payment) الذي يتحقق من
-        // الأسعار مباشرة من Firebase ثم يولّد رابط دفع Shopier فعلي لهذا الطلب بالذات
+        // إتمام الطلب: توجيه الطلب إلى السيرفر المحلي عبر المسار النسبي (/api/shopier)
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1117,7 +1116,6 @@
                 return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' });
             }
 
-            // نرسل فقط productId + qty — السعر الحقيقي يُحسب بالسيرفر من Firebase
             const itemsPayload = cart.map(it => ({ productId: it.key, quantity: it.qty }));
             const discountCode = document.getElementById('discount-input')?.value?.trim() || null;
 
@@ -1131,7 +1129,8 @@
             const uid = auth.currentUser.uid;
 
             try {
-                const paymentRes = await fetch('https://paddle-backend-self.vercel.app/api/shopier', {
+                // ✅ التعديل هنا: استخدام مسار نسبى لتوجيه الطلب للسيرفر الحالى بدلاً من النطاق القديم
+                const paymentRes = await fetch('/api/shopier', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ items: itemsPayload, discountCode })
@@ -1160,8 +1159,6 @@
                 updateCartUI();
                 Swal.close();
 
-                // نستبدل محتوى الصفحة بنموذج الدفع المباشر — يوصل الزبون
-                // فوراً لصفحة الدفع بدون المرور بصفحة منتج على Shopier
                 document.open();
                 document.write(paymentData.checkoutHtml);
                 document.close();
