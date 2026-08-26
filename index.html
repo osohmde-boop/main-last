@@ -1153,8 +1153,8 @@
             const uid = auth.currentUser.uid;
 
             try {
-                // ✅ التعديل هنا: استخدام مسار نسبى لتوجيه الطلب للسيرفر الحالى بدلاً من النطاق القديم
-                const paymentRes = await fetch('/api/shopier', {
+                // ✅ التعديل: توجيه الطلب مباشرة إلى سيرفر الدفع على فيركل (بدلاً من مسار نسبي غير موجود على GitHub Pages)
+                const paymentRes = await fetch('https://paddle-backend-self.vercel.app/api/shopier', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ items: itemsPayload, discountCode })
