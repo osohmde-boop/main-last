@@ -1129,7 +1129,7 @@
             });
         };
 
-        // إتمام الطلب بتحويل العميل لرابط Whop بأمان مع معالجة خطأ JSON
+        // التوجيه الفوري والتنفيذي المباشر لصفحة Whop الرسمية
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1140,9 +1140,6 @@
                 return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' });
             }
 
-            const itemsPayload = cart.map(it => ({ productId: it.key, quantity: it.qty }));
-            const discountCode = document.getElementById('discount-input')?.value?.trim() || null;
-
             toggleCart(false);
             Swal.fire({
                 title: 'جاري تحويلك إلى صفحة الدفع...',
@@ -1151,52 +1148,31 @@
             });
 
             const uid = auth.currentUser.uid;
+            const orderId = `YZ-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+            // حفظ بيانات الطلب تلقائياً داخل قاعدة بيانات Firebase بموقعك
+            const orderData = {
+                userId: uid,
+                customerEmail: auth.currentUser.email,
+                items: cart,
+                total: document.getElementById('total-price').innerText,
+                whopOrderId: orderId,
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
 
             try {
-                const paymentRes = await fetch('https://paddle-backend-self.vercel.app/api/shopier', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ items: itemsPayload, discountCode })
-                });
-
-                const textResponse = await paymentRes.text();
-                let paymentData;
-
-                try {
-                    paymentData = JSON.parse(textResponse);
-                } catch (err) {
-                    Swal.close();
-                    return Swal.fire('خطأ في الاتصال', 'تعذر قراءة بيانات السيرفر بشكل صحيح.', 'error');
-                }
-
-                if (!paymentRes.ok || !paymentData.checkoutUrl) {
-                    Swal.close();
-                    return Swal.fire('تعذر إتمام الطلب', paymentData.error || 'حدث خطأ، حاول لاحقاً.', 'error');
-                }
-
-                const orderData = {
-                    userId: uid,
-                    customerEmail: auth.currentUser.email,
-                    items: cart,
-                    total: paymentData.total,
-                    whopOrderId: paymentData.orderId,
-                    status: 'pending',
-                    createdAt: new Date().toISOString()
-                };
-
                 await push(ref(db, `orders/${uid}`), orderData);
-
-                cart = [];
-                updateCartUI();
-                Swal.close();
-
-                // التوجيه المباشر لصفحة Whop
-                window.location.href = paymentData.checkoutUrl;
-
-            } catch (error) {
-                Swal.close();
-                Swal.fire('خطأ', 'تعذر الاتصال بالسيرفر. حاول مرة أخرى.', 'error');
+            } catch (err) {
+                console.error("Firebase Order Save Error:", err);
             }
+
+            cart = [];
+            updateCartUI();
+            Swal.close();
+
+            // التوجيه المباشر والخاطف إلى صفحة دفع Whop 
+            window.location.href = "https://whop.com/yzstoreonline/54-e3/";
         };
 
         window.showLegalModal = (type) => {
