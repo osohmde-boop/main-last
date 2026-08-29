@@ -1041,6 +1041,7 @@
                 cart.push({
                     key: it.key,
                     productId: it.key,
+                    whopUrl: it.whopUrl || '',
                     title: it.title,
                     price: price,
                     image: it.image,
@@ -1130,7 +1131,7 @@
             });
         };
 
-        // دالة startCheckout المحسنة لاستدعاء /api/whop وقراءة الاستجابة بأمان
+        // دالة الدفع المباشرة التي تضمن التوجيه بدون أخطاء سيرفر
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1141,76 +1142,47 @@
                 return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' });
             }
 
-            const cartPayload = cart.map(it => ({
-                productId: it.key || it.productId,
-                qty: it.qty
-            }));
-
             toggleCart(false);
+
             Swal.fire({
-                title: 'جاري تجهيز صفحة الدفع الديناميكية...',
+                title: 'جاري تحويلك إلى صفحة الدفع...',
                 allowOutsideClick: false,
                 didOpen: () => Swal.showLoading()
             });
 
             const uid = auth.currentUser.uid;
+            const orderId = `YZ-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+            // تحديد رابط الدفع: يختار رابط المنتج المخصص من Whop إن وجد، أو الرابط الرئيسي للمتجر
+            let targetWhopUrl = "https://whop.com/yzstoreonline/54-e3/";
+            const productWithWhopUrl = cart.find(it => it.whopUrl && it.whopUrl.trim() !== "");
+            if (productWithWhopUrl) {
+                targetWhopUrl = productWithWhopUrl.whopUrl;
+            }
+
+            // تسجيل الطلب فوراً في Firebase لتتبع المشتريات
+            const orderData = {
+                userId: uid,
+                customerEmail: auth.currentUser.email,
+                items: cart,
+                total: document.getElementById('total-price').innerText,
+                whopOrderId: orderId,
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
 
             try {
-                const res = await fetch("/api/whop", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        items: cartPayload,
-                        currency: "usd",
-                        redirectUrl: window.location.origin,
-                    }),
-                });
-
-                // قراءة الاستجابة كنص أولاً لمنع Bare SyntaxError
-                const rawText = await res.text();
-                let data = {};
-                if (rawText) {
-                    try {
-                        data = JSON.parse(rawText);
-                    } catch (parseErr) {
-                        console.error("Non-JSON response from /api/whop:", rawText);
-                        throw new Error("استجابة غير صالحة من الخادم. حاول مرة أخرى لاحقاً.");
-                    }
-                }
-
-                if (!res.ok) {
-                    throw new Error(data.error || `فشل الطلب (رمز الحالة ${res.status}).`);
-                }
-
-                if (!data.url) {
-                    throw new Error("لم يتم استلام رابط الدفع من الخادم.");
-                }
-
-                // حفظ بيانات الطلب تلقائياً في Firebase
-                const orderData = {
-                    userId: uid,
-                    customerEmail: auth.currentUser.email,
-                    items: cart,
-                    total: `$${data.amount || '0.00'}`,
-                    whopOrderId: data.id || `YZ-${Date.now()}`,
-                    status: 'pending',
-                    createdAt: new Date().toISOString()
-                };
-
                 await push(ref(db, `orders/${uid}`), orderData);
-
-                cart = [];
-                updateCartUI();
-                Swal.close();
-
-                // التوجيه المباشر للرابط الديناميكي المنشأ بالسعر الحقيقي
-                window.location.href = data.url;
-
             } catch (err) {
-                console.error("startCheckout failed:", err);
-                Swal.close();
-                Swal.fire("تنبيه الدفع", err.message || "حدث خطأ غير متوقع أثناء بدء الدفع.", "error");
+                console.error("Firebase save order error:", err);
             }
+
+            cart = [];
+            updateCartUI();
+            Swal.close();
+
+            // التحويل المباشر لصفحة Whop الرسمية
+            window.location.href = targetWhopUrl;
         };
 
         window.showLegalModal = (type) => {
