@@ -1129,7 +1129,7 @@
             });
         };
 
-        // إتمام الطلب وتحويل العميل لرابط Whop
+        // إتمام الطلب بتحويل السعر أوتوماتيكياً عبر Vercel API
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1145,7 +1145,7 @@
 
             toggleCart(false);
             Swal.fire({
-                title: 'جاري التحويل لصفحة الدفع...',
+                title: 'جاري تحويلك لصفحة الدفع (Whop)...',
                 allowOutsideClick: false,
                 didOpen: () => Swal.showLoading()
             });
@@ -1182,7 +1182,7 @@
                 updateCartUI();
                 Swal.close();
 
-                // التوجيه المباشر إلى Whop
+                // التوجيه التلقائي المباشر لصفحة الدفع المنشأة بالسعر المطلوب
                 window.location.href = paymentData.checkoutUrl;
 
             } catch (error) {
