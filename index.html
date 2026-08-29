@@ -5,21 +5,21 @@
     <title>YZ STORE | المنصة الأولى لخدمات البث والاشتراكات</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="YZ Store هو المتجر الرسمي لصناع المحتوى واللاعبين: أليرتات بث احترافية، اشتراكات، وخدمات تصميم خاصة. تسليم فوري، دفع آمن 100% عبر Shopier، وثقة أكثر من 3000 عميل.">
+    <meta name="description" content="YZ Store هو المتجر الرسمي لصناع المحتوى واللاعبين: أليرتات بث احترافية، اشتراكات، وخدمات تصميم خاصة. تسليم فوري، دفع آمن 100% عبر Whop، وثقة أكثر من 3000 عميل.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://yzstoreonline.com/">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="YZ STORE">
     <meta property="og:title" content="YZ STORE | المنصة الأولى لخدمات البث والاشتراكات">
-    <meta property="og:description" content="أليرتات بث احترافية، اشتراكات، وخدمات تصميم خاصة. تسليم فوري ودفع آمن 100% عبر Shopier.">
+    <meta property="og:description" content="أليرتات بث احترافية، اشتراكات، وخدمات تصميم خاصة. تسليم فوري ودفع آمن 100% عبر Whop.">
     <meta property="og:image" content="https://i.ibb.co/YT1RPZdx/image.png">
     <meta property="og:url" content="https://yzstoreonline.com/">
     <meta property="og:locale" content="ar_AR">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="YZ STORE | المنصة الأولى لخدمات البث والاشتراكات">
-    <meta name="twitter:description" content="أليرتات بث احترافية، اشتراكات، وخدمات تصميم خاصة. تسليم فوري ودفع آمن 100% عبر Shopier.">
+    <meta name="twitter:description" content="أليرتات بث احترافية، اشتراكات، وخدمات تصميم خاصة. تسليم فوري ودفع آمن 100% عبر Whop.">
     <meta name="twitter:image" content="https://i.ibb.co/YT1RPZdx/image.png">
 
     <link rel="icon" type="image/png" href="https://i.ibb.co/YT1RPZdx/image.png">
@@ -488,7 +488,7 @@
             <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
                 <i class="fa fa-shield-check text-green-500 text-xl mb-1"></i>
                 <h4 class="font-black text-white text-base sm:text-lg">دفع آمن 100%</h4>
-                <p class="text-[11px] text-gray-400">معتمد عبر Shopier</p>
+                <p class="text-[11px] text-gray-400">معتمد عبر Whop</p>
             </div>
             <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
                 <i class="fa fa-crown text-amber-500 text-xl mb-1"></i>
@@ -1129,7 +1129,7 @@
             });
         };
 
-        // إتمام الطلب: توجيه الطلب إلى السيرفر المحلي عبر المسار النسبي (/api/shopier)
+        // إتمام الطلب وتحويل العميل لرابط Whop
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
@@ -1145,7 +1145,7 @@
 
             toggleCart(false);
             Swal.fire({
-                title: 'جاري تجهيز عملية الدفع...',
+                title: 'جاري التحويل لصفحة الدفع...',
                 allowOutsideClick: false,
                 didOpen: () => Swal.showLoading()
             });
@@ -1153,7 +1153,6 @@
             const uid = auth.currentUser.uid;
 
             try {
-                // ✅ التعديل: توجيه الطلب مباشرة إلى سيرفر الدفع على فيركل (بدلاً من مسار نسبي غير موجود على GitHub Pages)
                 const paymentRes = await fetch('https://paddle-backend-self.vercel.app/api/shopier', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1162,9 +1161,9 @@
 
                 const paymentData = await paymentRes.json();
 
-                if (!paymentRes.ok || !paymentData.checkoutHtml) {
+                if (!paymentRes.ok || !paymentData.checkoutUrl) {
                     Swal.close();
-                    return Swal.fire('تعذر إتمام الطلب', paymentData.error || 'حدث خطأ غير متوقع، حاول لاحقاً.', 'error');
+                    return Swal.fire('تعذر إتمام الطلب', paymentData.error || 'حدث خطأ، حاول لاحقاً.', 'error');
                 }
 
                 const orderData = {
@@ -1172,7 +1171,7 @@
                     customerEmail: auth.currentUser.email,
                     items: cart,
                     total: paymentData.total,
-                    shopierOrderId: paymentData.orderId,
+                    whopOrderId: paymentData.orderId,
                     status: 'pending',
                     createdAt: new Date().toISOString()
                 };
@@ -1183,13 +1182,12 @@
                 updateCartUI();
                 Swal.close();
 
-                document.open();
-                document.write(paymentData.checkoutHtml);
-                document.close();
+                // التوجيه المباشر إلى Whop
+                window.location.href = paymentData.checkoutUrl;
 
             } catch (error) {
                 Swal.close();
-                Swal.fire('خطأ', 'تعذر الاتصال بسيرفر الدفع. حاول مرة أخرى.', 'error');
+                Swal.fire('خطأ', 'تعذر الاتصال بالسيرفر. حاول مرة أخرى.', 'error');
             }
         };
 
@@ -1200,8 +1198,8 @@
                     content: `
                         <p><strong>1. Services:</strong> YZ STORE provides digital streaming assets, sound alerts, overlays, and graphics.</p>
                         <p><strong>2. Delivery:</strong> All goods are delivered electronically via instant download on your dashboard upon payment.</p>
-                        <p><strong>3. Payments:</strong> All orders are paid electronically through Shopier.</p>
-                        <p><strong>4. Merchant of Record:</strong> Shopier is the Merchant of Record for all orders and handles customer inquiries.</p>`
+                        <p><strong>3. Payments:</strong> All orders are paid electronically through Whop.</p>
+                        <p><strong>4. Merchant of Record:</strong> Whop is the Merchant of Record for all orders and handles customer inquiries.</p>`
                 },
                 refund: {
                     title: 'Refund Policy | سياسة الاسترجاع',
@@ -1214,7 +1212,7 @@
                     title: 'Privacy Policy | سياسة الخصوصية',
                     content: `
                         <p>We respect your privacy and only collect essential information required for order fulfillment and support.</p>
-                        <p>Payments are processed securely via Shopier.</p>`
+                        <p>Payments are processed securely via Whop.</p>`
                 },
                 contact: {
                     title: 'Contact Us | اتصل بنا',
