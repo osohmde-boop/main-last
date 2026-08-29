@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <title>YZ STORE | المنصة الأولى لخدمات البث والاشتراكات</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta name="description" content="YZ Store هو المتجر الرسمي لصناع المحتوى واللاعبين: أليرتات بث احترافية، اشتراكات، وخدمات تصميم خاصة. تسليم فوري، دفع آمن 100% عبر Whop، وثقة أكثر من 3000 عميل.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://yzstoreonline.com/">
-
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="YZ STORE">
     <meta property="og:title" content="YZ STORE | المنصة الأولى لخدمات البث والاشتراكات">
@@ -16,40 +14,33 @@
     <meta property="og:image" content="https://i.ibb.co/YT1RPZdx/image.png">
     <meta property="og:url" content="https://yzstoreonline.com/">
     <meta property="og:locale" content="ar_AR">
-
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="YZ STORE | المنصة الأولى لخدمات البث والاشتراكات">
     <meta name="twitter:description" content="أليرتات بث احترافية، اشتراكات، وخدمات تصميم خاصة. تسليم فوري ودفع آمن 100% عبر Whop.">
     <meta name="twitter:image" content="https://i.ibb.co/YT1RPZdx/image.png">
-
     <link rel="icon" type="image/png" href="https://i.ibb.co/YT1RPZdx/image.png">
     <link rel="apple-touch-icon" href="https://i.ibb.co/YT1RPZdx/image.png">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://i.ibb.co">
     <link rel="preload" as="image" href="https://i.ibb.co/YT1RPZdx/image.png">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
             --primary-red: #ef4444;
             --bg-dark: #070709;
         }
-
         body {
             background: var(--bg-dark);
             color: #f4f4f5;
             font-family: 'Cairo', sans-serif;
             overflow-x: hidden;
         }
-
         .cyber-grid {
             background-image:
                 linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
@@ -58,14 +49,12 @@
             mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
             -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
         }
-
         .glass-v2 {
             background: rgba(18, 18, 24, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-
         .hero-gradient {
             background: radial-gradient(
                 circle at 50% -20%,
@@ -73,7 +62,6 @@
                 rgba(7, 7, 9, 0) 70%
             );
         }
-
         .product-card-v2 {
             background: linear-gradient(
                 180deg,
@@ -85,20 +73,17 @@
             transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
-
         .product-card-v2:hover {
             transform: translateY(-8px) scale(1.01);
             border-color: rgba(239, 68, 68, 0.5);
             box-shadow: 0 20px 40px -15px rgba(239, 68, 68, 0.35);
         }
-
         .category-tab {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: #a1a1aa;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         .category-tab:hover,
         .category-tab.active {
             background: #ef4444;
@@ -107,7 +92,6 @@
             box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
             transform: scale(1.04);
         }
-
         .cart-sidebar {
             transform: translateX(100%);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -122,11 +106,9 @@
             border-left: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: -25px 0 50px rgba(0,0,0,0.8);
         }
-
         .cart-sidebar.open {
             transform: translateX(0);
         }
-
         .swal2-popup {
             border-radius: 24px !important;
             background: #121218 !important;
@@ -134,13 +116,11 @@
             padding: 24px !important;
             color: #fff !important;
         }
-
         .swal2-title {
             color: #fff !important;
             font-family: 'Cairo', sans-serif !important;
             font-weight: 900 !important;
         }
-
         .swal2-input,
         .swal2-select,
         .swal2-file,
@@ -152,12 +132,10 @@
             padding: 12px !important;
             font-family: 'Cairo', sans-serif !important;
         }
-
         .swal2-input:focus,
         .swal2-textarea:focus {
             border-color: var(--primary-red) !important;
         }
-
         .whatsapp-btn-float {
             position: fixed;
             bottom: 25px;
@@ -175,12 +153,10 @@
             z-index: 90;
             transition: all 0.3s ease;
         }
-
         .whatsapp-btn-float:hover {
             transform: scale(1.1) rotate(12deg);
             background: #16a34a;
         }
-
         @keyframes pulse-slow {
             0%, 100% {
                 filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.3));
@@ -189,30 +165,24 @@
                 filter: drop-shadow(0 0 25px rgba(239, 68, 68, 0.7));
             }
         }
-
         .logo-glow-effect {
             animation: pulse-slow 3s infinite ease-in-out;
         }
-
         .custom-scroll::-webkit-scrollbar {
             width: 5px;
         }
-
         .custom-scroll::-webkit-scrollbar-track {
             background: transparent;
         }
-
         .custom-scroll::-webkit-scrollbar-thumb {
             background: #272732;
             border-radius: 10px;
         }
-
         .intro-logo-pop {
             opacity: 0;
             animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             z-index: 10;
         }
-
         @keyframes popUp {
             0% {
                 opacity: 0;
@@ -224,7 +194,6 @@
                 filter: drop-shadow(0 15px 35px rgba(239, 68, 68, 0.8));
             }
         }
-
         .intro-fade-out {
             opacity: 0;
             visibility: hidden;
@@ -233,7 +202,6 @@
                 transform 0.6s cubic-bezier(0.8, 0, 0.2, 1),
                 opacity 0.6s ease;
         }
-
         #bg-dragon-wrap {
             position: fixed;
             inset: 0;
@@ -242,13 +210,11 @@
             opacity: 0;
             animation: dragon-fade-in 1.2s ease forwards 2.6s;
         }
-
         @keyframes dragon-fade-in {
             to {
                 opacity: 1;
             }
         }
-
         #bg-dragon {
             position: absolute;
             top: 0;
@@ -266,7 +232,6 @@
             opacity: 0.5;
             mix-blend-mode: screen;
         }
-
         @keyframes dragon-fly {
             0% {
                 offset-distance: 0%;
@@ -281,16 +246,13 @@
                 transform: scale(0.75);
             }
         }
-
         #bg-dragon .wing {
             transform-origin: 50% 50%;
             animation: wing-flap 0.9s ease-in-out infinite;
         }
-
         #bg-dragon .wing.wing-back {
             animation-delay: 0.12s;
         }
-
         @keyframes wing-flap {
             0%, 100% {
                 transform: scaleY(1) rotate(0deg);
@@ -299,13 +261,11 @@
                 transform: scaleY(0.55) rotate(-8deg);
             }
         }
-
         @media (max-width: 640px) {
             #bg-dragon {
                 width: 130px;
             }
         }
-
         @media (prefers-reduced-motion: reduce) {
             #bg-dragon-wrap {
                 display: none;
@@ -313,9 +273,7 @@
         }
     </style>
 </head>
-
 <body class="flex flex-col min-h-screen relative">
-
     <div id="yz-intro"
          class="fixed inset-0 z-[99999] bg-[#050507] flex items-center justify-center transition-all duration-700 overflow-hidden origin-top">
         <div class="relative flex items-center justify-center w-full h-full">
@@ -325,7 +283,6 @@
                  class="w-64 sm:w-80 h-auto relative intro-logo-pop">
         </div>
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const intro = document.getElementById('yz-intro');
@@ -336,16 +293,13 @@
                 }
             }, 800);
         });
-
         setTimeout(() => {
             const intro = document.getElementById('yz-intro');
             if (intro) { intro.remove(); }
         }, 2500);
     </script>
-
     <div class="fixed inset-0 cyber-grid pointer-events-none z-0"></div>
     <div class="fixed inset-0 hero-gradient pointer-events-none z-0"></div>
-
     <div id="bg-dragon-wrap" aria-hidden="true">
         <svg id="bg-dragon"
              viewBox="0 0 240 120"
@@ -379,7 +333,6 @@
                   fill="url(#dragon-body-grad)"/>
         </svg>
     </div>
-
     <nav class="fixed top-0 w-full glass-v2 z-50 px-6 py-4 border-b border-white/5 flex justify-between items-center">
         <div class="flex items-center gap-3 cursor-pointer"
              onclick="window.scrollTo({top:0, behavior:'smooth'})"
@@ -392,7 +345,6 @@
                 <span class="text-red-500">STORE</span>
             </span>
         </div>
-
         <div class="flex items-center gap-3">
             <a href="https://discord.gg/3VmZzgMMBK"
                target="_blank"
@@ -401,14 +353,12 @@
                 <i class="fab fa-discord"></i>
                 ديسكورد
             </a>
-
             <a id="admin-link"
                href="admin.html"
                class="hidden items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-white transition duration-300 text-xs font-bold">
                 <i class="fa fa-shield-halved"></i>
                 لوحة التحكم
             </a>
-
             <button onclick="toggleCart(true)"
                     class="relative p-3 rounded-xl bg-white/5 border border-white/10 text-gray-200 hover:text-white hover:border-red-500/50 transition">
                 <i class="fa fa-shopping-bag text-lg"></i>
@@ -417,7 +367,6 @@
                     0
                 </span>
             </button>
-
             <button id="auth-btn"
                     onclick="handleAuth()"
                     class="text-xs font-bold px-5 py-3 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white shadow-lg shadow-red-600/30 transition duration-300">
@@ -425,14 +374,12 @@
             </button>
         </div>
     </nav>
-
     <a href="https://wa.me/905377964233"
        target="_blank"
        rel="noopener noreferrer"
        class="whatsapp-btn-float">
         <i class="fab fa-whatsapp"></i>
     </a>
-
     <main class="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-grow w-full relative z-10">
         <div class="glass-v2 rounded-3xl p-8 sm:p-12 mb-12 border border-white/10 relative overflow-hidden text-center sm:text-right flex flex-col sm:flex-row justify-between items-center gap-8 shadow-2xl">
             <div class="space-y-4 max-w-xl z-10">
@@ -440,19 +387,16 @@
                     <i class="fa fa-bolt"></i>
                     المتجر الرسمي لصناع المحتوى واللاعبين
                 </div>
-
                 <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight">
                     طوّر بثك وحساباتك بأعلى
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-500 to-amber-500">
                         احترافية ⚡
                     </span>
                 </h1>
-
                 <p id="store-desc-display"
                    class="text-gray-400 text-sm sm:text-base leading-relaxed">
                     جاري تحميل وصف المتجر...
                 </p>
-
                 <div class="pt-2 flex flex-wrap justify-center sm:justify-start gap-3">
                     <a href="https://wa.me/905377964233?text=أريد طلب تصميم أو خدمة خاصة"
                        target="_blank"
@@ -461,7 +405,6 @@
                         <i class="fa fa-wand-magic-sparkles"></i>
                         طلب تصميم خاص
                     </a>
-
                     <a href="https://www.youtube.com/@Yzstore130"
                        target="_blank"
                        rel="noopener noreferrer"
@@ -471,14 +414,12 @@
                     </a>
                 </div>
             </div>
-
             <div class="relative z-10 flex-shrink-0">
                 <img src="https://i.ibb.co/YT1RPZdx/image.png"
                      alt="YZ Store"
                      class="w-48 sm:w-64 h-auto logo-glow-effect drop-shadow-2xl">
             </div>
         </div>
-
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
             <div class="glass-v2 p-4 rounded-2xl text-center border border-white/5">
                 <i class="fa fa-bolt text-red-500 text-xl mb-1"></i>
@@ -501,7 +442,6 @@
                 <p class="text-[11px] text-gray-400">مساعدة مستمرة عبر واتساب</p>
             </div>
         </div>
-
         <div class="flex items-center justify-center gap-3 mb-10 overflow-x-auto pb-2 custom-scroll">
             <button onclick="window.filterCat('all')"
                     class="category-tab active px-7 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 whitespace-nowrap"
@@ -522,7 +462,6 @@
                 البكجات والاشتراكات
             </button>
         </div>
-
         <div id="user-orders-section" class="hidden mb-12">
             <h2 class="text-xl font-black text-white mb-4 flex items-center gap-2">
                 <i class="fa fa-download text-blue-400"></i>
@@ -530,9 +469,7 @@
             </h2>
             <div id="user-orders-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
-
         <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></div>
-
         <div class="mt-20 mb-10">
             <div class="text-center mb-10">
                 <h2 class="text-2xl sm:text-3xl font-black text-white inline-flex items-center gap-3">
@@ -549,7 +486,6 @@
             </div>
             <div id="reviews-container" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
         </div>
-
         <div class="mt-20 mb-10">
             <div class="text-center mb-10">
                 <h2 class="text-2xl sm:text-3xl font-black text-white inline-flex items-center gap-3">
@@ -558,7 +494,6 @@
                 </h2>
                 <p class="text-gray-400 text-sm mt-2">أبرز صناع المحتوى الذين يثقون بأعمالنا 🏆</p>
             </div>
-
             <div class="flex flex-col md:flex-row justify-center items-end gap-6 max-w-4xl mx-auto mt-20 px-4">
                 <div class="glass-v2 p-6 rounded-t-3xl border-t-4 border-gray-400 w-full md:w-1/3 text-center relative order-2 md:order-1 hover:-translate-y-2 transition duration-300">
                     <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
@@ -575,7 +510,6 @@
                         </a>
                     </div>
                 </div>
-
                 <div class="glass-v2 p-8 rounded-t-3xl border-t-4 border-yellow-500 w-full md:w-1/3 text-center relative order-1 md:order-2 transform md:-translate-y-8 hover:-translate-y-10 transition duration-300 shadow-[0_0_30px_rgba(234,179,8,0.15)] z-10">
                     <div class="absolute -top-16 left-1/2 transform -translate-x-1/2">
                         <i class="fa fa-crown text-4xl text-yellow-500 absolute -top-10 left-1/2 transform -translate-x-1/2 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]"></i>
@@ -592,7 +526,6 @@
                         </a>
                     </div>
                 </div>
-
                 <div class="glass-v2 p-6 rounded-t-3xl border-t-4 border-amber-700 w-full md:w-1/3 text-center relative order-3 md:order-3 hover:-translate-y-2 transition duration-300">
                     <div class="absolute -top-12 left-1/2 transform -translate-x-1/2">
                         <div class="w-20 h-20 rounded-full border-4 border-amber-700 bg-gray-900 overflow-hidden">
@@ -611,7 +544,6 @@
             </div>
         </div>
     </main>
-
     <footer class="border-t border-white/5 py-12 bg-[#050507] text-center w-full mt-auto relative z-10">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-gray-400">
             <div>جميع الحقوق محفوظة © 2026 <span class="text-white font-bold">YZ STORE</span></div>
@@ -623,7 +555,6 @@
             </div>
         </div>
     </footer>
-
     <div id="cart-drawer" class="cart-sidebar p-6 sm:p-8 flex flex-col">
         <div class="flex justify-between items-center pb-6 border-b border-white/10 mb-6">
             <h2 class="text-xl font-black text-white flex items-center gap-2">
@@ -633,34 +564,27 @@
                 <i class="fa fa-times"></i>
             </button>
         </div>
-
         <div id="cart-items" class="flex-1 space-y-3 overflow-y-auto custom-scroll pr-1"></div>
-
         <div class="mt-4 pb-4 border-b border-white/10">
             <input id="discount-input" type="text" placeholder="لديك كود خصم؟ أدخله هنا" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-green-500 outline-none transition text-center uppercase">
         </div>
-
         <div class="mt-4 pt-2">
             <div class="flex justify-between items-center mb-6 bg-white/5 p-4 rounded-2xl border border-white/5">
                 <span class="text-gray-400 text-sm font-bold">المجموع الكلي:</span>
                 <span id="total-price" class="text-2xl font-black text-red-500">$0.00</span>
             </div>
-
             <button onclick="window.startCheckout()" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white py-4 rounded-xl font-black shadow-lg shadow-red-600/40 transform hover:-translate-y-0.5 transition-all text-sm">
                 <i class="fa fa-bolt ml-1"></i> إتمام الطلب والدفع الإلكتروني
             </button>
-
             <a href="https://wa.me/905377964233?text=أريد الاستفسار عن طرق دفع أخرى" target="_blank" rel="noopener noreferrer" class="mt-3 w-full flex items-center justify-center gap-2 text-gray-400 hover:text-green-400 py-2 text-xs font-bold transition">
                 <i class="fab fa-whatsapp text-green-500"></i> طرق دفع أخرى؟ تواصل معنا
             </a>
         </div>
     </div>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
         import { getDatabase, ref, onValue, off, push } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
-
         const firebaseConfig = {
             apiKey: "AIzaSyCt5H1t5dqUxileT88DqkIT5WRSGx45Lps",
             authDomain: "osman-70f42.firebaseapp.com",
@@ -668,15 +592,12 @@
             projectId: "osman-70f42",
             storageBucket: "osman-70f42.firebasestorage.app"
         };
-
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth(app);
         const googleProvider = new GoogleAuthProvider();
-
         const ADMIN_EMAIL = "osohmde@gmail.com";
         const FALLBACK_IMAGE = "https://i.ibb.co/YT1RPZdx/image.png";
-
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-start',
@@ -685,12 +606,10 @@
             background: '#181822',
             color: '#fff'
         });
-
         let cart = [];
         let allProducts = [];
         let currentCat = 'all';
         let ordersUserRef = null;
-
         const escapeHtml = (str) => {
             if (str === null || str === undefined) return '';
             return String(str)
@@ -700,7 +619,6 @@
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#39;');
         };
-
         const safeUrl = (url) => {
             try {
                 const u = new URL(url, window.location.href);
@@ -708,39 +626,32 @@
             } catch (e) {}
             return FALLBACK_IMAGE;
         };
-
         onValue(ref(db, "store_settings/desc"), s => {
             document.getElementById('store-desc-display').textContent =
                 s.val() || "مرحباً بك في YZ STORE، المتجر الأفضل لتطوير تجربة البث المباشر وشراء الاشتراكات والخدمات الرقمية.";
         });
-
         onValue(ref(db, "store_settings/leaderboard"), s => {
             const data = s.val() || {};
             const r1 = data.rank1 || { name: 'المكان متاح', img: FALLBACK_IMAGE, role: 'VIP', link: '#' };
             const r2 = data.rank2 || { name: 'المكان متاح', img: FALLBACK_IMAGE, role: 'VIP', link: '#' };
             const r3 = data.rank3 || { name: 'المكان متاح', img: FALLBACK_IMAGE, role: 'VIP', link: '#' };
-
             document.getElementById('vip-1-name').textContent = r1.name + ' 👑';
             document.getElementById('vip-1-role').textContent = r1.role;
             document.getElementById('vip-1-img').src = safeUrl(r1.img);
             document.getElementById('vip-1-link').href = safeUrl(r1.link);
-
             document.getElementById('vip-2-name').textContent = r2.name;
             document.getElementById('vip-2-role').textContent = r2.role;
             document.getElementById('vip-2-img').src = safeUrl(r2.img);
             document.getElementById('vip-2-link').href = safeUrl(r2.link);
-
             document.getElementById('vip-3-name').textContent = r3.name;
             document.getElementById('vip-3-role').textContent = r3.role;
             document.getElementById('vip-3-img').src = safeUrl(r3.img);
             document.getElementById('vip-3-link').href = safeUrl(r3.link);
         });
-
         const loadReviews = () => {
             onValue(ref(db, "reviews"), s => {
                 const container = document.getElementById('reviews-container');
                 let html = '';
-
                 if (!s.exists()) {
                     html = `
                         <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
@@ -760,13 +671,11 @@
                     const reviews = [];
                     s.forEach(child => { reviews.push(child.val()); });
                     reviews.reverse();
-
                     reviews.slice(0, 6).forEach(rev => {
                         let starsHtml = '';
                         for (let i = 0; i < 5; i++) {
                             starsHtml += `<i class="fa fa-star ${i < rev.rating ? 'text-amber-400' : 'text-gray-600/50'}"></i>`;
                         }
-
                         html += `
                             <div class="glass-v2 p-6 rounded-2xl border border-white/5 hover:border-red-500/30 transition duration-300 transform hover:-translate-y-1">
                                 <div class="flex gap-1 text-xs mb-4">${starsHtml}</div>
@@ -784,9 +693,7 @@
                 container.innerHTML = html;
             });
         };
-
         loadReviews();
-
         window.addReview = async () => {
             const { value: formValues } = await Swal.fire({
                 title: 'تقييم تجربتك معنا',
@@ -811,12 +718,10 @@
                     return { rating: parseInt(rating), text: text.trim() };
                 }
             });
-
             if (formValues && auth.currentUser) {
                 const userEmail = auth.currentUser.email;
                 const userName = userEmail.split('@')[0];
                 const initial = userName.charAt(0).toUpperCase();
-
                 push(ref(db, "reviews"), {
                     name: userName,
                     initial,
@@ -828,7 +733,6 @@
                 .catch(error => { Swal.fire('خطأ', error.message, 'error'); });
             }
         };
-
         onValue(ref(db, "products"), s => {
             allProducts = [];
             s.forEach(p => {
@@ -848,19 +752,16 @@
                     تعذر تحميل المنتجات، يرجى تحديث الصفحة أو المحاولة لاحقاً.
                 </div>`;
         });
-
         onAuthStateChanged(auth, user => {
             const isAdmin = user && user.email === ADMIN_EMAIL;
             document.getElementById('admin-link').classList.toggle('hidden', !isAdmin);
             document.getElementById('admin-link').classList.toggle('flex', isAdmin);
             document.getElementById('user-orders-section').classList.toggle('hidden', !user);
             document.getElementById('auth-btn').innerText = user ? "حسابي (خروج)" : "تسجيل الدخول";
-
             if (ordersUserRef) {
                 off(ordersUserRef);
                 ordersUserRef = null;
             }
-
             if (user) {
                 loadUserOrders(user.uid);
             } else {
@@ -871,7 +772,6 @@
                 }
             }
         });
-
         window.loginWithGoogle = () => {
             Swal.showLoading();
             signInWithPopup(auth, googleProvider)
@@ -881,7 +781,6 @@
             })
             .catch(error => { Swal.fire('خطأ في تسجيل الدخول', error.message, 'error'); });
         };
-
         window.handleAuth = () => {
             if (auth.currentUser) {
                 signOut(auth).then(() => {
@@ -890,7 +789,6 @@
                 });
                 return;
             }
-
             Swal.fire({
                 title: 'تسجيل الدخول إلى حسابك',
                 html: `
@@ -913,13 +811,11 @@
                 const email = document.getElementById('e').value;
                 const pass = document.getElementById('p').value;
                 if (!email || !pass) return Toast.fire({ icon: 'error', title: 'يرجى ملء الحقول' });
-
                 signInWithEmailAndPassword(auth, email, pass)
                 .then(() => { Toast.fire({ icon: 'success', title: 'أهلاً بك مجدداً!' }); })
                 .catch(() => { Swal.fire('خطأ', 'بيانات الدخول غير صحيحة', 'error'); });
             });
         };
-
         window.openRegister = async () => {
             const { value: f } = await Swal.fire({
                 title: 'إنشاء حساب جديد',
@@ -933,15 +829,12 @@
                     p: document.getElementById('rp').value
                 })
             });
-
             if (!f) return;
             if (!f.e || !f.p) return Toast.fire({ icon: 'error', title: 'يرجى ملء البيانات' });
-
             createUserWithEmailAndPassword(auth, f.e, f.p)
             .then(() => { Toast.fire({ icon: 'success', title: 'تم إنشاء الحساب بنجاح' }); })
             .catch(e => { Swal.fire('خطأ', e.message, 'error'); });
         };
-
         window.forgotPass = async () => {
             const { value: e } = await Swal.fire({
                 title: 'استعادة كلمة المرور',
@@ -949,24 +842,20 @@
                 placeholder: 'بريدك الإلكتروني',
                 confirmButtonColor: '#ef4444'
             });
-
             if (!e) return;
             sendPasswordResetEmail(auth, e)
             .then(() => { Swal.fire('تم الإرسال', 'تفقد بريدك الإلكتروني لتعيين كلمة مرور جديدة', 'success'); })
             .catch(() => { Toast.fire({ icon: 'error', title: 'البريد غير مسجل' }); });
         };
-
         window.getYouTubeID = (url) => {
             if (!url) return null;
             const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
             return (match && match[2].length === 11) ? match[2] : null;
         };
-
         window.openVideoModal = (k) => {
             const p = allProducts.find(x => x.key === k);
             if (!p) return;
             const yid = window.getYouTubeID(p.youtube);
-
             Swal.fire({
                 width: window.innerWidth > 768 ? '780px' : '95%',
                 padding: '24px',
@@ -988,20 +877,16 @@
                     </div>`
             });
         };
-
         window.renderProducts = () => {
             const grid = document.getElementById('products-grid');
             grid.innerHTML = '';
-
             const filtered = currentCat === 'all'
                 ? allProducts
                 : allProducts.filter(p => p.category === currentCat);
-
             if (filtered.length === 0) {
                 grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-500 font-bold">لا توجد منتجات في هذا القسم حالياً.</div>`;
                 return;
             }
-
             filtered.forEach(p => {
                 grid.innerHTML += `
                     <div class="product-card-v2 group flex flex-col justify-between overflow-hidden">
@@ -1027,13 +912,11 @@
                     </div>`;
             });
         };
-
         window.addToCart = (k) => {
             const it = allProducts.find(x => x.key === k);
             if (!it) return;
             const price = Number(it.price);
             if (!Number.isFinite(price) || price <= 0) return Toast.fire({ icon: 'error', title: 'سعر المنتج غير صالح' });
-
             const ex = cart.find(x => x.key === k);
             if (ex) {
                 ex.qty++;
@@ -1050,11 +933,9 @@
                     qty: 1
                 });
             }
-
             updateCartUI();
             Toast.fire({ icon: 'success', title: 'تمت الإضافة للسلة' });
         };
-
         const updateCartUI = () => {
             let sub = 0;
             document.getElementById('cart-items').innerHTML = cart.map((it, i) => {
@@ -1073,41 +954,34 @@
                         </div>
                     </div>`;
             }).join('');
-
             document.getElementById('total-price').innerText = `$${sub.toFixed(2)}`;
             document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.qty, 0);
         };
-
         window.updateQty = (i, d) => {
             if (!cart[i]) return;
             cart[i].qty += d;
             if (cart[i].qty < 1) cart.splice(i, 1);
             updateCartUI();
         };
-
         window.toggleCart = (s) => {
             document.getElementById('cart-drawer').classList.toggle('open', s);
         };
-
         window.filterCat = (c) => {
             currentCat = c;
             document.querySelectorAll('.category-tab').forEach(i => i.classList.remove('active'));
             document.getElementById('cat-' + c).classList.add('active');
             renderProducts();
         };
-
         const loadUserOrders = (uid) => {
             ordersUserRef = ref(db, `orders/${uid}`);
             onValue(ordersUserRef, s => {
                 const list = document.getElementById('user-orders-list');
                 list.innerHTML = '';
                 let hasActiveOrder = false;
-
                 s.forEach(o => {
                     const d = o.val() || {};
                     const active = d.status === 'active';
                     if (active) hasActiveOrder = true;
-
                     list.innerHTML += `
                         <div class="glass-v2 p-4 rounded-2xl flex justify-between items-center ${active ? 'border-green-500/40' : 'border-yellow-500/40'}">
                             <div>
@@ -1122,7 +996,6 @@
                             `}
                         </div>`;
                 });
-
                 const reviewBtn = document.getElementById('add-review-btn');
                 if (reviewBtn) {
                     reviewBtn.classList.toggle('hidden', !hasActiveOrder);
@@ -1130,61 +1003,98 @@
                 }
             });
         };
-
-        // دالة الدفع المباشرة التي تضمن التوجيه بدون أخطاء سيرفر
+        // دالة الدفع الديناميكي عبر Whop: تُنشئ جلسة دفع بمبلغ السلة الفعلي
+        // بدل التوجيه لرابط Whop ثابت (الذي كان يعرض دائماً سعر الخطة الثابتة).
         window.startCheckout = async () => {
             if (!auth.currentUser) {
                 toggleCart(false);
                 return handleAuth();
             }
-
             if (cart.length === 0) {
                 return Toast.fire({ icon: 'info', title: 'سلة المشتريات فارغة' });
             }
-
             toggleCart(false);
-
             Swal.fire({
-                title: 'جاري تحويلك إلى صفحة الدفع...',
+                title: 'جاري تجهيز صفحة الدفع...',
                 allowOutsideClick: false,
                 didOpen: () => Swal.showLoading()
             });
 
             const uid = auth.currentUser.uid;
             const orderId = `YZ-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-
-            // تحديد رابط الدفع: يختار رابط المنتج المخصص من Whop إن وجد، أو الرابط الرئيسي للمتجر
-            let targetWhopUrl = "https://whop.com/yzstoreonline/54-e3/";
-            const productWithWhopUrl = cart.find(it => it.whopUrl && it.whopUrl.trim() !== "");
-            if (productWithWhopUrl) {
-                targetWhopUrl = productWithWhopUrl.whopUrl;
-            }
-
-            // تسجيل الطلب فوراً في Firebase لتتبع المشتريات
-            const orderData = {
-                userId: uid,
-                customerEmail: auth.currentUser.email,
-                items: cart,
-                total: document.getElementById('total-price').innerText,
-                whopOrderId: orderId,
-                status: 'pending',
-                createdAt: new Date().toISOString()
-            };
+            const cartSnapshot = cart.map(it => ({ ...it })); // نسخة قبل التصفير، للتسجيل والتشخيص
 
             try {
-                await push(ref(db, `orders/${uid}`), orderData);
+                // 1) اطلب من الباك إند (api/whop.js) إنشاء جلسة دفع Whop ديناميكية
+                //    بمبلغ يساوي إجمالي السلة الحقيقي (يُعاد حسابه من Firebase في السيرفر).
+                const res = await fetch('/api/whop', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        items: cartSnapshot.map(it => ({ id: it.productId || it.key, qty: it.qty })),
+                        currency: 'usd',
+                        orderId,
+                        uid,
+                        customerEmail: auth.currentUser.email,
+                        redirectUrl: window.location.origin + window.location.pathname + '?order=' + encodeURIComponent(orderId)
+                    })
+                });
+
+                // 2) اقرأ الاستجابة كنص أولاً، ثم حلّلها بأمان — هذا ما يمنع
+                //    ظهور خطأ "Unexpected end of JSON input" إن أعاد الخادم رداً فارغاً.
+                const rawText = await res.text();
+                let data = {};
+                if (rawText) {
+                    try {
+                        data = JSON.parse(rawText);
+                    } catch (parseErr) {
+                        console.error('استجابة غير صالحة من /api/whop:', rawText);
+                        throw new Error('استجابة غير صالحة من الخادم، حاول مرة أخرى.');
+                    }
+                }
+
+                if (!res.ok) {
+                    throw new Error(data.error || `فشل إنشاء جلسة الدفع (رمز ${res.status}).`);
+                }
+                if (!data.url) {
+                    throw new Error('لم يتم استلام رابط الدفع من الخادم.');
+                }
+
+                // 3) سجّل الطلب في Firebase قبل التحويل، مع معرّف جلسة Whop للمطابقة لاحقاً
+                //    (عبر Webhook من Whop يُحدّث الحالة إلى "active" بعد نجاح الدفع فعلياً).
+                const orderData = {
+                    userId: uid,
+                    customerEmail: auth.currentUser.email,
+                    items: cartSnapshot,
+                    total: `$${Number(data.amount).toFixed(2)}`,
+                    orderId,
+                    whopCheckoutId: data.id || null,
+                    status: 'pending',
+                    createdAt: new Date().toISOString()
+                };
+                try {
+                    await push(ref(db, `orders/${uid}`), orderData);
+                } catch (err) {
+                    console.error('Firebase save order error:', err);
+                }
+
+                cart = [];
+                updateCartUI();
+                Swal.close();
+
+                // 4) التحويل إلى رابط الدفع الديناميكي الفعلي القادم من Whop (وليس رابط ثابت).
+                window.location.href = data.url;
             } catch (err) {
-                console.error("Firebase save order error:", err);
+                console.error('startCheckout failed:', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'تعذّر بدء عملية الدفع',
+                    text: err.message || 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً أو التواصل معنا عبر واتساب.',
+                    confirmButtonColor: '#ef4444',
+                    confirmButtonText: 'حسناً'
+                });
             }
-
-            cart = [];
-            updateCartUI();
-            Swal.close();
-
-            // التحويل المباشر لصفحة Whop الرسمية
-            window.location.href = targetWhopUrl;
         };
-
         window.showLegalModal = (type) => {
             const data = {
                 terms: {
@@ -1216,7 +1126,6 @@
                         <p><strong>WhatsApp:</strong> +90 537 796 42 33</p>`
                 }
             };
-
             Swal.fire({
                 title: data[type].title,
                 html: `<div class="text-left text-xs space-y-3 leading-relaxed text-gray-300 font-sans" dir="ltr">${data[type].content}</div>`,
